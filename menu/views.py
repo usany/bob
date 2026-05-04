@@ -2,6 +2,11 @@ from django.shortcuts import render
 from .models import MenuItem
 
 
+def home(request):
+    """Home page"""
+    return render(request, 'menu/home.html')
+
+
 def menu_list(request):
     """Display all menu items as a tree structure"""
     root_items = MenuItem.objects.filter(parent=None)
