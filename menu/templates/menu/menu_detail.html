@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ menu_item.title }}</title>
+</head>
+<body>
+    <h1>{{ menu_item.title }}</h1>
+    <p><strong>URL:</strong> {{ menu_item.url }}</p>
+    <p><strong>Order:</strong> {{ menu_item.order }}</p>
+    {% if menu_item.parent %}
+        <p><strong>Parent:</strong> {{ menu_item.parent.title }}</p>
+    {% endif %}
+    
+    {% if menu_item.children.exists %}
+        <h2>Children</h2>
+        <ul>
+            {% for child in menu_item.children.all %}
+                <li><a href="{% url 'menu_detail' child.pk %}">{{ child.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <p><a href="{% url 'menu_list' %}">Back to Menu List</a></p>
+</body>
+</html>
