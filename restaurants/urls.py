@@ -22,7 +22,7 @@ from pages import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('admin/', views.admin_view, name='admin_view'),
-    path('django-admin/', admin.site.urls),
-    path('menu/', include('pages.urls')),
+    path('adminpage/', views.admin_view, name='admin_view'),
+    path('admin/', admin.site.urls),
+    path('pages/', include('pages.urls')),
 ]
