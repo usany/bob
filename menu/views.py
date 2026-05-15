@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import MenuItem
 
 
@@ -17,3 +18,10 @@ def menu_detail(request, pk):
     """Display details for a specific menu item"""
     menu_item = MenuItem.objects.get(pk=pk)
     return render(request, 'menu/menu_detail.html', {'menu_item': menu_item})
+
+
+@staff_member_required
+def admin_view(request):
+    """Custom admin view for managing menu items"""
+    items = MenuItem.objects.all()
+    return render(request, 'menu/admin_view.html', {'items': items})
