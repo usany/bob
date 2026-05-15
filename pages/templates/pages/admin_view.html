@@ -34,7 +34,7 @@
                 <td>{{ item.order }}</td>
                 <td>{{ item.parent.title|default:"-" }}</td>
                 <td>
-                    <a href="{% url 'admin:menu_menuitem_change' item.id %}" class="btn btn-admin">Edit in Django Admin</a>
+                    <a href="{% url 'admin:pages_menuitem_change' item.id %}" class="btn btn-admin">Edit in Django Admin</a>
                 </td>
             </tr>
             {% endfor %}
