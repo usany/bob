@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@source "../templates/**/*.html";
+@source "../**/templates/**/*.html";
+
+/* 2. Customize your theme using standard CSS variables */
+@theme {
+    --color-brand-primary: #4f46e5;
+    --color-brand-secondary: #06b6d4;
+    --font-display: "Inter", sans-serif;
+}
