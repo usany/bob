@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      basecoat-css:
+        specifier: ^0.3.11
+        version: 0.3.11
       daisyui:
         specifier: ^5.5.19
         version: 5.5.19
@@ -156,6 +159,9 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
+
+  basecoat-css@0.3.11:
+    resolution: {integrity: sha512-cU91Egcg9AhKJ1HswpKFItHC//FWDt1T8AlL5Yk9Fh5I2WYe+QhN3MtiVJ2vemqFF4iAM1vfbikhhjc+vkr2zA==}
 
   baseline-browser-mapping@2.10.30:
     resolution: {integrity: sha512-xjOFN16Ha1+Rz4nFYKqHU/LSB+gx/Vi3yQLX7r7sAW+Wa+8hhF2h4pvqTrTMc8+WcDBEunnUurr46Jvv0jk3Vg==}
@@ -611,6 +617,8 @@ snapshots:
       picocolors: 1.1.1
       postcss: 8.5.14
       postcss-value-parser: 4.2.0
+
+  basecoat-css@0.3.11: {}
 
   baseline-browser-mapping@2.10.30: {}
 

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @source "../templates/**/*.html";
 @source "../**/templates/**/*.html";
-@plugin "daisyui";
+@import "basecoat-css";
 
 /* 2. Customize your theme using standard CSS variables */
 @theme {
