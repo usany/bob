@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tailwindcss": "^4.3.0",
     "@tailwindcss/postcss": "^4.3.0",
-    "postcss": "^8.5.14"
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.3.0"
   }
 }
