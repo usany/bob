@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Menu Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-table {
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .admin-table th,
+    .admin-table td {
+        border: 1px solid var(--border-color);
+        padding: 12px;
+        text-align: left;
+    }
+
+    .admin-table th {
+        background-color: #f1f5f9;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        text-decoration: none;
+        color: white;
+        border-radius: 6px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .btn-admin {
+        background: #10b981;
+        transition: background 0.2s ease;
+    }
+
+    .btn-admin:hover {
+        background: #059669;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Menu Administration</h1>
+<p style="margin-bottom: 20px;"><a href="{% url 'menu_list' %}"
+        style="text-decoration: none; color: #3b82f6; font-weight: 500;">&larr; Back to Public Menu</a></p>
+
+<div style="overflow-x: auto;">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>URL</th>
+                <th>Order</th>
+                <th>Parent</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.url }}</td>
+                <td>{{ item.order }}</td>
+                <td>{{ item.parent.title|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'admin:pages_menuitem_change' item.id %}" class="btn btn-admin">Edit in Django
+                        Admin</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

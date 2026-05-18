@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ menu_item.title }}{% endblock %}
+
+{% block content %}
+<div
+    style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px;">
+    <h1 style="margin-top: 0;">{{ menu_item.title }}</h1>
+    <p><strong>URL:</strong> {{ menu_item.url }}</p>
+    <p><strong>Order:</strong> {{ menu_item.order }}</p>
+    {% if menu_item.parent %}
+    <p><strong>Parent:</strong> {{ menu_item.parent.title }}</p>
+    {% endif %}
+</div>
+
+{% if menu_item.children.exists %}
+<h2>Children</h2>
+<ul style="list-style-type: none; padding: 0;">
+    {% for child in menu_item.children.all %}
+    <li
+        style="margin-bottom: 10px; background: white; padding: 10px 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <a href="{% url 'menu_detail' child.pk %}" style="text-decoration: none; color: #1e293b;">{{ child.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'menu_list' %}" style="text-decoration: none; color: #3b82f6; font-weight: 500;">&larr; Back to Menu
+        List</a>
+</div>
+{% endblock %}

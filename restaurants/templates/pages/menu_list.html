@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Menu List{% endblock %}
+
+{% block content %}
+<h1>Menu Items</h1>
+<ul style="list-style-type: none; padding: 0;">
+    {% for item in menu_items %}
+    <li
+        style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <a href="{{ item.url }}" style="text-decoration: none; font-size: 1.1rem; color: #1e293b; font-weight: 500;">{{
+            item.title }}</a>
+        {% if item.children.exists %}
+        <ul style="list-style-type: none; padding-left: 20px; margin-top: 10px;">
+            {% for child in item.children.all %}
+            <li style="margin-bottom: 8px;">
+                <a href="{{ child.url }}" style="text-decoration: none; color: #3b82f6;">{{ child.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>No menu items available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
