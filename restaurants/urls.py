@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from pages import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.root_redirect, name='root'),
+    path('se', views.home, name='home'),
+    path('gl', views.home_gl, name='home_gl'),
     path('adminpage/', views.admin_view, name='admin_view'),
     path('admin/', admin.site.urls),
     path('pages/', include('pages.urls')),
