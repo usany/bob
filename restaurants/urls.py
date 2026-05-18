@@ -21,8 +21,8 @@ from . import views
 
 urlpatterns = [
     path('', views.root_redirect, name='root'),
-    path('se', views.home, name='home'),
-    path('gl', views.home_gl, name='home_gl'),
+    path('se/', views.home, name='home'),
+    path('gl/', views.home_gl, name='home_gl'),
     path('adminpage/', views.admin_view, name='admin_view'),
     path('admin/', admin.site.urls),
     path('pages/', include('pages.urls')),
