@@ -1,19 +1,33 @@
 import oci
+from django.core.files.storage import Storage
+from django.conf import settings
  
-# Initialize the client
-config = oci.config.from_file()  # Uses ~/.oci/config
-object_storage_client = oci.object_storage.ObjectStorageClient(config)
- 
-# Upload a file
-namespace = 'your_namespace'  # Get from Oracle Cloud Console
-bucket_name = 'your_bucket_name'
-object_name = 'path/to/file.jpg'
-file_path = '/local/path/to/file.jpg'
- 
-with open(file_path, 'rb') as f:
-    object_storage_client.put_object(
-        namespace_name=namespace,
-        bucket_name=bucket_name,
-        object_name=object_name,
-        put_object_body=f
-    )
+class OracleObjectStorage(Storage):
+    def __init__(self):
+        config = oci.config.from_file()
+        self.client = oci.object_storage.ObjectStorageClient(config)
+        self.namespace = settings.ORACLE_NAMESPACE
+        self.bucket = settings.ORACLE_BUCKET
+    
+    def _save(self, name, content):
+        self.client.put_object(
+            namespace_name=self.namespace,
+            bucket_name=self.bucket,
+            object_name=name,
+            put_object_body=content
+        )
+        return name
+    
+    def url(self, name):
+        return f"https://objectstorage.{settings.ORACLE_REGION}.oraclecloud.com/n/{self.namespace}/b/{self.bucket}/o/{name}"
+    
+    def exists(self, name):
+        try:
+            self.client.get_object(
+                namespace_name=self.namespace,
+                bucket_name=self.bucket,
+                object_name=name
+            )
+            return True
+        except:
+            return False

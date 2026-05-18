@@ -82,6 +82,23 @@ DATABASES = {
     }
 }
 
+# Oracle Cloud Object Storage
+ORACLE_NAMESPACE = 'ax0ym4amgnfk'
+ORACLE_BUCKET = 'bucket-20260516-0145'
+ORACLE_REGION = 'ap-chuncheon-1'
+
+# Optional: sub-folder inside the bucket used as the media root
+ORACLE_MEDIA_LOCATION = 'media'
+
+# Optional: public base URL for the bucket (set if bucket is public or uses PAR)
+# ORACLE_STORAGE_URL = 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'
+
+# Optional: OCI credentials (defaults to ~/.oci/config)
+# ORACLE_CONFIG_FILE = '~/.oci/config'
+# ORACLE_CONFIG_PROFILE = 'DEFAULT'
+
+# Django media file storage backend
+DEFAULT_FILE_STORAGE = 'restaurants.oracle_storage.OracleObjectStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
