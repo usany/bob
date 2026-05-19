@@ -19,14 +19,13 @@
     {% for child in menu_item.children.all %}
     <li
         style="margin-bottom: 10px; background: white; padding: 10px 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <a href="{% url 'menu_detail' child.pk %}" style="text-decoration: none; color: #1e293b;">{{ child.title }}</a>
+        <a href="/{{ location }}/{{ child.url }}/" style="text-decoration: none; color: #1e293b;">{{ child.title }}</a>
     </li>
     {% endfor %}
 </ul>
 {% endif %}
 
 <div style="margin-top: 20px;">
-    <a href="{% url 'menu_list' %}" style="text-decoration: none; color: #3b82f6; font-weight: 500;">&larr; Back to Menu
-        List</a>
+    <a href="/{{ location }}/" style="text-decoration: none; color: #3b82f6; font-weight: 500;">&larr; Back</a>
 </div>
 {% endblock %}

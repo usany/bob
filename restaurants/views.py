@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import MenuItem
@@ -53,10 +53,11 @@ def menu_list(request):
     return render(request, 'pages/menu_list.html', {'menu_items': root_items})
 
 
-def menu_detail(request, pk):
+def menu_detail(request, pathname):
     """Display details for a specific menu item"""
-    menu_item = MenuItem.objects.get(pk=pk)
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item})
+    menu_item = get_object_or_404(MenuItem, url=pathname)
+    location = 'gl' if request.path.startswith('/gl/') else 'se'
+    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location})
 
 
 # @staff_member_required
