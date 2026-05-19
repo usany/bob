@@ -16,15 +16,15 @@ RESTAURANT_TITLES = {
 MEALS = ['아침', '점심', '저녁']
 WEEKDAYS = ['월', '화', '수', '목', '금']
 restaurants = [
-    {'id': 1, 'title': '푸른솔 학생식당', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
-        {'id': 2, 'title': '푸른솔 교직원식당', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 3, 'title': '청운관 학생식당', 'path': 'ch', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['점심']},
-        {'id': 4, 'title': '청운관 교직원식당', 'path': 'cg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 5, 'title': '한국외대 인문관 식당', 'path': 'hi', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-        {'id': 6, 'title': '한국외대 교수회관 식당', 'path': 'hg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-        {'id': 7, 'title': '학생회관 학생식당', 'path': 'hh', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-        {'id': 8, 'title': '학생회관 교직원식당', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 9, 'title': '제2기숙사 식당', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+    {'id': 1, 'title': '푸른솔 학생식당', 'campus': 'se', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
+    {'id': 2, 'title': '푸른솔 교직원식당', 'campus': 'se', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+    {'id': 3, 'title': '청운관 학생식당', 'campus': 'se', 'path': 'ch', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['점심']},
+    {'id': 4, 'title': '청운관 교직원식당', 'campus': 'se', 'path': 'cg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+    {'id': 5, 'title': '한국외대 인문관 식당', 'campus': 'se', 'path': 'hi', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+    {'id': 6, 'title': '한국외대 교수회관 식당', 'campus': 'se', 'path': 'hg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+    {'id': 7, 'title': '학생회관 학생식당', 'campus': 'gl', 'path': 'hh', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+    {'id': 8, 'title': '학생회관 교직원식당', 'campus': 'gl', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+    {'id': 9, 'title': '제2기숙사 식당', 'campus': 'gl', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
 ]
 
 def root_redirect(request):
@@ -49,24 +49,13 @@ def root_redirect(request):
 def home(request):
     """Home page — SE location"""
     # root_items = MenuItem.objects.filter(parent=None)
-    menu_items = [
-        {'id': 1, 'title': '푸른솔 학생식당', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
-        {'id': 2, 'title': '푸른솔 교직원식당', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 3, 'title': '청운관 학생식당', 'path': 'ch', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['점심']},
-        {'id': 4, 'title': '청운관 교직원식당', 'path': 'cg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 5, 'title': '한국외대 인문관 식당', 'path': 'hi', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-        {'id': 6, 'title': '한국외대 교수회관 식당', 'path': 'hg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-    ]
+    menu_items = restaurants.filter(campus='se')
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
-    menu_items = [
-        {'id': 7, 'title': '학생회관 학생식당', 'path': 'hh', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-        {'id': 8, 'title': '학생회관 교직원식당', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
-        {'id': 9, 'title': '제2기숙사 식당', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
-    ]
+    menu_items = restaurants.filter(campus='gl')
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
 
