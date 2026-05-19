@@ -34,7 +34,7 @@ def home(request):
         {'id': 5, 'title': '한국외대 인문관 식당', 'url': '5'},
         {'id': 6, 'title': '한국외대 교수회관 식당', 'url': '6'},
     ]
-    return render(request, 'pages/home.html', {'menu_items': root_items, 'items': menu_items})
+    return render(request, 'pages/home.html', {'menu_items': root_items, 'items': menu_items, 'location': 'se'})
 
 
 def home_gl(request):
@@ -44,7 +44,7 @@ def home_gl(request):
         {'id': 8, 'title': '학생회관 교직원식당', 'url': '8'},
         {'id': 9, 'title': '제2 식당', 'url': '9'},
     ]
-    return render(request, 'pages/home.html', {'items': menu_items})
+    return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
 
 def menu_list(request):

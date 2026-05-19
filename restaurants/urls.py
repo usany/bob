@@ -22,7 +22,9 @@ from . import views
 urlpatterns = [
     path('', views.root_redirect, name='root'),
     path('se/', views.home, name='home'),
+    path('se/<int:pk>/', views.menu_detail, name='menu_detail_se'),
     path('gl/', views.home_gl, name='home_gl'),
+    path('gl/<int:pk>/', views.menu_detail, name='menu_detail_gl'),
     path('adminpage/', views.admin_view, name='admin_view'),
     path('admin/', admin.site.urls),
     path('pages/', include('pages.urls')),

@@ -7,7 +7,7 @@
     <h1 class="text-4xl font-bold text-blue-700 mb-6">Welcome to restaurants</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 max-w-2xl mx-auto">
         {% for item in items %}
-        <a href="{% url 'menu_detail' item.id %}"
+        <a href="/{{ location }}/{{ item.id }}/"
             class="flex items-center justify-between px-4 py-3 bg-white text-gray-800 text-sm font-medium rounded-lg shadow hover:shadow-md hover:bg-gray-50 transition border border-gray-100">
             <svg class="w-[25px] h-[25px] text-blue-600 flex-shrink-0" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
