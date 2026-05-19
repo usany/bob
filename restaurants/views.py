@@ -13,9 +13,8 @@ RESTAURANT_TITLES = {
     'hh': '학생회관 학생식당',
     'jg': '제2기숙사 식당',
 }
-MEALS = ['아침', '점심', '저녁']
 WEEKDAYS = ['월', '화', '수', '목', '금']
-restaurants = [
+RESTAURANTS = [
     {'id': 1, 'title': '푸른솔 학생식당', 'campus': 'se', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
     {'id': 2, 'title': '푸른솔 교직원식당', 'campus': 'se', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
     {'id': 3, 'title': '청운관 학생식당', 'campus': 'se', 'path': 'ch', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['점심']},
@@ -26,6 +25,18 @@ restaurants = [
     {'id': 8, 'title': '학생회관 교직원식당', 'campus': 'gl', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
     {'id': 9, 'title': '제2기숙사 식당', 'campus': 'gl', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
 ]
+
+
+def _restaurants_for_campus(campus):
+    return [r for r in RESTAURANTS if r['campus'] == campus]
+
+
+def _restaurant_dict_by_path(path):
+    for r in RESTAURANTS:
+        if r['path'] == path:
+            return r
+    return None
+
 
 def root_redirect(request):
     """Redirect to /gl or /se based on localStorage.location"""
@@ -48,32 +59,27 @@ def root_redirect(request):
 
 def home(request):
     """Home page — SE location"""
-    # root_items = MenuItem.objects.filter(parent=None)
-    menu_items = restaurants.filter(campus='se')
+    menu_items = _restaurants_for_campus('se')
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
-    menu_items = restaurants.filter(campus='gl')
+    menu_items = _restaurants_for_campus('gl')
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
 
 def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    restaurant = restaurants.filter(path=path).first()
-    title = restaurant.title if restaurant else RESTAURANT_TITLES.get(path, path)
-    mealsTabs = []
-    for meal in MEALS:
-        mealsTabs.append({
-            'id': meal,
-            'label': meal,
-            'items': [],
-        })
+    r = _restaurant_dict_by_path(path)
+    title = r['title'] if r else RESTAURANT_TITLES.get(path, path)
+    meal_tabs = [{'id': m, 'label': m} for m in (r['mealsSemester'] if r else [])]
+
+    db_restaurant = MenuItem.objects.filter(url=path).first()
     tabs = []
-    if restaurant:
-        for child in restaurant.children.all():
+    if db_restaurant:
+        for child in db_restaurant.children.all():
             sub_items = list(child.children.all())
             tabs.append({
                 'id': child.url,
@@ -89,7 +95,7 @@ def menu_list(request, path):
 
     return render(request, 'pages/menu_list.html', {
         'tabs': tabs,
-        'restaurant': restaurant,
+        'restaurant': {'title': title, 'meal_tabs': meal_tabs},
         'location': location,
     })
 
