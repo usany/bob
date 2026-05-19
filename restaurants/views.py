@@ -15,7 +15,17 @@ RESTAURANT_TITLES = {
 }
 MEALS = ['아침', '점심', '저녁']
 WEEKDAYS = ['월', '화', '수', '목', '금']
-
+restaurants = [
+    {'id': 1, 'title': '푸른솔 학생식당', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
+        {'id': 2, 'title': '푸른솔 교직원식당', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+        {'id': 3, 'title': '청운관 학생식당', 'path': 'ch', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['점심']},
+        {'id': 4, 'title': '청운관 교직원식당', 'path': 'cg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+        {'id': 5, 'title': '한국외대 인문관 식당', 'path': 'hi', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+        {'id': 6, 'title': '한국외대 교수회관 식당', 'path': 'hg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+        {'id': 7, 'title': '학생회관 학생식당', 'path': 'hh', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+        {'id': 8, 'title': '학생회관 교직원식당', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
+        {'id': 9, 'title': '제2기숙사 식당', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
+]
 
 def root_redirect(request):
     """Redirect to /gl or /se based on localStorage.location"""
