@@ -47,10 +47,16 @@ def home_gl(request):
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
 
-def menu_list(request):
-    """Display all menu items as a tree structure"""
-    root_items = MenuItem.objects.filter(parent=None)
-    return render(request, 'pages/menu_list.html', {'menu_items': root_items})
+def menu_list(request, path):
+    """Display menu items for the restaurant selected on the home page."""
+    restaurant = get_object_or_404(MenuItem, url=path)
+    menu_items = restaurant.children.all()
+    location = 'gl' if request.path.startswith('/gl/') else 'se'
+    return render(request, 'pages/menu_list.html', {
+        'menu_items': menu_items,
+        'restaurant': restaurant,
+        'location': location,
+    })
 
 
 def menu_detail(request, pathname):
