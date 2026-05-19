@@ -13,7 +13,7 @@ RESTAURANT_TITLES = {
     'hh': '학생회관 학생식당',
     'jg': '제2기숙사 식당',
 }
-
+MEALS = ['아침', '점심', '저녁']
 WEEKDAYS = ['월', '화', '수', '목', '금']
 
 
@@ -65,7 +65,13 @@ def menu_list(request, path):
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     restaurant = MenuItem.objects.filter(url=path).first()
     title = restaurant.title if restaurant else RESTAURANT_TITLES.get(path, path)
-
+    mealsTabs = []
+    for meal in MEALS:
+        mealsTabs.append({
+            'id': meal,
+            'label': meal,
+            'items': [],
+        })
     tabs = []
     if restaurant:
         for child in restaurant.children.all():
@@ -83,6 +89,7 @@ def menu_list(request, path):
         ]
 
     return render(request, 'pages/menu_list.html', {
+        'mealsTabs': mealsTabs,
         'tabs': tabs,
         'restaurant': {'title': title},
         'location': location,
