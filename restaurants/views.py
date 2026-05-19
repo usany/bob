@@ -88,9 +88,8 @@ def menu_list(request, path):
         ]
 
     return render(request, 'pages/menu_list.html', {
-        'mealsTabs': mealsTabs,
         'tabs': tabs,
-        'restaurant': {'title': title, 'mealsSemester': restaurant.mealsSemester, 'mealsVacation': restaurant.mealsVacation},
+        'restaurant': restaurant,
         'location': location,
     })
 
