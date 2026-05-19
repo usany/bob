@@ -13,7 +13,7 @@ RESTAURANT_TITLES = {
     'hh': '학생회관 학생식당',
     'jg': '제2기숙사 식당',
 }
-WEEKDAYS = ['월', '화', '수', '목', '금']
+WEEKDAYS = [{'id': 0, 'name': '월', 'day': 'mon'}, {'id': 1, 'name': '화', 'day': 'tue'}, {'id': 2, 'name': '수', 'day': 'wed'}, {'id': 3, 'name': '목', 'day': 'thu'}, {'id': 4, 'name': '금', 'day': 'fri'}]
 RESTAURANTS = [
     {'id': 1, 'title': '푸른솔 학생식당', 'campus': 'se', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심']},
     {'id': 2, 'title': '푸른솔 교직원식당', 'campus': 'se', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
@@ -89,13 +89,13 @@ def menu_list(request, path):
 
     if not tabs:
         tabs = [
-            {'id': f'day-{i}', 'label': day, 'items': []}
-            for i, day in enumerate(WEEKDAYS)
+            {'id': day['day'], 'label': day['name'], 'items': []}
+            for day in WEEKDAYS
         ]
 
     return render(request, 'pages/menu_list.html', {
         'tabs': tabs,
-        'restaurant': {'title': title, 'meal_tabs': meal_tabs},
+        'restaurant': {'title': title, 'meal_tabs': meal_tabs, 'path': path},
         'location': location,
     })
 
