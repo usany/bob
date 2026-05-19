@@ -27,12 +27,12 @@ def home(request):
     """Home page — SE location"""
     root_items = MenuItem.objects.filter(parent=None)
     menu_items = [
-        {'id': 1, 'title': '푸른솔 학생식당', 'url': '1'},
-        {'id': 2, 'title': '푸른솔 교직원식당', 'url': '2'},
-        {'id': 3, 'title': '청운관 학생식당', 'url': '3'},
-        {'id': 4, 'title': '청운관 교직원식당', 'url': '4'},
-        {'id': 5, 'title': '한국외대 인문관 식당', 'url': '5'},
-        {'id': 6, 'title': '한국외대 교수회관 식당', 'url': '6'},
+        {'id': 1, 'title': '푸른솔 학생식당', 'path': 'ph'},
+        {'id': 2, 'title': '푸른솔 교직원식당', 'path': 'pg'},
+        {'id': 3, 'title': '청운관 학생식당', 'path': 'ch'},
+        {'id': 4, 'title': '청운관 교직원식당', 'path': 'cg'},
+        {'id': 5, 'title': '한국외대 인문관 식당', 'path': 'hi'},
+        {'id': 6, 'title': '한국외대 교수회관 식당', 'path': 'hg'},
     ]
     return render(request, 'pages/home.html', {'menu_items': root_items, 'items': menu_items, 'location': 'se'})
 
