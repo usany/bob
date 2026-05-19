@@ -49,12 +49,13 @@ def home_gl(request):
 
 def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
-    restaurant = get_object_or_404(MenuItem, url=path)
-    menu_items = restaurant.children.all()
+    # restaurant = get_object_or_404(MenuItem, url=path)
+    menu_items = path
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     return render(request, 'pages/menu_list.html', {
         # 'menu_items': menu_items,
         # 'restaurant': restaurant,
+        'menu_items': menu_items,
         'location': location,
     })
 
