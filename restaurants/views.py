@@ -42,7 +42,7 @@ def home_gl(request):
     menu_items = [
         {'id': 7, 'title': '학생회관 학생식당', 'path': 'hh'},
         {'id': 8, 'title': '학생회관 교직원식당', 'path': 'hg'},
-        {'id': 9, 'title': '제2 식당', 'path': 'jg'},
+        {'id': 9, 'title': '제2기숙사 식당', 'path': 'jg'},
     ]
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
