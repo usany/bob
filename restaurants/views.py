@@ -62,7 +62,7 @@ def home_gl(request):
 def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    restaurant = MenuItem.objects.filter(url=path).first()
+    restaurant = restaurants.filter(path=path).first()
     title = restaurant.title if restaurant else RESTAURANT_TITLES.get(path, path)
     mealsTabs = []
     for meal in MEALS:
@@ -90,7 +90,7 @@ def menu_list(request, path):
     return render(request, 'pages/menu_list.html', {
         'mealsTabs': mealsTabs,
         'tabs': tabs,
-        'restaurant': {'title': title},
+        'restaurant': {'title': title, 'mealsSemester': restaurant.mealsSemester, 'mealsVacation': restaurant.mealsVacation},
         'location': location,
     })
 
