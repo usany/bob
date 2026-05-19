@@ -118,9 +118,9 @@
         // Simple script to set active state based on URL
         document.addEventListener('DOMContentLoaded', () => {
             const currentPath = window.location.pathname;
-            if (currentPath === '/' || currentPath.startsWith === '/se/') {
+            if (currentPath === '/' || currentPath.startsWith('/se')) {
                 document.getElementById('nav-home').style.color = 'var(--nav-active)';
-            } else if (currentPath.startsWith('/gl/')) {
+            } else if (currentPath.startsWith('/gl')) {
                 document.getElementById('nav-menus').style.color = 'var(--nav-active)';
             }
         });
