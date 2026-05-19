@@ -40,9 +40,9 @@ def home(request):
 def home_gl(request):
     """Home page — GL location"""
     menu_items = [
-        {'id': 7, 'title': '학생회관 학생식당', 'url': '7'},
-        {'id': 8, 'title': '학생회관 교직원식당', 'url': '8'},
-        {'id': 9, 'title': '제2 식당', 'url': '9'},
+        {'id': 7, 'title': '학생회관 학생식당', 'path': 'hh'},
+        {'id': 8, 'title': '학생회관 교직원식당', 'path': 'hg'},
+        {'id': 9, 'title': '제2 식당', 'path': 'jg'},
     ]
     return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
 
