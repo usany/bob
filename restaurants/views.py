@@ -25,7 +25,7 @@ def root_redirect(request):
 
 def home(request):
     """Home page — SE location"""
-    root_items = MenuItem.objects.filter(parent=None)
+    # root_items = MenuItem.objects.filter(parent=None)
     menu_items = [
         {'id': 1, 'title': '푸른솔 학생식당', 'path': 'ph'},
         {'id': 2, 'title': '푸른솔 교직원식당', 'path': 'pg'},
@@ -34,7 +34,7 @@ def home(request):
         {'id': 5, 'title': '한국외대 인문관 식당', 'path': 'hi'},
         {'id': 6, 'title': '한국외대 교수회관 식당', 'path': 'hg'},
     ]
-    return render(request, 'pages/home.html', {'menu_items': root_items, 'items': menu_items, 'location': 'se'})
+    return render(request, 'pages/home.html', {'items': menu_items, 'location': 'se'})
 
 
 def home_gl(request):
@@ -53,8 +53,8 @@ def menu_list(request, path):
     menu_items = restaurant.children.all()
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     return render(request, 'pages/menu_list.html', {
-        'menu_items': menu_items,
-        'restaurant': restaurant,
+        # 'menu_items': menu_items,
+        # 'restaurant': restaurant,
         'location': location,
     })
 
