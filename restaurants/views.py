@@ -3,6 +3,19 @@ from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import MenuItem
 
+RESTAURANT_TITLES = {
+    'ph': '푸른솔 학생식당',
+    'pg': '푸른솔 교직원식당',
+    'ch': '청운관 학생식당',
+    'cg': '청운관 교직원식당',
+    'hi': '한국외대 인문관 식당',
+    'hg': '한국외대 교수회관 식당',
+    'hh': '학생회관 학생식당',
+    'jg': '제2기숙사 식당',
+}
+
+WEEKDAYS = ['월', '화', '수', '목', '금']
+
 
 def root_redirect(request):
     """Redirect to /gl or /se based on localStorage.location"""
@@ -49,13 +62,29 @@ def home_gl(request):
 
 def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
-    # restaurant = get_object_or_404(MenuItem, url=path)
-    menu_items = path
     location = 'gl' if request.path.startswith('/gl/') else 'se'
+    restaurant = MenuItem.objects.filter(url=path).first()
+    title = restaurant.title if restaurant else RESTAURANT_TITLES.get(path, path)
+
+    tabs = []
+    if restaurant:
+        for child in restaurant.children.all():
+            sub_items = list(child.children.all())
+            tabs.append({
+                'id': child.url,
+                'label': child.title,
+                'items': sub_items if sub_items else [child],
+            })
+
+    if not tabs:
+        tabs = [
+            {'id': f'day-{i}', 'label': day, 'items': []}
+            for i, day in enumerate(WEEKDAYS)
+        ]
+
     return render(request, 'pages/menu_list.html', {
-        # 'menu_items': menu_items,
-        # 'restaurant': restaurant,
-        'menu_items': menu_items,
+        'tabs': tabs,
+        'restaurant': {'title': title},
         'location': location,
     })
 

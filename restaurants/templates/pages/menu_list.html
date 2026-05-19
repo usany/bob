@@ -6,23 +6,64 @@
 <div class="max-w-2xl mx-auto py-10">
     <a href="/{{ location }}/" class="text-blue-600 font-medium text-sm hover:underline">&larr; Back</a>
     <h1 class="text-3xl font-bold text-blue-700 mt-4 mb-6">{{ restaurant.title }}</h1>
-    <ul class="grid grid-cols-1 gap-3">
-        {% for item in menu_items %}
-        <li>
-            <svg class="w-[25px] h-[25px] text-blue-600 flex-shrink-0" fill="none" stroke="currentColor"
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                </path>
-            </svg>
-            <a href="{{ item.url }}"
-                class="block px-4 py-3 bg-white text-gray-800 text-sm font-medium rounded-lg shadow hover:shadow-md hover:bg-gray-50 transition border border-gray-100">
-                {{ item.title }}
-            </a>
-        </li>
-        {% empty %}
-        <li class="text-gray-500">No menu items available.</li>
-        {% endfor %}
-    </ul>
+
+    <div class="border-b border-gray-200 mb-6" role="tablist" aria-label="Menu tabs">
+        <div class="flex gap-1 overflow-x-auto scrollbar-hide">
+            {% for tab in tabs %}
+            <button type="button" role="tab"
+                class="menu-tab shrink-0 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition whitespace-nowrap
+                {% if forloop.first %}border-blue-600 text-blue-700 bg-blue-50{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50{% endif %}"
+                data-tab="{{ tab.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="panel-{{ tab.id }}">
+                {{ tab.label }}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% for tab in tabs %}
+    <div id="panel-{{ tab.id }}" role="tabpanel" class="menu-panel {% if not forloop.first %}hidden{% endif %}"
+        aria-labelledby="tab-{{ tab.id }}">
+        <ul class="grid grid-cols-1 gap-3">
+            {% for item in tab.items %}
+            <li>
+                <a href="{{ item.url }}"
+                    class="flex items-center gap-3 px-4 py-3 bg-white text-gray-800 text-sm font-medium rounded-lg shadow hover:shadow-md hover:bg-gray-50 transition border border-gray-100">
+                    <svg class="w-[25px] h-[25px] text-blue-600 flex-shrink-0" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        </path>
+                    </svg>
+                    {{ item.title }}
+                </a>
+            </li>
+            {% empty %}
+            <li class="text-gray-500 text-sm py-6 text-center">No menu items for this day.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 </div>
+
+<script>
+    document.querySelectorAll('.menu-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.tab;
+
+            document.querySelectorAll('.menu-tab').forEach((t) => {
+                t.classList.remove('border-blue-600', 'text-blue-700', 'bg-blue-50');
+                t.classList.add('border-transparent', 'text-gray-500');
+                t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('border-blue-600', 'text-blue-700', 'bg-blue-50');
+            tab.classList.remove('border-transparent', 'text-gray-500');
+            tab.setAttribute('aria-selected', 'true');
+
+            document.querySelectorAll('.menu-panel').forEach((panel) => {
+                panel.classList.toggle('hidden', panel.id !== `panel-${target}`);
+            });
+        });
+    });
+</script>
 {% endblock %}
