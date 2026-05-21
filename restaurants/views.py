@@ -100,9 +100,10 @@ def menu_list(request, path):
     })
 
 
-def menu_detail(request, path):
+def menu_detail(request, path, meal):
     """Display details for a specific menu item"""
-    menu_item = get_object_or_404(MenuItem, url=path)
+    # menu_item = get_object_or_404(MenuItem, url=path)
+    menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location})
 
