@@ -27,7 +27,7 @@ urlpatterns = [
     path('gl/', views.home_gl, name='home_gl'),
     path('gl/<str:path>/', views.menu_list, name='menu_list_gl'),
     path('gl/<str:path>/<str:meal>/', views.menu_detail, name='menu_detail_gl'),
-    path('adminpage/', views.admin_view, name='admin_view'),
+    # path('adminpage/', views.admin_view, name='admin_view'),
     path('admin/', admin.site.urls),
     # path('pages/', include('pages.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
