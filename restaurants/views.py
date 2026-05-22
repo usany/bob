@@ -46,7 +46,7 @@ FIXED_MENU = {
         "time_category": ["아침"],
         "time_detail": {"아침": ["09:00", "10:00"]},
         "place": "청운관 학생식당",
-        "extra": "오전 간편식",
+        "extra": None,
         "non_pork": False
     },
     {
@@ -55,9 +55,9 @@ FIXED_MENU = {
         "price": 800,
         "time_date": None,
         "time_category": ["아침", "간식"],
-        "time_detail": {"아침": ["09:00", "10:00"], "간식": ["17:30", "18:30"]},
+        "time_detail": {"아침": ["09:00", "10:00"], "간식": ["15:00", "16:00"]},
         "place": "청운관 학생식당",
-        "extra": "오전 간편식",
+        "extra": None,
         "non_pork": False
     },
     {
@@ -65,10 +65,10 @@ FIXED_MENU = {
         "side": None,
         "price": 3800,
         "time_date": None,
-        "time_category": ["저녁"],
-        "time_detail": {"저녁": ["15:00", "16:00"]},
+        "time_category": ["간식"],
+        "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "청운관 학생식당",
-        "extra": "오후 간식",
+        "extra": None,
         "non_pork": False
     },
     {
@@ -76,10 +76,10 @@ FIXED_MENU = {
         "side": None,
         "price": 3800,
         "time_date": None,
-        "time_category": ["저녁"],
-        "time_detail": {"저녁": ["15:00", "16:00"]},
+        "time_category": ["간식"],
+        "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "청운관 학생식당",
-        "extra": "오후 간식",
+        "extra": None,
         "non_pork": False
     }
  ]
