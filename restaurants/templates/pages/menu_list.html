@@ -48,6 +48,13 @@
                 </svg>
                 {{ dish.main }}
                 {{ dish.price }}
+                {% if dish.extra %}
+                {{ dish.extra }}
+                {{ dish.extra_price }}
+                {% endif %}
+                {% if dish.non_pork %}
+                돼지 없는 메뉴
+                {% endif %}
             </a>
         </li>
         {% empty %}
