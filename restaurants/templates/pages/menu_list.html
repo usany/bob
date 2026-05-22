@@ -14,7 +14,7 @@
     <div class="border-b border-gray-200 mb-6">
         <div class="flex justify-center gap-1" role="tablist" aria-label="요일 선택">
             {% for tab in tabs %}
-            <a id="daytab-{{ tab.day }}" href="?day={{ tab.day }}" role="tab" data-tab="{{ tab.day }}"
+            <a id="daytab-{{ tab.day }}" href="?day={{ tab.day }}{% if selected_meal %}&meal={{ selected_meal }}{% endif %}" role="tab" data-tab="{{ tab.day }}"
                 aria-selected="{% if selected_day == tab.day %}true{% else %}false{% endif %}"
                 aria-controls="panel-{{ tab.day }}"
                 class="day-tab shrink-0 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition whitespace-nowrap
@@ -29,7 +29,7 @@
     <nav aria-label="식사 시간 선택">
         <div class="flex gap-1 border-b border-gray-200 mb-6" role="tablist">
             {% for tab in restaurant.meal_tabs %}
-            <a id="tab-{{ tab.id }}" href="?meal={{ tab.id }}" role="tab"
+            <a id="tab-{{ tab.id }}" href="?meal={{ tab.id }}{% if selected_day %}&day={{ selected_day }}{% endif %}" role="tab"
                 aria-selected="{% if selected_meal == tab.id %}true{% else %}false{% endif %}"
                 aria-controls="menu-panel" class="shrink-0 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition whitespace-nowrap
                       {% if selected_meal == tab.id %}border-blue-600 text-blue-700 bg-blue-50
