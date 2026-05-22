@@ -138,6 +138,7 @@ def menu_list(request, path):
     r = _restaurant_dict_by_path(path)
     title = r['title'] if r else RESTAURANT_TITLES.get(path, path)
     all_meals = r['mealsSemester'] if r else []
+    weekdays = [d for d in WEEKDAYS if d['id'] == request.GET.get('day', WEEKDAYS[0]['id'])]
     meal_tabs = [
         {
             'id': m,
@@ -149,6 +150,7 @@ def menu_list(request, path):
 
     # State: which meal tab is active — read from GET param, default to first
     selected_meal = request.GET.get('meal', all_meals[0] if all_meals else None)
+    selected_day = request.GET.get('day', weekdays[0]['id'] if weekdays else None)
 
     # Only pass dishes for the selected meal into context
     all_dishes = FIXED_MENU.get(path, [])
@@ -170,7 +172,7 @@ def menu_list(request, path):
 
     if not tabs:
         tabs = [
-            {'id': day['day'], 'label': day['name'], 'items': []}
+            day
             for day in WEEKDAYS
         ]
 
@@ -178,6 +180,7 @@ def menu_list(request, path):
         'tabs': tabs,
         'restaurant': {'title': title, 'meal_tabs': meal_tabs, 'path': path},
         'selected_meal': selected_meal,
+        'selected_day': selected_day,
         'location': location,
         'menu': filtered_dishes,
     })
