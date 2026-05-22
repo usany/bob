@@ -25,7 +25,65 @@ RESTAURANTS = [
     {'id': 8, 'title': '학생회관 교직원식당', 'campus': 'gl', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심']},
     {'id': 9, 'title': '제2기숙사 식당', 'campus': 'gl', 'path': 'jg', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁']},
 ]
-
+FIXED_MENU = {
+ 'ch' : [
+    {
+        'main': '만두라면, 치즈라면', 
+        'side': None, 
+        'price': 3000, 
+        'calendar': None, 
+        'time_category': ['아침', '간식'], 
+        'time_detail': {'아침': ['09:00', '10:00'], '간식': ['15:00', '16:00']}, 
+        'place': '청운관 학생식당', 
+        'extra': None, 
+        'non_pork': False
+    },
+    {
+        "main": "속풀이라면",
+        "side": None,
+        "price": 3500,
+        "calendar": None,
+        "time_category": ["아침"],
+        "time_detail": {"아침": ["09:00", "10:00"]},
+        "place": "청운관 학생식당",
+        "extra": "오전 간편식",
+        "non_pork": False
+    },
+    {
+        "main": "공깃밥",
+        "side": None,
+        "price": 800,
+        "calendar": None,
+        "time_category": ["아침", "간식"],
+        "time_detail": {"아침": ["09:00", "10:00"], "간식": ["17:30", "18:30"]},
+        "place": "청운관 학생식당",
+        "extra": "오전 간편식",
+        "non_pork": False
+    },
+    {
+        "main": "짜계치",
+        "side": None,
+        "price": 3800,
+        "calendar": None,
+        "time_category": ["저녁"],
+        "time_detail": {"저녁": ["15:00", "16:00"]},
+        "place": "청운관 학생식당",
+        "extra": "오후 간식",
+        "non_pork": False
+    },
+    {
+        "main": "콘치즈불닭면",
+        "side": None,
+        "price": 3800,
+        "calendar": None,
+        "time_category": ["저녁"],
+        "time_detail": {"저녁": ["15:00", "16:00"]},
+        "place": "청운관 학생식당",
+        "extra": "오후 간식",
+        "non_pork": False
+    }
+ ]
+}
 
 def _restaurants_for_campus(campus):
     return [r for r in RESTAURANTS if r['campus'] == campus]
@@ -97,6 +155,7 @@ def menu_list(request, path):
         'tabs': tabs,
         'restaurant': {'title': title, 'meal_tabs': meal_tabs, 'path': path},
         'location': location,
+        'items': {}
     })
 
 
