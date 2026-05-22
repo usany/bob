@@ -35,7 +35,8 @@ FIXED_MENU = {
         'time_category': ['아침', '간식'], 
         'time_detail': {'아침': ['09:00', '10:00'], '간식': ['15:00', '16:00']}, 
         'place': '청운관 학생식당', 
-        'extra': None, 
+        'extra': None,
+        'extra_price': None,
         'non_pork': False
     },
     {
