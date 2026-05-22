@@ -155,7 +155,8 @@ def menu_list(request, path):
         'tabs': tabs,
         'restaurant': {'title': title, 'meal_tabs': meal_tabs, 'path': path},
         'location': location,
-        'items': {}
+        'items': {},
+        'menu': FIXED_MENU[path]
     })
 
 
