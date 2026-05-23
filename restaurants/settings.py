@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_browser_reload',
-    'django_crontab',
     'restaurants',
     'pages'
 ]
@@ -140,15 +139,3 @@ STATIC_URL = 'static/'
 
 # LOGIN_URL = '/django-admin/login/'
 LOGOUT_REDIRECT_URL = 'home'
-
-# Cron jobs configuration
-CRONJOBS = [
-    # Example: Run a management command daily at midnight
-    # ('0 0 * * *', 'django.core.management.call_command', ['your_command']),
-    
-    # Example: Clear expired sessions daily at 3 AM
-    ('0 3 * * *', 'django.core.management.call_command', ['clearsessions']),
-    
-    # Example: Run custom command every hour
-    # ('0 * * * *', 'django.core.management.call_command', ['your_hourly_task']),
-]

@@ -14,3 +14,7 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'restaurants.settings')
 
 application = get_wsgi_application()
+
+# Start the scheduler
+from restaurants.scheduler import start
+start()
