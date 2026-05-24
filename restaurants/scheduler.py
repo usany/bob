@@ -19,6 +19,17 @@ def start():
         replace_existing=True
     )
     
+    # Post items to database every day at 10 AM
+    scheduler.add_job(
+        call_command,
+        'cron',
+        args=['post_items', '--count', '5'],
+        id='post_items',
+        hour=10,
+        minute=0,
+        replace_existing=True
+    )
+    
     # Add more jobs here as needed
     # Example: Run custom command every hour
     # scheduler.add_job(
