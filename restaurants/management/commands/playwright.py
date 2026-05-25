@@ -140,10 +140,10 @@ class Command(BaseCommand):
         # else:
         #     link = 'https://www.hufs.ac.kr/hufs/11318/subview.do?enc=Zm5jdDF8QEB8JTJGY2FmZXRlcmlhJTJGaHVmcyUyRjElMkZ2aWV3LmRvJTNGeWVhciUzRDIwMjYlMjZtb250aCUzRDA1JTI2c2VsRGF0ZSUzRDIwMjYwNTIxJTI2c2VsQ2FmSWQlM0RoMTAyJTI2'
         page.goto(link)
-        page.wait_for_selector('td.no-menu, td.menu')
         if not is_student:
             page.locator('a').filter(has_text='교수회관식당').click()
-            page.wait_for_selector('td.no-menu, td.menu')
+            # page.wait_for_selector('td.no-menu, td.menu')
+        page.wait_for_selector('td.no-menu, td.menu')
                     
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
         self.stdout.write(str(menu_texts))
