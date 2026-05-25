@@ -142,7 +142,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR(f'Failed to visit {link_data["href"]}: {str(err)}'))
                     continue
             
-            title = page.locator('p.txt06').inner_text().strip()
+            title = page.locator('p.txt06').first.inner_text().strip()
             
             # Find PNG images
             images = page.locator('img').all()
