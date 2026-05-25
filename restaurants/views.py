@@ -128,13 +128,13 @@ def root_redirect(request):
 
 def home(request):
     """Home page — SE location"""
-    restaurants_items = _restaurants_for_campus('se')
+    restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
     return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
-    restaurants_items = _restaurants_for_campus('gl')
+    restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'gl']
     return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl'})
 
 
