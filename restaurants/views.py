@@ -96,8 +96,8 @@ FIXED_MENU = {
  ]
 }
 
-def _restaurants_for_campus(campus):
-    return [r for r in RESTAURANTS if r['campus'] == campus]
+# def _restaurants_for_campus(campus):
+#     return [r for r in RESTAURANTS if r['campus'] == campus]
 
 
 def _restaurant_dict_by_path(path):
