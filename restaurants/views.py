@@ -141,9 +141,9 @@ def home_gl(request):
 def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    r = _restaurant_dict_by_path(path)
-    title = r['title'] if r else ''
-    all_meals = r['mealsSemester'] if r else []
+    r = next(r for r in RESTAURANTS if r['path'] == path)
+    title = r['title']
+    all_meals = r['mealsSemester']
     weekdays = [d for d in WEEKDAYS if d['day'] == request.GET.get('day', WEEKDAYS[0]['day'])]
     meal_tabs = [
         {
