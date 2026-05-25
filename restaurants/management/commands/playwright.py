@@ -102,7 +102,7 @@ class Command(BaseCommand):
                         main=main,
                         side=side,
                         price=random.randint(10000, 50000),
-                        time=''
+                        time='morning' if index % 3 == 0 else 'dinner',
                         pork=random.choice([True, False])
                     )
         
