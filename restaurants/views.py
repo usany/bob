@@ -3,16 +3,16 @@ from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import MenuItem
 
-RESTAURANT_TITLES = {
-    'ph': '푸른솔 학생식당',
-    'pg': '푸른솔 교직원식당',
-    'ch': '청운관 학생식당',
-    'cg': '청운관 교직원식당',
-    'hi': '한국외대 인문관 식당',
-    'hg': '한국외대 교수회관 식당',
-    'hh': '학생회관 학생식당',
-    'jg': '제2기숙사 식당',
-}
+# RESTAURANT_TITLES = {
+#     'ph': '푸른솔 학생식당',
+#     'pg': '푸른솔 교직원식당',
+#     'ch': '청운관 학생식당',
+#     'cg': '청운관 교직원식당',
+#     'hi': '한국외대 인문관 식당',
+#     'hg': '한국외대 교수회관 식당',
+#     'hh': '학생회관 학생식당',
+#     'jg': '제2기숙사 식당',
+# }
 WEEKDAYS = [{'id': 0, 'name': '월', 'day': 'mon'}, {'id': 1, 'name': '화', 'day': 'tue'}, {'id': 2, 'name': '수', 'day': 'wed'}, {'id': 3, 'name': '목', 'day': 'thu'}, {'id': 4, 'name': '금', 'day': 'fri'}]
 RESTAURANTS = [
     {'id': 1, 'title': '청운관 학생식당', 'campus': 'se', 'path': 'ch', 'mealsSemester': ['아침', '점심', '간식', '저녁'], 'mealsSemesterTime': ['08:30~10:00 (간편식: 09:00~10:00)', '11:00~14:30', '15:00~16:00', '17:00~18:30'], 'mealsVacation': ['점심']},
@@ -136,7 +136,7 @@ def menu_list(request, path):
     """Display menu items for the restaurant selected on the home page."""
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     r = _restaurant_dict_by_path(path)
-    title = r['title'] if r else RESTAURANT_TITLES.get(path, path)
+    title = r['title'] if r else ''
     all_meals = r['mealsSemester'] if r else []
     weekdays = [d for d in WEEKDAYS if d['day'] == request.GET.get('day', WEEKDAYS[0]['day'])]
     meal_tabs = [
