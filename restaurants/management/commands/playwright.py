@@ -112,7 +112,7 @@ class Command(BaseCommand):
                         main=main,
                         side=side,
                         price=5500,
-                        time='morning' if index % 3 == 0 else 'dinner',
+                        time='breakfast' if index % 3 == 0 else 'dinner',
                         day='mon' if index <= 3 else 'tue' if index <= 6 else 'wed' if index <= 9 else 'thu' if index <= 12 else 'fri',
                         place='jg',
                         extra='',
