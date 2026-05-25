@@ -3,6 +3,7 @@ from playwright.sync_api import sync_playwright
 import os
 import pathlib
 from restaurants.models import MenuItem
+from django.db import IntegrityError
 import random
 from concurrent.futures import ThreadPoolExecutor
 
@@ -78,51 +79,60 @@ class Command(BaseCommand):
                     first_menu = first_part.split(',', 1)
                     main = first_menu[0].strip() if first_menu else ''
                     side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
-                    MenuItem.objects.create(
-                        main=main,
-                        side=side,
-                        price=6500,
-                        day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        time='lunch',
-                        place='jg',
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url='',
-                        
-                    )
+                    try:
+                        MenuItem.objects.create(
+                            main=main,
+                            side=side,
+                            price=6500,
+                            day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
+                            time='lunch',
+                            place='jg',
+                            extra_menu='',
+                            extra_price=None,
+                            non_pork=False,
+                            storage_url='',
+                            
+                        )
+                    except IntegrityError:
+                        pass
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    MenuItem.objects.create(
-                        main=main,
-                        side=side,
-                        price=5500,
-                        time='lunch',
-                        day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        place='jg',
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url='',
-                    )
+                    try:
+                        MenuItem.objects.create(
+                            main=main,
+                            side=side,
+                            price=5500,
+                            time='lunch',
+                            day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
+                            place='jg',
+                            extra_menu='',
+                            extra_price=None,
+                            non_pork=False,
+                            storage_url='',
+                        )
+                    except IntegrityError:
+                        pass
                 else:
                     menu_parts = menu.split(',', 1)
                     main = menu_parts[0].strip() if menu_parts else ''
                     side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
-                    MenuItem.objects.create(
-                        main=main,
-                        side=side,
-                        price=5500,
-                        time='breakfast' if index % 3 == 0 else 'dinner',
-                        day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        place='jg',
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url=''
-                    )
+                    try:
+                        MenuItem.objects.create(
+                            main=main,
+                            side=side,
+                            price=5500,
+                            time='breakfast' if index % 3 == 0 else 'dinner',
+                            day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
+                            place='jg',
+                            extra_menu='',
+                            extra_price=None,
+                            non_pork=False,
+                            storage_url=''
+                        )
+                    except IntegrityError:
+                        pass
         
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -161,18 +171,21 @@ class Command(BaseCommand):
                 side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
                 if not main or not side:
                     continue
-                MenuItem.objects.create(
-                    main=main,
-                    side=side,
-                    price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                    time='lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner',
-                    day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
-                    place='hi' if is_student else 'hg',
-                    extra_menu='',
-                    extra_price=None,
-                    non_pork=False,
-                    storage_url=''
-                )
+                try:
+                    MenuItem.objects.create(
+                        main=main,
+                        side=side,
+                        price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
+                        time='lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner',
+                        day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
+                        place='hi' if is_student else 'hg',
+                        extra_menu='',
+                        extra_price=None,
+                        non_pork=False,
+                        storage_url=''
+                    )
+                except IntegrityError:
+                    pass
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
