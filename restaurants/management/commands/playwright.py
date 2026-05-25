@@ -165,7 +165,7 @@ class Command(BaseCommand):
                     main=main,
                     side=side,
                     price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                    time='lunch',
+                    time='lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner',
                     day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
                     place='hi' if is_student else 'hg',
                     extra_menu='',
