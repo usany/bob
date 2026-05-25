@@ -2,10 +2,10 @@ from django.db import models
 
 
 class MenuItem(models.Model):
-    # title = models.CharField(max_length=200)
-    # order = models.IntegerField(default=0)
-    # parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    # parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    title = models.CharField(max_length=200)
+    order = models.IntegerField(default=0)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     main = models.CharField(max_length=200)
     side = models.CharField(max_length=200)
     time = models.CharField(max_length=200)
