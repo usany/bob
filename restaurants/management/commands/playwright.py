@@ -127,7 +127,7 @@ class Command(BaseCommand):
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
 
-    def scrap_hufs(self, playwright, is_student=False):
+    def scrap_hufs(self, playwright, is_student):
         """Scrape HUFS menu"""
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context()
@@ -142,7 +142,7 @@ class Command(BaseCommand):
         page.goto(link)
         page.wait_for_selector('td.no-menu, td.menu')
         if not is_student:
-            page.click('a[href*="selCafId=h102"]')
+            page.locator('a').filter(has_text='교수회관식당').click()
             page.wait_for_selector('td.no-menu, td.menu')
                     
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
