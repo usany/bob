@@ -37,7 +37,8 @@ FIXED_MENU = {
         'place': 'ch', 
         'extra_menu': None,
         'extra_price': None,
-        'non_pork': False
+        'non_pork': False,
+        'storage_url': ''
     },
     {
         "main": "속풀이라면",
@@ -49,7 +50,8 @@ FIXED_MENU = {
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
-        "non_pork": False
+        "non_pork": False,
+        "storage_url": ''
     },
     {
         "main": "공깃밥",
@@ -61,7 +63,8 @@ FIXED_MENU = {
         "place": "ch", 
         "extra_menu": None,
         "extra_price": None,
-        "non_pork": False
+        "non_pork": False,
+        "storage_url": ''
     },
     {
         "main": "짜계치",
@@ -73,7 +76,8 @@ FIXED_MENU = {
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
-        "non_pork": False
+        "non_pork": False,
+        "storage_url": ''
     },
     {
         "main": "콘치즈불닭면",
@@ -85,7 +89,8 @@ FIXED_MENU = {
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
-        "non_pork": False
+        "non_pork": False,
+        "storage_url": ''
     }
  ]
 }
