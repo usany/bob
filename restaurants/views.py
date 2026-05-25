@@ -164,9 +164,9 @@ def menu_list(request, path):
         d for d in all_dishes
         if selected_meal in d.get('time_category', [])
     ] if selected_meal else all_dishes
-    db_qs = MenuItem.objects.filter(place=path)
-    if selected_meal:
-        db_qs = db_qs.filter(time=selected_meal)
+    db_qs = MenuItem.objects.filter(place=path, time=selected_meal)
+    # if selected_meal:
+    #     db_qs = db_qs.filter(time=selected_meal)
     # if selected_day:
     #     db_qs = db_qs.filter(day=selected_day)
     filtered_dishes = filtered_dishes + list(db_qs)
