@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from playwright.sync_api import sync_playwright
 import os
 import pathlib
+from restaurants.models import MenuItem
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
@@ -60,6 +61,22 @@ class Command(BaseCommand):
         page.wait_for_selector('td.te_left')
         
         menu_texts = page.locator('td.te_left').all_inner_texts()
+        for menu in menu_texts:
+            if (menu == '미운영'):
+                continue
+            menu_parts = menu.split(',', 1)
+            main = menu_parts[0].strip() if menu_parts else ''
+            side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+            
+            item = MenuItem.objects.create(
+                main=main,
+                side=side,
+                time=random.choice(sample_times),
+                place=random.choice(sample_places),
+                extra=random.choice(sample_extras),
+                price=random.randint(10000, 50000),
+                pork=random.choice([True, False])
+            )
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
         
