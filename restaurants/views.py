@@ -147,7 +147,7 @@ def menu_list(request, path):
     weekdays = [d for d in WEEKDAYS if d['day'] == request.GET.get('day', WEEKDAYS[0]['day'])]
     meal_tabs = [
         {
-            'id': m,
+            'id': MEALS.find(lambda x: x['name'] == m)['time'],
             'label': m,
             'meal_time': r['mealsSemesterTime'][r['mealsSemester'].index(m)]
         }
