@@ -86,6 +86,7 @@ class Command(BaseCommand):
                         time='lunch',
                         place='jg',
                         extra_menu='',
+                        extra_price=None,
                         pork=False,
                         storage_url='',
                         
@@ -102,6 +103,7 @@ class Command(BaseCommand):
                         day='mon' if index <= 3 else 'tue' if index <= 6 else 'wed' if index <= 9 else 'thu' if index <= 12 else 'fri',
                         place='jg',
                         extra_menu='',
+                        extra_price=None,
                         pork=False,
                         storage_url='',
                     )
@@ -117,6 +119,7 @@ class Command(BaseCommand):
                         day='mon' if index <= 3 else 'tue' if index <= 6 else 'wed' if index <= 9 else 'thu' if index <= 12 else 'fri',
                         place='jg',
                         extra_menu='',
+                        extra_price=None,
                         pork=False,
                         storage_url=''
                     )
