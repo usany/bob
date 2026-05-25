@@ -159,16 +159,12 @@ def menu_list(request, path):
         if selected_meal in d.get('time_category', [])
     ] if selected_meal else all_dishes
 
-    db_restaurant = MenuItem.objects.filter(url=path).first()
+    db_dishes = MenuItem.objects.filter(place=path).first()
     tabs = []
-    if db_restaurant:
-        for child in db_restaurant.children.all():
+    if db_dishes:
+        for child in db_dishes.children.all():
             sub_items = list(child.children.all())
-            tabs.append({
-                'id': child.url,
-                'label': child.title,
-                'items': sub_items if sub_items else [child],
-            })
+            all_dishes.append(child)
 
     if not tabs:
         tabs = [
