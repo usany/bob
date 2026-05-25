@@ -65,3 +65,5 @@ se1 se2 se3 sehufs1 sehufs2
 * 중식 A코너 11:30~13:30
 * 중식 B코너 11:30~13:30
 * 석식 17:00~18:30
+
+main side price time place extra pork url
