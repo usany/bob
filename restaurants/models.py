@@ -15,7 +15,7 @@ class MenuItem(models.Model):
     day = models.CharField(max_length=200)
     price = models.IntegerField(default=0)
     pork = models.BooleanField(default=False)
-    url = models.CharField(max_length=200)
+    storage_url = models.CharField(max_length=200)
 
     class Meta:
         ordering = ['order']
