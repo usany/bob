@@ -73,16 +73,37 @@ class Command(BaseCommand):
             for menu in menu_texts:
                 if (menu == '미운영'):
                     continue
-                menu_parts = menu.split(',', 1)
-                main = menu_parts[0].strip() if menu_parts else ''
-                side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
-                
-                MenuItem.objects.create(
-                    main=main,
-                    side=side,
-                    price=random.randint(10000, 50000),
-                    pork=random.choice([True, False])
-                )
+                if (menu.startswith('A코너 : ')):
+                    first_part = menu.split(' : ', 1)[1]
+                    first_menu = first_part.split(',', 1)
+                    main = first_menu[0].strip() if first_menu else ''
+                    side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
+                    MenuItem.objects.create(
+                        main=main,
+                        side=side,
+                        price=random.randint(10000, 50000),
+                        pork=random.choice([True, False])
+                    )
+                    second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
+                    second_menu = second_part.split(',', 1)
+                    main = second_menu[0].strip() if second_menu else ''
+                    side = second_menu[1].strip() if len(second_menu) > 1 else ''
+                    MenuItem.objects.create(
+                        main=main,
+                        side=side,
+                        price=random.randint(10000, 50000),
+                        pork=random.choice([True, False])
+                    )
+                else:
+                    menu_parts = menu.split(',', 1)
+                    main = menu_parts[0].strip() if menu_parts else ''
+                    side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                    MenuItem.objects.create(
+                        main=main,
+                        side=side,
+                        price=random.randint(10000, 50000),
+                        pork=random.choice([True, False])
+                    )
         
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
