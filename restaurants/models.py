@@ -10,12 +10,12 @@ class MenuItem(models.Model):
     side = models.CharField(max_length=200)
     time = models.CharField(max_length=200)
     place = models.CharField(max_length=200)
-    extra_menu = models.CharField(max_length=200)
-    extra_price = models.IntegerField(default=0)
-    day = models.CharField(max_length=200)
+    extra_menu = models.CharField(max_length=200, null=True, blank=True)
+    extra_price = models.IntegerField(default=0, null=True, blank=True)
+    day = models.CharField(max_length=200, null=True, blank=True)
     price = models.IntegerField(default=0, null=True, blank=True)
     non_pork = models.BooleanField(default=False)
-    storage_url = models.CharField(max_length=200)
+    storage_url = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         ordering = ['order']
