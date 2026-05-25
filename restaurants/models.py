@@ -19,9 +19,6 @@ class MenuItem(models.Model):
 
     class Meta:
         ordering = ['order']
-        constraints = [
-            models.UniqueConstraint(fields=['main', 'side', 'day', 'time', 'place'], name='unique_menu_item')
-        ]
     
     def __str__(self):
         return self.title
