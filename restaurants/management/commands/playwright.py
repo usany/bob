@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     MenuItem.objects.create(
                         main=main,
                         side=side,
-                        price=random.randint(10000, 50000),
+                        price=5500,
                         time='morning' if index % 3 == 0 else 'dinner',
                         pork=random.choice([True, False])
                     )
