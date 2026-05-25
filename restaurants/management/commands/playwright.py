@@ -81,8 +81,12 @@ class Command(BaseCommand):
                     MenuItem.objects.create(
                         main=main,
                         side=side,
-                        price=random.randint(10000, 50000),
-                        pork=random.choice([True, False])
+                        price=6500,
+                        time='lunch',
+                        place='jg',
+                        extra='',
+                        pork=False,
+                        url=''
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
@@ -91,8 +95,12 @@ class Command(BaseCommand):
                     MenuItem.objects.create(
                         main=main,
                         side=side,
-                        price=random.randint(10000, 50000),
-                        pork=random.choice([True, False])
+                        price=5500,
+                        time='lunch',
+                        place='jg',
+                        extra='',
+                        pork=False,
+                        url=''
                     )
                 else:
                     menu_parts = menu.split(',', 1)
