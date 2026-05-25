@@ -158,19 +158,15 @@ def menu_list(request, path):
         d for d in all_dishes
         if selected_meal in d.get('time_category', [])
     ] if selected_meal else all_dishes
+    db_qs = MenuItem.objects.filter(place=path)
+    # if selected_meal:
+    #     db_qs = db_qs.filter(time=selected_meal)
+    # if selected_day:
+    #     db_qs = db_qs.filter(day=selected_day)
+    filtered_dishes = filtered_dishes + list(db_qs)
 
-    db_dishes = MenuItem.objects.filter(place=path).first()
-    tabs = []
-    if db_dishes:
-        for child in db_dishes.children.all():
-            sub_items = list(child.children.all())
-            all_dishes.append(child)
 
-    if not tabs:
-        tabs = [
-            day
-            for day in WEEKDAYS
-        ]
+    tabs = list(WEEKDAYS)
 
     return render(request, 'pages/menu_list.html', {
         'tabs': tabs,
