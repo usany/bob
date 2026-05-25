@@ -134,14 +134,17 @@ class Command(BaseCommand):
         page = context.new_page()
         
         self.stdout.write('Navigating to the list page...')
-        if is_student:
-            link = 'https://www.hufs.ac.kr/hufs/11318/subview.do#click'
-        else:
-            link = 'https://www.hufs.ac.kr/hufs/11318/subview.do?enc=Zm5jdDF8QEB8JTJGY2FmZXRlcmlhJTJGaHVmcyUyRjElMkZ2aWV3LmRvJTNGeWVhciUzRDIwMjYlMjZtb250aCUzRDA1JTI2c2VsRGF0ZSUzRDIwMjYwNTIxJTI2c2VsQ2FmSWQlM0RoMTAyJTI2'
-        
+        link = 'https://www.hufs.ac.kr/hufs/11318/subview.do#click'
+        # if is_student:
+        #     link = 'https://www.hufs.ac.kr/hufs/11318/subview.do#click'
+        # else:
+        #     link = 'https://www.hufs.ac.kr/hufs/11318/subview.do?enc=Zm5jdDF8QEB8JTJGY2FmZXRlcmlhJTJGaHVmcyUyRjElMkZ2aWV3LmRvJTNGeWVhciUzRDIwMjYlMjZtb250aCUzRDA1JTI2c2VsRGF0ZSUzRDIwMjYwNTIxJTI2c2VsQ2FmSWQlM0RoMTAyJTI2'
         page.goto(link)
         page.wait_for_selector('td.no-menu, td.menu')
-        
+        if not is_student:
+            page.click('a[href*="selCafId=h102"]')
+            page.wait_for_selector('td.no-menu, td.menu')
+                    
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
