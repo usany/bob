@@ -154,7 +154,7 @@ class Command(BaseCommand):
         # Create MenuItem objects outside of Playwright context
         def create_menu_items():
             for index, menu in enumerate(menu_texts):
-                if (menu.startswith('등록된')):
+                if menu.startswith('등록된') or index % 7 < 1 or index % 7 > 5:
                     continue
                 menu_parts = menu.split('\n', 1)
                 main = menu_parts[0].strip() if menu_parts else ''
