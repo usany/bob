@@ -128,14 +128,14 @@ def root_redirect(request):
 
 def home(request):
     """Home page — SE location"""
-    menu_items = _restaurants_for_campus('se')
-    return render(request, 'pages/home.html', {'items': menu_items, 'location': 'se'})
+    restaurants_items = _restaurants_for_campus('se')
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
-    menu_items = _restaurants_for_campus('gl')
-    return render(request, 'pages/home.html', {'items': menu_items, 'location': 'gl'})
+    restaurants_items = _restaurants_for_campus('gl')
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl'})
 
 
 def menu_list(request, path):
