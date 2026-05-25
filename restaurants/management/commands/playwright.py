@@ -103,6 +103,7 @@ class Command(BaseCommand):
                         side=side,
                         price=5500,
                         time='morning' if index % 3 == 0 else 'dinner',
+                        place='jg',
                         pork=random.choice([True, False])
                     )
         
