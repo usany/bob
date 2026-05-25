@@ -148,8 +148,33 @@ class Command(BaseCommand):
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
-        
+
         browser.close()
+
+        # Create MenuItem objects outside of Playwright context
+        def create_menu_items():
+            for index, menu in enumerate(menu_texts):
+                if (menu.startswith('등록된')):
+                    continue
+                menu_parts = menu.split('\n', 1)
+                main = menu_parts[0].strip() if menu_parts else ''
+                side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                MenuItem.objects.create(
+                    main=main,
+                    side=side,
+                    price=6000,
+                    time='lunch',
+                    day='mon' if index < 5 else 'tue' if index < 10 else 'wed' if index < 15 else 'thu' if index < 20 else 'fri',
+                    place='hufs',
+                    extra_menu='',
+                    extra_price=None,
+                    non_pork=False,
+                    storage_url=''
+                )
+
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            executor.submit(create_menu_items).result()
+        
 
     def scrap(self, playwright, is_seoul=True):
         """Scrape KHU menu and download images"""
