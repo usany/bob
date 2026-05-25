@@ -87,7 +87,7 @@ class Command(BaseCommand):
                         place='jg',
                         extra_menu='',
                         extra_price=None,
-                        pork=False,
+                        non_pork=False,
                         storage_url='',
                         
                     )
@@ -104,7 +104,7 @@ class Command(BaseCommand):
                         place='jg',
                         extra_menu='',
                         extra_price=None,
-                        pork=False,
+                        non_pork=False,
                         storage_url='',
                     )
                 else:
@@ -120,7 +120,7 @@ class Command(BaseCommand):
                         place='jg',
                         extra_menu='',
                         extra_price=None,
-                        pork=False,
+                        non_pork=False,
                         storage_url=''
                     )
         
