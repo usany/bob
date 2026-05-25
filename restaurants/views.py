@@ -35,7 +35,7 @@ FIXED_MENU = {
         'time_category': ['아침', '간식'], 
         'time_detail': {'아침': ['09:00', '10:00'], '간식': ['15:00', '16:00']}, 
         'place': 'ch', 
-        'extra': None,
+        'extra_menu': None,
         'extra_price': None,
         'non_pork': False
     },
@@ -47,7 +47,7 @@ FIXED_MENU = {
         "time_category": ["아침"],
         "time_detail": {"아침": ["09:00", "10:00"]},
         "place": "ch",
-        "extra": None,
+        "extra_menu": None,
         "extra_price": None,
         "non_pork": False
     },
@@ -59,7 +59,7 @@ FIXED_MENU = {
         "time_category": ["아침", "간식"],
         "time_detail": {"아침": ["09:00", "10:00"], "간식": ["15:00", "16:00"]},
         "place": "ch", 
-        "extra": None,
+        "extra_menu": None,
         "extra_price": None,
         "non_pork": False
     },
@@ -71,7 +71,7 @@ FIXED_MENU = {
         "time_category": ["간식"],
         "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "ch",
-        "extra": None,
+        "extra_menu": None,
         "extra_price": None,
         "non_pork": False
     },
@@ -83,7 +83,7 @@ FIXED_MENU = {
         "time_category": ["간식"],
         "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "ch",
-        "extra": None,
+        "extra_menu": None,
         "extra_price": None,
         "non_pork": False
     }
