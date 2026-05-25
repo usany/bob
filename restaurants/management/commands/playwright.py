@@ -164,7 +164,7 @@ class Command(BaseCommand):
                     side=side,
                     price=6000,
                     time='lunch',
-                    day='mon' if index % 7 == 0 else 'tue' if index % 7 == 1 else 'wed' if index % 7 == 2 else 'thu' if index % 7 == 3 else 'fri',
+                    day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
                     place='hufs',
                     extra_menu='',
                     extra_price=None,
