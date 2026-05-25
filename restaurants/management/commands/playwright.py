@@ -3,6 +3,8 @@ from playwright.sync_api import sync_playwright
 import os
 import pathlib
 from restaurants.models import MenuItem
+import random
+from concurrent.futures import ThreadPoolExecutor
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
@@ -61,26 +63,29 @@ class Command(BaseCommand):
         page.wait_for_selector('td.te_left')
         
         menu_texts = page.locator('td.te_left').all_inner_texts()
-        for menu in menu_texts:
-            if (menu == '미운영'):
-                continue
-            menu_parts = menu.split(',', 1)
-            main = menu_parts[0].strip() if menu_parts else ''
-            side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
-            
-            item = MenuItem.objects.create(
-                main=main,
-                side=side,
-                time=random.choice(sample_times),
-                place=random.choice(sample_places),
-                extra=random.choice(sample_extras),
-                price=random.randint(10000, 50000),
-                pork=random.choice([True, False])
-            )
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
         
         browser.close()
+        
+        # Create MenuItem objects outside of Playwright context
+        def create_menu_items():
+            for menu in menu_texts:
+                if (menu == '미운영'):
+                    continue
+                menu_parts = menu.split(',', 1)
+                main = menu_parts[0].strip() if menu_parts else ''
+                side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                
+                MenuItem.objects.create(
+                    main=main,
+                    side=side,
+                    price=random.randint(10000, 50000),
+                    pork=random.choice([True, False])
+                )
+        
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            executor.submit(create_menu_items).result()
 
     def scrap_hufs(self, playwright, is_student=False):
         """Scrape HUFS menu"""
