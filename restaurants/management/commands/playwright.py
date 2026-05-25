@@ -70,7 +70,7 @@ class Command(BaseCommand):
         
         # Create MenuItem objects outside of Playwright context
         def create_menu_items():
-            for menu in menu_texts:
+            for index, menu in enumerate(menu_texts):
                 if (menu == '미운영'):
                     continue
                 if (menu.startswith('A코너 : ')):
@@ -102,6 +102,7 @@ class Command(BaseCommand):
                         main=main,
                         side=side,
                         price=random.randint(10000, 50000),
+                        time=''
                         pork=random.choice([True, False])
                     )
         
