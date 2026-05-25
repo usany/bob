@@ -156,7 +156,7 @@ class Command(BaseCommand):
             for index, menu in enumerate(menu_texts):
                 if menu.startswith('등록된') or index % 7 < 1 or index % 7 > 5:
                     continue
-                menu_parts = menu.split('\n', 1)
+                menu_parts = menu.split('\n')
                 main = menu_parts[0].strip() if menu_parts else ''
                 side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
                 MenuItem.objects.create(
