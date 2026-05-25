@@ -145,7 +145,7 @@ class Command(BaseCommand):
         page.wait_for_selector('tbody')
         
         # Find links in tbody - map over locations to find matching elements
-        locations = ['푸른솔', '청운관'] if is_seoul else ['학생회관']
+        locations = ['푸른솔', '청운관'] if is_seoul else ['학생회관', '기숙사']
         raw_links = []
         
         for loc in locations:
@@ -205,8 +205,10 @@ class Command(BaseCommand):
                         image_name = 'c.png'
                     elif '푸른솔' in title:
                         image_name = 'p.png'
-                    else:
+                    elif '학생회관' in title:
                         image_name = 'h.png'
+                    else:
+                        image_name = 'j.png'
                     
                     local_path = download_dir / image_name
                     
