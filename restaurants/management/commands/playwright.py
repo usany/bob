@@ -87,7 +87,8 @@ class Command(BaseCommand):
                         place='jg',
                         extra='',
                         pork=False,
-                        url=''
+                        storage_url='',
+                        
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
@@ -102,7 +103,7 @@ class Command(BaseCommand):
                         place='jg',
                         extra='',
                         pork=False,
-                        url=''
+                        storage_url='',
                     )
                 else:
                     menu_parts = menu.split(',', 1)
@@ -117,7 +118,7 @@ class Command(BaseCommand):
                         place='jg',
                         extra='',
                         pork=False,
-                        url=''
+                        storage_url=''
                     )
         
         with ThreadPoolExecutor(max_workers=1) as executor:
