@@ -155,7 +155,7 @@ def menu_list(request, path):
     ]
 
     # State: which meal tab is active — read from GET param, default to first
-    selected_meal = request.GET.get('meal', all_meals[0] if all_meals else None)
+    selected_meal = request.GET.get('meal', meal_tabs[0]['id'] if meal_tabs else None)
     selected_day = request.GET.get('day', weekdays[0]['day'] if weekdays else None)
 
     # Only pass dishes for the selected meal into context
