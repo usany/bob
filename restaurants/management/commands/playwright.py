@@ -111,17 +111,18 @@ class Command(BaseCommand):
                     menu_parts = menu.split(',', 1)
                     main = menu_parts[0].strip() if menu_parts else ''
                     side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                    time = 'breakfast' if index % 3 == 0 else 'dinner'
                     MenuItem.objects.create(
                         main=main,
                         side=side,
                         price=5500,
-                        time='breakfast' if index % 3 == 0 else 'dinner',
+                        time=time,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        place='jg',
+                        place=place,
                         extra_menu='',
                         extra_price=None,
                         non_pork=False,
-                        storage_url=''
+                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
                     )
         
         with ThreadPoolExecutor(max_workers=1) as executor:
@@ -161,17 +162,19 @@ class Command(BaseCommand):
                 side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
                 if not main or not side:
                     continue
+                place = 'hi' if is_student else 'hg'
+                time = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 MenuItem.objects.create(
                     main=main,
                     side=side,
                     price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                    time='lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner',
+                    time=time,
                     day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
-                    place='hi' if is_student else 'hg',
+                    place=place,
                     extra_menu='',
                     extra_price=None,
                     non_pork=False,
-                    storage_url=''
+                    storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
                 )
 
         with ThreadPoolExecutor(max_workers=1) as executor:
