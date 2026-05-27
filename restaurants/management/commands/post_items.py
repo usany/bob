@@ -8,12 +8,13 @@ class Command(BaseCommand):
     help = 'Post items to the storage'
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            # '--count',
-            # type=int,
-            # default=1,
-            # help='Number of items to post',
-        )
+        pass
+        # parser.add_argument(
+        #     '--count',
+        #     type=int,
+        #     default=1,
+        #     help='Number of items to post',
+        # )
 
     def handle(self, *args, **options):
         url = "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/IB7TC1jkYnlu_awkWLKTY6GDr0_dXG5nEh1CAupBQjjIGAcCIbmn_4Gxma2GeE3U/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/hglunch"
