@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         url = "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/IB7TC1jkYnlu_awkWLKTY6GDr0_dXG5nEh1CAupBQjjIGAcCIbmn_4Gxma2GeE3U/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/jgdinner"
-        file_path = os.path.join('statics', 'favicon.png')
+        file_path = os.path.join('restaurants', 'statics', 'favicon.png')
         
         # Example data - customize as needed
         
