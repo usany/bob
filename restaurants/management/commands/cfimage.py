@@ -11,15 +11,18 @@ class Command(BaseCommand):
     help = 'Generate an image using Cloudflare AI'
 
     def handle(self, *args, **options):
-        account_id = os.getenv('CFACCOUNTID')
-        api_token = os.getenv('CFAPITOKEN')
+        # account_id = os.getenv('CFACCOUNTID')
+        # api_token = os.getenv('CFAPITOKEN')
+        account_id = '1291a040558f41643e407d8f6d6f36ab'
+        api_token = 'cfat_SyDzx0m7AfjZziaGNGAUJERDI4eI6DYpOs4Q3oFZ0e6ea3a3'
 
         if not account_id or not api_token:
             self.stderr.write(self.style.ERROR('Cloudflare credentials not found in environment variables.'))
             return
 
         prompt = "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"
-        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/seedream-5-lite"
+        # url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
 
         headers = {
             "Authorization": f"Bearer {api_token}",
