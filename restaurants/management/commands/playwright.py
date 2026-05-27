@@ -70,6 +70,7 @@ class Command(BaseCommand):
         
         # Create MenuItem objects outside of Playwright context
         def create_menu_items():
+            place = 'jg'
             for index, menu in enumerate(menu_texts):
                 if (menu == '미운영'):
                     continue
@@ -84,12 +85,11 @@ class Command(BaseCommand):
                         price=6500,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
                         time='lunch',
-                        place='jg',
+                        place=place,
                         extra_menu='',
                         extra_price=None,
                         non_pork=False,
-                        storage_url='',
-                        
+                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
@@ -101,11 +101,11 @@ class Command(BaseCommand):
                         price=5500,
                         time='lunch',
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        place='jg',
+                        place=place,
                         extra_menu='',
                         extra_price=None,
                         non_pork=False,
-                        storage_url='',
+                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
                     )
                 else:
                     menu_parts = menu.split(',', 1)
