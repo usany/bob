@@ -291,7 +291,7 @@ FIXED_MENU = {
         "storage_url": ''
     },
     {
-        "main": "김밥",
+        "main": "오늘의김밥",
         "side": None,
         "price": '3000~4000',
         "day": None,
