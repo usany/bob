@@ -7,10 +7,11 @@ import random
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 import requests
+import google.generativeai as genai
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
-    storage_url = os.getenv('STORAGE_URL')
+    storage_url = os.getenv('STORAGE_URL', 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/')
     
     def add_arguments(self, parser):
         parser.add_argument(
@@ -93,7 +94,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+place+main,
+                            'storage_url': self.storage_url+place+main,
                         }
                     )
                     
@@ -114,7 +115,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+place+main,
+                            'storage_url': self.storage_url+place+main,
                         }
                     )
                     self.generate_image(main)
@@ -135,7 +136,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+main,
+                            'storage_url': self.storage_url+main,
                         }
                     )
                     self.generate_image(main)
@@ -179,21 +180,32 @@ class Command(BaseCommand):
                     continue
                 place = 'hi' if is_student else 'hg'
                 time = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
-                MenuItem.objects.get_or_create(
+                day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
+                existing = MenuItem.objects.filter(
                     main=main,
                     side=side,
-                    day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
+                    day=day,
                     time=time,
                     place=place,
-                    defaults={
-                        'price': int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                        'extra_menu': '',
-                        'extra_price': None,
-                        'non_pork': False,
-                        'storage_url': storage_url+place+time,
-                    }
-                )
-                self.generate_image(place+time)
+                ).first()
+                if existing:
+                    existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
+                    existing.storage_url = self.storage_url+place+time
+                    existing.save()
+                else:
+                    MenuItem.objects.create(
+                        main=main,
+                        side=side,
+                        day=day,
+                        time=time,
+                        place=place,
+                        price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
+                        extra_menu='',
+                        extra_price=None,
+                        non_pork=False,
+                        storage_url=self.storage_url+place+time,
+                    )
+                self.generate_image(main)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -301,33 +313,50 @@ class Command(BaseCommand):
         load_dotenv()
         account_id = os.getenv('CFACCOUNTID')
         api_token = os.getenv('CFAPITOKEN')
+        gemini_api_key = os.getenv('GEMINI_API_KEY')
 
         if not account_id or not api_token:
             self.stderr.write(self.style.ERROR('Cloudflare credentials not found in environment variables.'))
             return
 
-        prompt = f"Create a picture of a {main} dish in a fancy restaurant"
-        # url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
-        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
+        if not gemini_api_key:
+            self.stderr.write(self.style.ERROR('Gemini API key not found in environment variables.'))
+            return
 
+        # Step 1: Translate Korean to English using Gemini
+        genai.configure(api_key=gemini_api_key)
+        model = genai.GenerativeModel('gemini-3.5-flash')
+
+        try:
+            prompt = f"Translate this Korean food name to English. Return only the English translation, no additional text: {main}"
+            response = model.generate_content(prompt)
+            translated_text = response.text.strip()
+            self.stdout.write(self.style.SUCCESS(f"Translated: {main} -> {translated_text}"))
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error translating text with Gemini: {str(e)}"))
+            translated_text = main  # Fallback to original text
+
+        # Step 2: Generate image using translated text
+        imageurl = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
         headers = {
             "Authorization": f"Bearer {api_token}",
             "Content-Type": "application/json",
         }
 
-        payload = {
-            "prompt": prompt,
+        image_prompt = f"Create a picture of {translated_text} dish in a fancy restaurant"
+        image_payload = {
+            "prompt": image_prompt,
             "seed": random.randint(0, 1000000),
         }
 
         try:
-            response = requests.post(url, headers=headers, json=payload)
+            image_response = requests.post(imageurl, headers=headers, json=image_payload)
 
-            if response.status_code == 200:
+            if image_response.status_code == 200:
                 with open(f"{main}.png", "wb") as f:
-                    f.write(response.content)
+                    f.write(image_response.content)
                 self.stdout.write(self.style.SUCCESS(f"Image saved as {main}.png"))
             else:
-                self.stderr.write(self.style.ERROR(f"Cloudflare API error: {response.status_code} {response.text}"))
+                self.stderr.write(self.style.ERROR(f"Image generation API error: {image_response.status_code} {image_response.text}"))
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error generating image: {str(e)}"))
