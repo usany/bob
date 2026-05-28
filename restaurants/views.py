@@ -317,6 +317,21 @@ FIXED_MENU = {
         "non_pork": False,
         "storage_url": ''
     },
+ ],
+ 'jg': [
+  {
+    "main": "테이크아웃오늘의샐러드",
+    "side": None,
+    "price": 6500,
+    "day": None,
+    'time_category': ['breakfast', 'lunch'], 
+    'time_detail': None, 
+    "place": "jg",
+    "extra_menu": None,
+    "extra_price": None,
+    "non_pork": False,
+    "storage_url": ''
+  }  
  ]
 }
 
