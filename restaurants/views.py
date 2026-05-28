@@ -13,6 +13,7 @@ from .models import MenuItem
 #     'hh': '학생회관 학생식당',
 #     'jg': '제2기숙사 식당',
 # }
+
 MEALS = [{'id': 0, 'name': '아침', 'time': 'breakfast'}, {'id': 1, 'name': '점심', 'time': 'lunch'}, {'id': 2, 'name': '간식', 'time': 'snack'}, {'id': 3, 'name': '저녁', 'time': 'dinner'}, {'id': 4, 'name': '셀프', 'time': 'self'}, {'id': 5, 'name': 'To-go', 'time': 'togo'}]
 WEEKDAYS = [{'id': 0, 'name': '월', 'day': 'mon'}, {'id': 1, 'name': '화', 'day': 'tue'}, {'id': 2, 'name': '수', 'day': 'wed'}, {'id': 3, 'name': '목', 'day': 'thu'}, {'id': 4, 'name': '금', 'day': 'fri'}]
 RESTAURANTS = [
