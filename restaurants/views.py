@@ -421,7 +421,7 @@ def menu_list(request, path):
     #     db_qs = db_qs.filter(time=selected_meal)
     # if selected_day:
     #     db_qs = db_qs.filter(day=selected_day)
-    filtered_dishes = list(db_qs) + filtered_dishes
+    filtered_dishes = list(db_qs) + filtered_dishes 
 
 
     tabs = list(WEEKDAYS)
