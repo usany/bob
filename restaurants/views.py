@@ -168,7 +168,7 @@ FIXED_MENU = {
         'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
         'time_detail': {'breakfast': ['08:30', '16:00']}, 
         "place": "ch", 
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
+        "extra_menu": None,
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
