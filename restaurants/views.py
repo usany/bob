@@ -331,7 +331,20 @@ FIXED_MENU = {
     "extra_price": None,
     "non_pork": False,
     "storage_url": ''
-  }  
+  },
+  {
+    'main': '셀프라면(신라면/진라면매운맛/진라면순한맛/너구리/짜파게티/안성탕면/오징어짬뽕)',
+    'side': None,
+    'price': None,
+    'day': None,
+    'time_category': ['breakfast', 'lunch', 'dinner'],
+    'time_detail': None,
+    'place': 'jg',
+    'extra_menu': '토핑2종',
+    'extra_price': None,
+    'non_pork': False,
+    'storage_url': ''
+  }
  ]
 }
 
