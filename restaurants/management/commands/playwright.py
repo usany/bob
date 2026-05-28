@@ -5,6 +5,8 @@ import pathlib
 from restaurants.models import MenuItem
 import random
 from concurrent.futures import ThreadPoolExecutor
+from dotenv import load_dotenv
+import requests
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
@@ -91,9 +93,44 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+place+'lunch',
+                            'storage_url': storage_url+place+main,
                         }
                     )
+                    
+                    load_dotenv()
+                    account_id = os.getenv('CFACCOUNTID')
+                    api_token = os.getenv('CFAPITOKEN')
+
+                    if not account_id or not api_token:
+                        self.stderr.write(self.style.ERROR('Cloudflare credentials not found in environment variables.'))
+                        return
+
+                    prompt = "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"
+                    # url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+                    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
+
+                    headers = {
+                        "Authorization": f"Bearer {api_token}",
+                        "Content-Type": "application/json",
+                    }
+
+                    payload = {
+                        "prompt": prompt,
+                        "seed": random.randint(0, 1000000),
+                    }
+
+                    try:
+                        response = requests.post(url, headers=headers, json=payload)
+
+                        if response.status_code == 200:
+                            with open("output.png", "wb") as f:
+                                f.write(response.content)
+                            self.stdout.write(self.style.SUCCESS("Image saved as output.png"))
+                        else:
+                            self.stderr.write(self.style.ERROR(f"Cloudflare API error: {response.status_code} {response.text}"))
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f"Error generating image: {str(e)}"))
+
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
@@ -109,7 +146,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+place+'lunch',
+                            'storage_url': storage_url+place+main,
                         }
                     )
                 else:
@@ -128,7 +165,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': storage_url+place+time,
+                            'storage_url': storage_url+main,
                         }
                     )
         
@@ -286,3 +323,39 @@ class Command(BaseCommand):
         
         browser.close()
         self.stdout.write(self.style.SUCCESS('Done.'))
+
+    def generate_image(self):
+        """Generate an image using Cloudflare AI API"""
+        load_dotenv()
+        account_id = os.getenv('CFACCOUNTID')
+        api_token = os.getenv('CFAPITOKEN')
+
+        if not account_id or not api_token:
+            self.stderr.write(self.style.ERROR('Cloudflare credentials not found in environment variables.'))
+            return
+
+        prompt = "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"
+        # url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
+
+        headers = {
+            "Authorization": f"Bearer {api_token}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "prompt": prompt,
+            "seed": random.randint(0, 1000000),
+        }
+
+        try:
+            response = requests.post(url, headers=headers, json=payload)
+
+            if response.status_code == 200:
+                with open("output.png", "wb") as f:
+                    f.write(response.content)
+                self.stdout.write(self.style.SUCCESS("Image saved as output.png"))
+            else:
+                self.stderr.write(self.style.ERROR(f"Cloudflare API error: {response.status_code} {response.text}"))
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error generating image: {str(e)}"))
