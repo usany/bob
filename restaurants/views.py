@@ -142,7 +142,7 @@ FIXED_MENU = {
         'time_category': ['breakfast', 'lunch', 'self'], 
         'time_detail': {'breakfast': ['08:30', '16:00']}, 
         'place': 'ph', 
-        'extra_menu': None,
+        'extra_menu': '08:30~소진시까지',
         'extra_price': None,
         'non_pork': False,
         'storage_url': ''
@@ -155,7 +155,7 @@ FIXED_MENU = {
         'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
         'time_detail': {'breakfast': ['08:30', '16:00']}, 
         "place": "ph",
-        "extra_menu": None,
+        "extra_menu": '08:30~소진시까지',
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
@@ -168,7 +168,7 @@ FIXED_MENU = {
         'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
         'time_detail': {'breakfast': ['08:30', '16:00']}, 
         "place": "ch", 
-        "extra_menu": None,
+        "extra_menu": '08:30~소진시까지',
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
