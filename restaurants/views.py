@@ -226,6 +226,19 @@ FIXED_MENU = {
         "storage_url": ''
     },
     {
+        "main": "토핑dhkd쏭쏭",
+        "side": None,
+        "price": 500,
+        "day": None,
+        "time_category": ["self"],
+        "time_detail": None,
+        "place": "ch",
+        "extra_menu": None,
+        "extra_price": None,
+        "non_pork": False,
+        "storage_url": ''
+    },
+    {
         "main": "음료(콜라,사이다)",
         "side": None,
         "price": 1700,
