@@ -203,7 +203,7 @@ class Command(BaseCommand):
                         extra_menu='',
                         extra_price=None,
                         non_pork=False,
-                        storage_url=self.storage_url+place+time,
+                        storage_url=self.storage_url+main+'.png',
                     )
                 self.generate_image(main)
 
@@ -356,7 +356,38 @@ class Command(BaseCommand):
                 with open(f"{main}.png", "wb") as f:
                     f.write(image_response.content)
                 self.stdout.write(self.style.SUCCESS(f"Image saved as {main}.png"))
+                self.upload_to_storage(f"{main}.png", f"{main}.png")
             else:
                 self.stderr.write(self.style.ERROR(f"Image generation API error: {image_response.status_code} {image_response.text}"))
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error generating image: {str(e)}"))
+
+    def upload_to_storage(self, file_path, object_name):
+        """Upload image to storage using PUT with PAR token"""
+        load_dotenv()
+        par_token = os.getenv('STORAGE_PAR_TOKEN')
+        namespace = os.getenv('STORAGE_NAMESPACE', 'ax0ym4amgnfk')
+        bucket = os.getenv('STORAGE_BUCKET', 'bucket-20260516-0145')
+
+        # if not par_token:
+        #     self.stderr.write(self.style.ERROR('Storage PAR token not found in environment variables.'))
+        #     return
+
+        # url = f"https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/{par_token}/n/{namespace}/b/{bucket}/o/{object_name}"
+        url = f"https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/IB7TC1jkYnlu_awkWLKTY6GDr0_dXG5nEh1CAupBQjjIGAcCIbmn_4Gxma2GeE3U/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/{object_name}"
+
+        if not os.path.exists(file_path):
+            self.stderr.write(self.style.ERROR(f'File not found: {file_path}'))
+            return
+
+        try:
+            with open(file_path, 'rb') as f:
+                file_data = f.read()
+                response = requests.put(url, data=file_data, timeout=10)
+
+            if response.status_code in [200, 201]:
+                self.stdout.write(self.style.SUCCESS(f'Successfully uploaded {file_path} to storage'))
+            else:
+                self.stderr.write(self.style.ERROR(f'Failed to upload: {response.status_code} {response.text}'))
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f'Error uploading to storage: {str(e)}'))
