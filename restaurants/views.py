@@ -181,7 +181,7 @@ FIXED_MENU = {
         "time_category": ["self"],
         "time_detail": None,
         "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},,
+        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
@@ -194,7 +194,7 @@ FIXED_MENU = {
         "time_category": ["self"],
         "time_detail": None,
         "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},,
+        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
@@ -207,7 +207,7 @@ FIXED_MENU = {
         "time_category": ["self"],
         "time_detail": None,
         "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},,
+        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
@@ -226,7 +226,7 @@ FIXED_MENU = {
         "storage_url": ''
     },
     {
-        "main": "토핑dhkd쏭쏭",
+        "main": "토핑왕계란",
         "side": None,
         "price": 500,
         "day": None,
