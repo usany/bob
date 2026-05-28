@@ -8,7 +8,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
-
+    storage_url = 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'
+    
     def add_arguments(self, parser):
         parser.add_argument(
             '--source',
@@ -90,7 +91,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                            'storage_url': storage_url+place+'lunch',
                         }
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
@@ -127,7 +128,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                            'storage_url': storage_url+place+time,
                         }
                     )
         
@@ -181,7 +182,7 @@ class Command(BaseCommand):
                         'extra_menu': '',
                         'extra_price': None,
                         'non_pork': False,
-                        'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                        'storage_url': storage_url+place+time,
                     }
                 )
 
