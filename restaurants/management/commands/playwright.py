@@ -94,7 +94,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': self.storage_url+place+main,
+                            'storage_url': self.storage_url+main+'.png',
                         }
                     )
                     
@@ -115,7 +115,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': self.storage_url+place+main,
+                            'storage_url': self.storage_url+main+'.png',
                         }
                     )
                     self.generate_image(main)
