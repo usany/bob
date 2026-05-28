@@ -148,13 +148,13 @@ FIXED_MENU = {
         'storage_url': ''
     },
     {
-        "main": "속풀이라면",
+        "main": '주먹밥2EA',
         "side": None,
-        "price": 3500,
+        "price": 2500,
         "day": None,
-        "time_category": ["breakfast"],
-        "time_detail": {"breakfast": ["09:00", "10:00"]},
-        "place": "ch",
+        "time_category": ["togoonedish"],
+        "time_detail": {"togoonedish": ["08:30", "16:00"]},
+        "place": "ph",
         "extra_menu": None,
         "extra_price": None,
         "non_pork": False,
@@ -213,7 +213,7 @@ FIXED_MENU = {
         "storage_url": ''
     },
     {
-        "main": "컵씨리얼&우유",
+        "main": "씨리얼&우유",
         "side": None,
         "price": 2000,
         "day": None,
@@ -226,7 +226,7 @@ FIXED_MENU = {
         "storage_url": ''
     },
     {
-        "main": "우유,딸기,초코우유",
+        "main": "우유",
         "side": None,
         "price": 900,
         "day": None,
