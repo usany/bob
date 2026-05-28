@@ -79,50 +79,56 @@ class Command(BaseCommand):
                     first_menu = first_part.split(',', 1)
                     main = first_menu[0].strip() if first_menu else ''
                     side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
-                    MenuItem.objects.create(
+                    MenuItem.objects.get_or_create(
                         main=main,
                         side=side,
-                        price=6500,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
                         time='lunch',
                         place=place,
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                        defaults={
+                            'price': 6500,
+                            'extra_menu': '',
+                            'extra_price': None,
+                            'non_pork': False,
+                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                        }
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    MenuItem.objects.create(
+                    MenuItem.objects.get_or_create(
                         main=main,
                         side=side,
-                        price=5500,
-                        time='lunch',
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
+                        time='lunch',
                         place=place,
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                        defaults={
+                            'price': 5500,
+                            'extra_menu': '',
+                            'extra_price': None,
+                            'non_pork': False,
+                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                        }
                     )
                 else:
                     menu_parts = menu.split(',', 1)
                     main = menu_parts[0].strip() if menu_parts else ''
                     side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
                     time = 'breakfast' if index % 3 == 0 else 'dinner'
-                    MenuItem.objects.create(
+                    MenuItem.objects.get_or_create(
                         main=main,
                         side=side,
-                        price=5500,
-                        time=time,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
+                        time=time,
                         place=place,
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                        defaults={
+                            'price': 5500,
+                            'extra_menu': '',
+                            'extra_price': None,
+                            'non_pork': False,
+                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                        }
                     )
         
         with ThreadPoolExecutor(max_workers=1) as executor:
@@ -164,17 +170,19 @@ class Command(BaseCommand):
                     continue
                 place = 'hi' if is_student else 'hg'
                 time = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
-                MenuItem.objects.create(
+                MenuItem.objects.get_or_create(
                     main=main,
                     side=side,
-                    price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                    time=time,
                     day='mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri',
+                    time=time,
                     place=place,
-                    extra_menu='',
-                    extra_price=None,
-                    non_pork=False,
-                    storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                    defaults={
+                        'price': int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
+                        'extra_menu': '',
+                        'extra_price': None,
+                        'non_pork': False,
+                        'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+time,
+                    }
                 )
 
         with ThreadPoolExecutor(max_workers=1) as executor:
