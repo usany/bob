@@ -98,14 +98,40 @@ FIXED_MENU = {
         "side": None,
         "price": 1700,
         "day": None,
-        "time_category": ["간식"],
+        "time_category": ["아침", "점심", "간식", "저녁"],
         "time_detail": None,
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
-    }
+    },
+    {
+        "main": "컵씨리얼&우유",
+        "side": None,
+        "price": 2000,
+        "day": None,
+        "time_category": ["아침", "점심", "간식", "저녁"],
+        "time_detail": None,
+        "place": "ch",
+        "extra_menu": None,
+        "extra_price": None,
+        "non_pork": False,
+        "storage_url": ''
+    },
+    {
+        "main": "우유,딸기,초코우유",
+        "side": None,
+        "price": 900,
+        "day": None,
+        "time_category": ["아침", "점심", "간식", "저녁"],
+        "time_detail": None,
+        "place": "ch",
+        "extra_menu": None,
+        "extra_price": None,
+        "non_pork": False,
+        "storage_url": ''
+    },
  ]
 }
 
