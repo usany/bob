@@ -117,6 +117,8 @@ class Command(BaseCommand):
                             'storage_url': storage_url+place+main,
                         }
                     )
+                    self.generate_image(main)
+
                 else:
                     menu_parts = menu.split(',', 1)
                     main = menu_parts[0].strip() if menu_parts else ''
@@ -136,7 +138,8 @@ class Command(BaseCommand):
                             'storage_url': storage_url+main,
                         }
                     )
-        
+                    self.generate_image(main)
+
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
 
@@ -190,6 +193,7 @@ class Command(BaseCommand):
                         'storage_url': storage_url+place+time,
                     }
                 )
+                self.generate_image(place+time)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
