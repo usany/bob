@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
-    storage_url = 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'
+    storage_url = os.getenv('STORAGE_URL')
     
     def add_arguments(self, parser):
         parser.add_argument(
@@ -109,7 +109,7 @@ class Command(BaseCommand):
                             'extra_menu': '',
                             'extra_price': None,
                             'non_pork': False,
-                            'storage_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+place+'lunch',
+                            'storage_url': storage_url+place+'lunch',
                         }
                     )
                 else:
