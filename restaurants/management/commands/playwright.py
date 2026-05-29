@@ -7,7 +7,7 @@ import random
 from concurrent.futures import ThreadPoolExecutor
 
 class Command(BaseCommand):
-    help = 'Scrape menu data from university websites using Playwright'
+    help = 'Scrap menu data from university websites using Playwright'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -89,7 +89,6 @@ class Command(BaseCommand):
                         extra_price=None,
                         non_pork=False,
                         storage_url='',
-                        
                     )
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
