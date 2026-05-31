@@ -100,11 +100,11 @@ FIXED_MENU = {
 #     return [r for r in RESTAURANTS if r['campus'] == campus]
 
 
-def _restaurant_dict_by_path(path):
-    for r in RESTAURANTS:
-        if r['path'] == path:
-            return r
-    return None
+# def _restaurant_dict_by_path(path):
+#     for r in RESTAURANTS:
+#         if r['path'] == path:
+#             return r
+#     return None
 
 
 def root_redirect(request):
