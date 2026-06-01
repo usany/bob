@@ -90,8 +90,18 @@
             justify-content: space-around;
         }
 
-        .dark-mode-btn {
+        .top-buttons-row {
             display: none;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .bottom-nav.expanded .top-buttons-row {
+            display: flex;
+        }
+
+        .dark-mode-btn {
             cursor: pointer;
             font-size: 1.2rem;
             background: none;
@@ -101,15 +111,29 @@
             padding: 0;
         }
 
-        .bottom-nav.expanded .dark-mode-btn {
-            display: block;
-        }
-
         .dark-mode-btn:hover {
             color: var(--nav-active);
         }
 
         html.dark .dark-mode-btn {
+            color: var(--nav-inactive);
+        }
+
+        .language-btn {
+            cursor: pointer;
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--nav-inactive);
+            transition: color 0.3s ease;
+            padding: 0;
+        }
+
+        .language-btn:hover {
+            color: var(--nav-active);
+        }
+
+        html.dark .language-btn {
             color: var(--nav-inactive);
         }
 
@@ -161,10 +185,18 @@
     </main>
 
     <nav class="bottom-nav">
-        <!-- Dark Mode Toggle (hidden by default, shown when expanded) -->
-        <button class="dark-mode-btn" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
-            <span id="theme-icon">🌙</span>
-        </button>
+        <!-- Top Buttons Wrapper (Dark Mode + Language) -->
+        <div class="top-buttons-row">
+            <!-- Dark Mode Toggle (hidden by default, shown when expanded) -->
+            <button class="dark-mode-btn" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
+                <span id="theme-icon">🌙</span>
+            </button>
+
+            <!-- Language Button (hidden by default, shown when expanded) -->
+            <button class="language-btn" id="language-toggle" onclick="alert('Language selector')">
+                <span id="language-icon">🌐</span>
+            </button>
+        </div>
 
         <!-- Nav Items Wrapper -->
         <div class="nav-items-row">
