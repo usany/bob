@@ -106,6 +106,14 @@
         }
     </style>
     {% block extra_css %}{% endblock %}
+    <script>
+        // Restore dark mode before paint to avoid flash
+        const saved = localStorage.getItem('darkMode');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'true' || (saved === null && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 
 <body>
@@ -130,13 +138,6 @@
         </a>
     </nav>
     <script>
-        // Restore dark mode before paint to avoid flash
-        const saved = localStorage.getItem('darkMode');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'true' || (saved === null && prefersDark)) {
-            document.documentElement.classList.add('dark');
-        }
-
         // Simple script to set active state based on URL
         document.addEventListener('DOMContentLoaded', () => {
             const currentPath = window.location.pathname;
