@@ -19,6 +19,21 @@
             --border-color: #e2e8f0;
         }
 
+        html.dark {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --nav-bg: rgba(15, 23, 42, 0.9);
+            --nav-active: #60a5fa;
+            --nav-inactive: #64748b;
+            --border-color: #1e293b;
+        }
+
+        html.dark .bottom-nav {
+            background-color: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -115,6 +130,13 @@
         </a>
     </nav>
     <script>
+        // Restore dark mode before paint to avoid flash
+        const saved = localStorage.getItem('darkMode');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'true' || (saved === null && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+
         // Simple script to set active state based on URL
         document.addEventListener('DOMContentLoaded', () => {
             const currentPath = window.location.pathname;
