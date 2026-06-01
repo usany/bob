@@ -41,18 +41,15 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             padding-bottom: 90px;
-            /* Space for fixed bottom nav */
             box-sizing: border-box;
         }
 
-        /* Container for the main content */
         main {
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        /* Dock Style Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 24px;
@@ -69,7 +66,6 @@
             gap: 30px;
             padding: 12px 30px;
             border-radius: 9999px;
-            /* Fully rounded corners */
             border: 1px solid rgba(255, 255, 255, 0.8);
             z-index: 1000;
             flex-direction: row;
@@ -153,7 +149,6 @@
             transform: translateY(-2px);
         }
 
-        /* Simple placeholder icons using CSS circles/shapes or SVG */
         .nav-icon {
             width: 24px;
             height: 24px;
@@ -166,6 +161,18 @@
             font-weight: 600;
             margin-bottom: 1rem;
             text-align: center;
+        }
+
+        /* Custom expanded state for nav */
+        nav.expanded {
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+
+        nav.expanded .top-buttons-row {
+            display: flex;
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -184,22 +191,22 @@
         {% block content %}{% endblock %}
     </main>
 
-    <nav class="bottom-nav">
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-max bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-full border border-white/80 dark:border-white/10 shadow-lg z-1000 flex flex-col gap-4 px-8 py-3 dark:shadow-2xl transition-all duration-300">
         <!-- Top Buttons Wrapper (Dark Mode + Language) -->
-        <div class="top-buttons-row">
-            <!-- Dark Mode Toggle (hidden by default, shown when expanded) -->
-            <button class="dark-mode-btn" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
+        <div class="hidden expanded:flex flex-row gap-5 justify-center">
+            <!-- Dark Mode Toggle -->
+            <button class="dark-mode-btn cursor-pointer text-xl bg-none border-none text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-0" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
                 <span id="theme-icon">🌙</span>
             </button>
 
-            <!-- Language Button (hidden by default, shown when expanded) -->
-            <button class="language-btn" id="language-toggle" onclick="alert('Language selector')">
+            <!-- Language Button -->
+            <button class="language-btn cursor-pointer text-xl bg-none border-none text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-0" id="language-toggle" onclick="alert('Language selector')">
                 <span id="language-icon">🌐</span>
             </button>
         </div>
 
         <!-- Nav Items Wrapper -->
-        <div class="nav-items-row">
+        <div class="flex flex-row gap-8 justify-around">
             <!-- Location 1: Home Link -->
             <a href="{% url 'home' %}" class="nav-item" id="nav-home">
                 <svg class="nav-icon" viewBox="0 0 24 24">
