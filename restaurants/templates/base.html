@@ -10,162 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
-        :root {
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --nav-active: #3b82f6;
-            --nav-inactive: #94a3b8;
-            --border-color: #e2e8f0;
-        }
-
-        html.dark {
-            --bg-color: #0f172a;
-            --text-color: #e2e8f0;
-            --nav-bg: rgba(15, 23, 42, 0.9);
-            --nav-active: #60a5fa;
-            --nav-inactive: #64748b;
-            --border-color: #1e293b;
-        }
-
-        html.dark .bottom-nav {
-            background-color: rgba(30, 41, 59, 0.9);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding-bottom: 90px;
-            /* Space for fixed bottom nav */
-            box-sizing: border-box;
-        }
-
-        /* Container for the main content */
-        main {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Dock Style Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: max-content;
-            min-width: 200px;
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-around;
-            gap: 30px;
-            padding: 12px 30px;
-            border-radius: 9999px;
-            /* Fully rounded corners */
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            z-index: 1000;
-            flex-direction: row;
-            transition: flex-direction 0.3s ease, gap 0.3s ease;
-        }
-
+        /* Minimal custom styles for expanded state */
         .bottom-nav.expanded {
-            flex-direction: column;
-            gap: 15px;
-            padding: 20px 30px;
-            align-items: center;
+            flex-direction: column !important;
+            gap: 15px !important;
+            padding: 20px 30px !important;
+            align-items: center !important;
         }
-
-        .nav-items-row {
-            display: flex;
-            flex-direction: row;
-            gap: 30px;
-            justify-content: space-around;
-        }
-
-        .top-buttons-row {
-            display: none;
-            flex-direction: row;
-            gap: 20px;
-            justify-content: center;
-        }
-
+        
         .bottom-nav.expanded .top-buttons-row {
-            display: flex;
-        }
-
-        .dark-mode-btn {
-            cursor: pointer;
-            font-size: 1.2rem;
-            background: none;
-            border: none;
-            color: var(--nav-inactive);
-            transition: color 0.3s ease;
-            padding: 0;
-        }
-
-        .dark-mode-btn:hover {
-            color: var(--nav-active);
-        }
-
-        html.dark .dark-mode-btn {
-            color: var(--nav-inactive);
-        }
-
-        .language-btn {
-            cursor: pointer;
-            font-size: 1.2rem;
-            background: none;
-            border: none;
-            color: var(--nav-inactive);
-            transition: color 0.3s ease;
-            padding: 0;
-        }
-
-        .language-btn:hover {
-            color: var(--nav-active);
-        }
-
-        html.dark .language-btn {
-            color: var(--nav-inactive);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--nav-inactive);
-            font-size: 0.75rem;
-            font-weight: 500;
-            transition: color 0.3s ease, transform 0.2s ease;
-        }
-
-        .nav-item:hover {
-            color: var(--nav-active);
-            transform: translateY(-2px);
-        }
-
-        /* Simple placeholder icons using CSS circles/shapes or SVG */
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 4px;
-            fill: currentColor;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            text-align: center;
+            display: flex !important;
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -179,45 +33,45 @@
     </script>
 </head>
 
-<body>
-    <main>
+<body class="m-0 p-0 font-['Inter',sans-serif] bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 pb-[90px] box-border">
+    <main class="p-5 max-w-3xl mx-auto">
         {% block content %}{% endblock %}
     </main>
 
-    <nav class="bottom-nav">
+    <nav class="bottom-nav fixed bottom-6 left-1/2 -translate-x-1/2 w-max min-w-[200px] bg-white/90 dark:bg-slate-800/90 backdrop-blur-[15px] shadow-[0_10px_30px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.4),0_1px_3px_rgba(0,0,0,0.2)] flex justify-around gap-[30px] px-[30px] py-3 rounded-full border border-white/80 dark:border-white/10 z-[1000] flex-row">
         <!-- Top Buttons Wrapper (Dark Mode + Language) -->
-        <div class="top-buttons-row">
+        <div class="top-buttons-row hidden flex-row gap-5 justify-center">
             <!-- Dark Mode Toggle (hidden by default, shown when expanded) -->
-            <button class="dark-mode-btn" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
+            <button class="cursor-pointer text-xl bg-transparent border-none text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300 p-0" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
                 <span id="theme-icon">🌙</span>
             </button>
 
             <!-- Language Button (hidden by default, shown when expanded) -->
-            <button class="language-btn" id="language-toggle" onclick="alert('Language selector')">
+            <button class="cursor-pointer text-xl bg-transparent border-none text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300 p-0" id="language-toggle" onclick="alert('Language selector')">
                 <span id="language-icon">🌐</span>
             </button>
         </div>
 
         <!-- Nav Items Wrapper -->
-        <div class="nav-items-row">
+        <div class="nav-items-row flex flex-row gap-[30px] justify-around">
             <!-- Location 1: Home Link -->
-            <a href="{% url 'home' %}" class="nav-item" id="nav-home">
-                <svg class="nav-icon" viewBox="0 0 24 24">
+            <a href="{% url 'home' %}" class="nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300" id="nav-home">
+                <svg class="w-6 h-6 mb-1 fill-current" viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
                 <span>se</span>
             </a>
             <!-- Location 2: Menus Link -->
-            <a href="{% url 'home_gl' %}" class="nav-item" id="nav-menus">
-                <svg class="nav-icon" viewBox="0 0 24 24">
+            <a href="{% url 'home_gl' %}" class="nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300" id="nav-menus">
+                <svg class="w-6 h-6 mb-1 fill-current" viewBox="0 0 24 24">
                     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                 </svg>
                 <span>gl</span>
             </a>
 
             <!-- Toggle Button (on the right) -->
-            <button class="nav-item toggle-btn" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+            <button class="nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300 bg-transparent border-none cursor-pointer" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
+                <svg class="w-6 h-6 mb-1 fill-current" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                 </svg>
                 <span>Menu</span>
@@ -229,9 +83,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const currentPath = window.location.pathname;
             if (currentPath === '/' || currentPath.startsWith('/se')) {
-                document.getElementById('nav-home').style.color = 'var(--nav-active)';
+                document.getElementById('nav-home').style.color = '#3b82f6';
             } else if (currentPath.startsWith('/gl')) {
-                document.getElementById('nav-menus').style.color = 'var(--nav-active)';
+                document.getElementById('nav-menus').style.color = '#3b82f6';
             }
 
             // Update theme icon on load
