@@ -72,6 +72,45 @@
             /* Fully rounded corners */
             border: 1px solid rgba(255, 255, 255, 0.8);
             z-index: 1000;
+            flex-direction: row;
+            transition: flex-direction 0.3s ease, gap 0.3s ease;
+        }
+
+        .bottom-nav.expanded {
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 30px;
+            align-items: center;
+        }
+
+        .nav-items-row {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            justify-content: space-around;
+        }
+
+        .dark-mode-btn {
+            display: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--nav-inactive);
+            transition: color 0.3s ease;
+            padding: 0;
+        }
+
+        .bottom-nav.expanded .dark-mode-btn {
+            display: block;
+        }
+
+        .dark-mode-btn:hover {
+            color: var(--nav-active);
+        }
+
+        html.dark .dark-mode-btn {
+            color: var(--nav-inactive);
         }
 
         .nav-item {
@@ -122,20 +161,36 @@
     </main>
 
     <nav class="bottom-nav">
-        <!-- Location 1: Home Link -->
-        <a href="{% url 'home' %}" class="nav-item" id="nav-home">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>
-            <span>se</span>
-        </a>
-        <!-- Location 2: Menus Link -->
-        <a href="{% url 'home_gl' %}" class="nav-item" id="nav-menus">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-            </svg>
-            <span>gl</span>
-        </a>
+        <!-- Dark Mode Toggle (hidden by default, shown when expanded) -->
+        <button class="dark-mode-btn" id="dark-mode-toggle" onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'))">
+            <span id="theme-icon">🌙</span>
+        </button>
+
+        <!-- Nav Items Wrapper -->
+        <div class="nav-items-row">
+            <!-- Location 1: Home Link -->
+            <a href="{% url 'home' %}" class="nav-item" id="nav-home">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span>se</span>
+            </a>
+            <!-- Location 2: Menus Link -->
+            <a href="{% url 'home_gl' %}" class="nav-item" id="nav-menus">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+                <span>gl</span>
+            </a>
+
+            <!-- Toggle Button (on the right) -->
+            <button class="nav-item toggle-btn" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+                <span>Menu</span>
+            </button>
+        </div>
     </nav>
     <script>
         // Simple script to set active state based on URL
@@ -146,6 +201,19 @@
             } else if (currentPath.startsWith('/gl')) {
                 document.getElementById('nav-menus').style.color = 'var(--nav-active)';
             }
+
+            // Update theme icon on load
+            const themeIcon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.textContent = '☀️';
+            }
+
+            // Update theme icon when toggled
+            document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+                setTimeout(() => {
+                    themeIcon.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+                }, 0);
+            });
         });
     </script>
 </body>
