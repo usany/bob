@@ -21,6 +21,16 @@
         .bottom-nav.expanded .top-buttons-row {
             display: flex !important;
         }
+        
+        .bottom-nav {
+            display: hidden;
+        }
+        
+        /* Hide the menu toggle button when expanded */
+        .bottom-nav.expanded #nav-toggle {
+            display: none !important;
+        }
+        
     </style>
     {% block extra_css %}{% endblock %}
     <script>
@@ -50,6 +60,12 @@
             <button class="cursor-pointer text-xl bg-transparent border-none text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300 p-0" id="language-toggle" onclick="alert('Language selector')">
                 <span id="language-icon">🌐</span>
             </button>
+            <button class="nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300 bg-transparent border-none cursor-pointer" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
+                <svg class="w-6 h-6 mb-1 fill-current" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+                <span>Menu</span>
+            </button>
         </div>
 
         <!-- Nav Items Wrapper -->
@@ -69,8 +85,7 @@
                 <span>gl</span>
             </a>
 
-            <!-- Toggle Button (on the right) -->
-            <button class="nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300 bg-transparent border-none cursor-pointer" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
+            <button class="bottom-nav nav-item flex flex-col items-center no-underline text-slate-400 dark:text-slate-500 text-xs font-medium hover:text-blue-500 dark:hover:text-blue-400 hover:-translate-y-0.5 transition-all duration-300 bg-transparent border-none cursor-pointer" id="nav-toggle" onclick="document.querySelector('.bottom-nav').classList.toggle('expanded')">
                 <svg class="w-6 h-6 mb-1 fill-current" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                 </svg>

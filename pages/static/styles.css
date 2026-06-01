@@ -64,7 +64,6 @@
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --blur-2xl: 40px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
