@@ -48,7 +48,7 @@
             {% for dish in menu %}
             <li
                 class="rounded-lg border {% if dish.non_pork %}border-green-400 bg-green-50 dark:bg-green-900/20{% else %}border-gray-100 bg-white dark:bg-gray-800{% endif %}">
-                <a href="/{{ location }}/{{ restaurant.path }}/{{ selected_meal }}/"
+                <a href="/{{ base }}/{{ bases }}/{{ path }}/{{ selected_meal }}"
                     class="flex items-center gap-3 px-4 py-3 text-gray-800 text-sm font-medium hover:bg-gray-50 transition rounded-lg shadow hover:shadow-md">
                     <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24" aria-hidden="true">
