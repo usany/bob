@@ -110,13 +110,6 @@
             }
         }
 
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            setStorage('darkMode', isDark);
-            updateThemeIcon(isDark);
-        }
-
         function updateThemeIcon(isDark) {
             const themeIcon = document.getElementById('theme-icon');
             themeIcon.textContent = isDark ? '☀️ theme' : '🌙 theme';
@@ -128,6 +121,12 @@
             const newBase = currentBase === 'se' ? 'gl' : 'se';
             setStorage('bases', newBase);
             updateCampusIcon(newBase);
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            setStorage('darkMode', isDark);
+            updateThemeIcon(isDark);
         }
 
         // Simple script to set active state based on URL
