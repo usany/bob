@@ -21,6 +21,7 @@ from . import views
 
 urlpatterns = [
     path('', views.root_redirect, name='root'),
+    path('<str:base>/<str:bases>/', views.home_menu, name='home'),
     path('se/', views.home, name='home'),
     path('se/<str:path>/', views.menu_list, name='menu_list_se'),
     path('se/<str:path>/<str:meal>/', views.menu_detail, name='menu_detail_se'),

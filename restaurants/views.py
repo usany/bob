@@ -121,6 +121,12 @@ def root_redirect(request):
     return null;
   }
   
+  const base = getCookie('base');
+  if (loc === 'gl') {
+    window.location.replace('/gl');
+  } else {
+    window.location.replace('/se');
+  }
   const loc = getCookie('location');
   if (loc === 'gl') {
     window.location.replace('/gl');
@@ -133,6 +139,10 @@ def root_redirect(request):
     return HttpResponse(html)
 
 
+def home_menu(request, base, bases):
+    """Home page — SE location"""
+    restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se'})
 def home(request):
     """Home page — SE location"""
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
