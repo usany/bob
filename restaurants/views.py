@@ -108,21 +108,15 @@ FIXED_MENU = {
 
 
 def root_redirect(request):
-    """Redirect to /gl or /se based on cookie location"""
+    """Redirect to /gl or /se based on localStorage"""
     html = """<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
 <body>
 <script>
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-  }
+  const base = localStorage.getItem('base');
+  const loc = localStorage.getItem('bases');
   
-  const base = getCookie('base');
-  const loc = getCookie('bases');
   if (base === 'ko') {
     if (loc === 'gl') {
         window.location.replace('/ko/gl');
