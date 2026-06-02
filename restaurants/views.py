@@ -143,7 +143,7 @@ def root_redirect(request):
 
 
 def home_menu(request, base, bases):
-    restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
+    restaurants_items = [r for r in RESTAURANTS if r['campus'] == bases]
     return render(request, 'pages/home.html', {'items': restaurants_items, 'location': bases})
 def home(request):
     """Home page — SE location"""
