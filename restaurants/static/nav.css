@@ -1,0 +1,16 @@
+/* Bottom Navigation Expanded State Styles */
+.bottom-nav.expanded {
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 20px 30px !important;
+    align-items: center !important;
+}
+
+.bottom-nav.expanded .top-buttons-row {
+    display: flex !important;
+}
+
+/* Hide the menu toggle button when expanded */
+.bottom-nav.expanded #nav-toggle {
+    display: none !important;
+}
