@@ -88,10 +88,10 @@
         }
 
         // Toggle language between English and Korean (or other languages)
-        function toggleLanguage() {
-            const currentLang = getCookie('language') || 'ko';
+        function toggleBase() {
+            const currentLang = getCookie('base') || 'ko';
             const newLang = currentLang === 'ko' ? 'en' : 'ko';
-            setCookie('language', newLang);
+            setCookie('base', newLang);
             updateLanguageIcon(newLang);
             // Optionally reload the page to apply language changes
             // window.location.reload();
@@ -107,11 +107,11 @@
         }
 
         // Toggle base/campus between 'se' and 'gl'
-        function toggleBase() {
+        function toggleLocation() {
             const currentPath = window.location.pathname;
             const currentBase = currentPath.startsWith('/gl') ? 'gl' : 'se';
             const newBase = currentBase === 'se' ? 'gl' : 'se';
-            setCookie('base', newBase);
+            setCookie('bases', newBase);
             
             // Redirect to the new campus
             window.location.href = `/${newBase}/`;

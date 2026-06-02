@@ -122,14 +122,14 @@ def root_redirect(request):
   }
   
   const base = getCookie('base');
-  if (loc === 'gl') {
-    window.location.replace('/gl');
-  } else {
-    window.location.replace('/se');
-  }
   const loc = getCookie('location');
-  if (loc === 'gl') {
+  if (base === 'ko') {
     window.location.replace('/gl');
+    if (loc === 'gl') {
+        window.location.replace('/gl');
+    } else {
+        window.location.replace('/se');
+    }
   } else {
     window.location.replace('/se');
   }
