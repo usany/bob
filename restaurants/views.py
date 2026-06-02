@@ -13,13 +13,12 @@ from .models import MenuItem
 #     'hh': '학생회관 학생식당',
 #     'jg': '제2기숙사 식당',
 # }
-
-MEALS = [{'id': 0, 'name': '아침', 'time': 'breakfast'}, {'id': 1, 'name': '점심', 'time': 'lunch'}, {'id': 2, 'name': '간식', 'time': 'snack'}, {'id': 3, 'name': '저녁', 'time': 'dinner'}, {'id': 4, 'name': '셀프', 'time': 'self'}, {'id': 5, 'name': 'To-go', 'time': 'togo'}]
+MEALS = [{'id': 0, 'name': '아침', 'time': 'breakfast'}, {'id': 1, 'name': '점심', 'time': 'lunch'}, {'id': 2, 'name': '간식', 'time': 'snack'}, {'id': 3, 'name': '저녁', 'time': 'dinner'}]
 WEEKDAYS = [{'id': 0, 'name': '월', 'day': 'mon'}, {'id': 1, 'name': '화', 'day': 'tue'}, {'id': 2, 'name': '수', 'day': 'wed'}, {'id': 3, 'name': '목', 'day': 'thu'}, {'id': 4, 'name': '금', 'day': 'fri'}]
 RESTAURANTS = [
     {'id': 1, 'title': '청운관 학생식당', 'campus': 'se', 'path': 'ch', 'mealsSemester': ['아침', '점심', '간식', '저녁'], 'mealsSemesterTime': ['08:30~10:00 (간편식: 09:00~10:00)', '11:00~14:30', '15:00~16:00', '17:00~18:30'], 'mealsVacation': ['점심']},
     {'id': 2, 'title': '청운관 교직원식당', 'campus': 'se', 'path': 'cg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심'], 'mealsSemesterTime': ['11:30~14:00']},
-    {'id': 3, 'title': '푸른솔 학생식당', 'campus': 'se', 'path': 'ph', 'mealsSemester': ['아침', '점심', '셀프', 'To-go'], 'mealsVacation': ['아침', '점심'], 'mealsSemesterTime': ['08:30~10:00 (간편식: 09:00~10:00)', '11:00~14:30', '08:30~16:00', '14:30~소진시까지']},
+    {'id': 3, 'title': '푸른솔 학생식당', 'campus': 'se', 'path': 'ph', 'mealsSemester': ['아침', '점심'], 'mealsVacation': ['아침', '점심'], 'mealsSemesterTime': ['08:30~10:00 (간편식: 09:00~10:00)', '11:00~14:30']},
     {'id': 4, 'title': '푸른솔 교직원식당', 'campus': 'se', 'path': 'pg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심'], 'mealsSemesterTime': ['11:30~14:00']},
     {'id': 5, 'title': '한국외대 인문관 식당', 'campus': 'se', 'path': 'hi', 'mealsSemester': ['아침', '점심', '저녁'], 'mealsVacation': ['아침', '점심', '저녁'], 'mealsSemesterTime': ['08:30~10:00 (간편식: 09:00~10:00)', '11:00~14:30', '17:00~18:30']},
     {'id': 6, 'title': '한국외대 교수회관 식당', 'campus': 'se', 'path': 'hg', 'mealsSemester': ['점심'], 'mealsVacation': ['점심'], 'mealsSemesterTime': ['11:30~14:00']},
@@ -34,8 +33,8 @@ FIXED_MENU = {
         'side': None, 
         'price': 3000, 
         'day': None, 
-        'time_category': ['breakfast', 'snack'], 
-        'time_detail': {'breakfast': ['09:00', '10:00']}, 
+        'time_category': ['아침', '간식'], 
+        'time_detail': {'아침': ['09:00', '10:00'], '간식': ['15:00', '16:00']}, 
         'place': 'ch', 
         'extra_menu': None,
         'extra_price': None,
@@ -47,8 +46,8 @@ FIXED_MENU = {
         "side": None,
         "price": 3500,
         "day": None,
-        "time_category": ["breakfast"],
-        "time_detail": {"breakfast": ["09:00", "10:00"]},
+        "time_category": ["아침"],
+        "time_detail": {"아침": ["09:00", "10:00"]},
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
@@ -60,8 +59,8 @@ FIXED_MENU = {
         "side": None,
         "price": 800,
         "day": None,
-        "time_category": ["breakfast", "snack"],
-        "time_detail": {"breakfast": ["09:00", "10:00"]},
+        "time_category": ["아침", "간식"],
+        "time_detail": {"아침": ["09:00", "10:00"], "간식": ["15:00", "16:00"]},
         "place": "ch", 
         "extra_menu": None,
         "extra_price": None,
@@ -73,8 +72,8 @@ FIXED_MENU = {
         "side": None,
         "price": 3800,
         "day": None,
-        "time_category": ["snack"],
-        "time_detail": None,
+        "time_category": ["간식"],
+        "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
@@ -86,265 +85,14 @@ FIXED_MENU = {
         "side": None,
         "price": 3800,
         "day": None,
-        "time_category": ["snack"],
-        "time_detail": None,
+        "time_category": ["간식"],
+        "time_detail": {"간식": ["15:00", "16:00"]},
         "place": "ch",
         "extra_menu": None,
         "extra_price": None,
         "non_pork": False,
         "storage_url": ''
-    },
-    {
-        "main": "음료(콜라,사이다)",
-        "side": None,
-        "price": 1700,
-        "day": None,
-        "time_category": ["breakfast", "lunch", "snack", "dinner"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "컵씨리얼&우유",
-        "side": None,
-        "price": 2000,
-        "day": None,
-        "time_category": ["breakfast", "lunch", "snack", "dinner"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "우유,딸기,초코우유",
-        "side": None,
-        "price": 900,
-        "day": None,
-        "time_category": ["breakfast", "lunch", "snack", "dinner"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
- ],
- 'ph': [
-    {
-        'main': '김가루주먹밥1EA', 
-        'side': None, 
-        'price': 1300, 
-        'day': None, 
-        'time_category': ['breakfast', 'lunch', 'self'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        'place': 'ph', 
-        'extra_menu': '08:30~소진시까지',
-        'extra_price': None,
-        'non_pork': False,
-        'storage_url': ''
-    },
-    {
-        "main": '김가루주먹밥2EA',
-        "side": None,
-        "price": 2500,
-        "day": None,
-        'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        "place": "ph",
-        "extra_menu": '08:30~소진시까지',
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "공깃밥",
-        "side": None,
-        "price": 800,
-        "day": None,
-        'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        "place": "ch", 
-        "extra_menu": '08:30~소진시까지',
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "셀프진라면매운/셀프안성탕면(김치/무맛김치/단무지/깍두기)",
-        "side": None,
-        "price": 2000,
-        "day": None,
-        "time_category": ["self"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "셀프신라면(김치/무맛김치/단무지/깍두기)",
-        "side": None,
-        "price": 2200,
-        "day": None,
-        "time_category": ["self"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "셀프너구리/셀프짜파게티(김치/무맛김치/단무지/깍두기)",
-        "side": None,
-        "price": 2300,
-        "day": None,
-        "time_category": ["self"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": {'대파쏭쏭': 500, '왕계란': 500},
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "토핑대파쏭쏭",
-        "side": None,
-        "price": 500,
-        "day": None,
-        "time_category": ["self"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "토핑왕계란",
-        "side": None,
-        "price": 500,
-        "day": None,
-        "time_category": ["self"],
-        "time_detail": None,
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "음료(콜라,사이다)",
-        "side": None,
-        "price": 1700,
-        "day": None,
-        'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "씨리얼&우유",
-        "side": None,
-        "price": 2000,
-        "day": None,
-        'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "우유",
-        "side": None,
-        "price": 900,
-        "day": None,
-        'time_category': ['breakfast', 'lunch', 'self', 'togo'], 
-        'time_detail': {'breakfast': ['08:30', '16:00']}, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "오늘의컵밥",
-        "side": None,
-        "price": '2800~5000',
-        "day": None,
-        'time_category': ['togo'], 
-        'time_detail': None, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "오늘의김밥",
-        "side": None,
-        "price": '3000~4000',
-        "day": None,
-        'time_category': ['togo'], 
-        'time_detail': None, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
-    {
-        "main": "소고기유부초밥",
-        "side": None,
-        "price": 2700,
-        "day": None,
-        'time_category': ['togo'], 
-        'time_detail': None, 
-        "place": "ch",
-        "extra_menu": None,
-        "extra_price": None,
-        "non_pork": False,
-        "storage_url": ''
-    },
- ],
- 'jg': [
-  {
-    "main": "테이크아웃오늘의샐러드",
-    "side": None,
-    "price": 6500,
-    "day": None,
-    'time_category': ['breakfast', 'lunch'], 
-    'time_detail': None, 
-    "place": "jg",
-    "extra_menu": None,
-    "extra_price": None,
-    "non_pork": False,
-    "storage_url": ''
-  },
-  {
-    'main': '셀프라면(신라면/진라면매운맛/진라면순한맛/너구리/짜파게티/안성탕면/오징어짬뽕)',
-    'side': None,
-    'price': None,
-    'day': None,
-    'time_category': ['breakfast', 'lunch', 'dinner'],
-    'time_detail': None,
-    'place': 'jg',
-    'extra_menu': '토핑2종',
-    'extra_price': None,
-    'non_pork': False,
-    'storage_url': ''
-  }
+    }
  ]
 }
 
@@ -360,17 +108,26 @@ FIXED_MENU = {
 
 
 def root_redirect(request):
-    """Redirect to /gl or /se based on localStorage.location"""
+    """Redirect to /gl or /se based on localStorage"""
     html = """<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
 <body>
 <script>
-  const loc = localStorage.getItem('location');
-  if (loc === 'gl') {
-    window.location.replace('/gl');
+  const lang = localStorage.getItem('base')
+  const loc = localStorage.getItem('bases');
+  if (lang === 'en') {
+    if (loc === 'gl') {
+        window.location.replace('en/gl/');
+    } else {
+        window.location.replace('en/se/');
+    }
   } else {
-    window.location.replace('/se');
+    if (loc === 'gl') {
+        window.location.replace('ko/gl/');
+    } else {
+        window.location.replace('ko/se/');
+    }
   }
 </script>
 </body>
@@ -378,20 +135,24 @@ def root_redirect(request):
     return HttpResponse(html)
 
 
+def home_menu(request, base, bases):
+    restaurants_items = [r for r in RESTAURANTS if r['campus'] == bases]
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': bases, 'lang': base, 'base': base, 'bases': bases})
 def home(request):
     """Home page — SE location"""
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
-    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se'})
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se', 'base': 'ko', 'bases': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'gl']
-    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl'})
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl', 'base': 'ko', 'bases': 'gl'})
 
 
-def menu_list(request, path):
+def menu_list(request, path, meal=None, base=None, bases=None):
     """Display menu items for the restaurant selected on the home page."""
+    # Extract base and bases from URL if they're part of the path
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     r = next(r for r in RESTAURANTS if r['path'] == path)
     title = r['title']
@@ -421,7 +182,7 @@ def menu_list(request, path):
     #     db_qs = db_qs.filter(time=selected_meal)
     # if selected_day:
     #     db_qs = db_qs.filter(day=selected_day)
-    filtered_dishes = list(db_qs) + filtered_dishes 
+    filtered_dishes = filtered_dishes + list(db_qs)
 
 
     tabs = list(WEEKDAYS)
@@ -433,15 +194,18 @@ def menu_list(request, path):
         'selected_day': selected_day,
         'location': location,
         'menu': filtered_dishes,
+        'base': base or 'ko',
+        'bases': bases or location,
+        'path': path
     })
 
 
-def menu_detail(request, path, meal):
+def menu_detail(request, path, meal, base=None, bases=None):
     """Display details for a specific menu item"""
     # menu_item = get_object_or_404(MenuItem, url=path)
     menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location})
+    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location, 'base': base or 'ko', 'bases': bases or location, 'meal': meal})
 
 
 # @staff_member_required
