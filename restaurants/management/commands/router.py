@@ -5,19 +5,27 @@
     import ast
     import re
     import json
+    import mimetypes
     from restaurants.models import MenuItem
 
     class Command(BaseCommand):
         help = 'Process menu images using AI APIs'
 
+        def add_arguments(self, parser):
+            parser.add_argument('img_path', type=str, help='Path to the menu image file')
+
         def handle(self, *args, **options):
             
-            img_path = os.path.join(os.path.dirname(__file__), 'downloads', 'c.png')
+            img_path = options['img_path']
             client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
             
             try:
                 # Read image and convert to base64
+                mime_type, _ = mimetypes.guess_type(img_path)
+                if not mime_type:
+                    mime_type = "image/png"
+
                 with open(img_path, 'rb') as f:
                     base64_image = base64.b64encode(f.read()).decode('utf-8')
                 
@@ -25,7 +33,7 @@
                 contents = [
                     {
                         "inline_data": {
-                            "mime_type": "image/png",
+                            "mime_type": mime_type,
                             "data": base64_image,
                         },
                     },
