@@ -137,21 +137,22 @@ def root_redirect(request):
 
 def home_menu(request, base, bases):
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == bases]
-    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': bases, 'lang': base})
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': bases, 'lang': base, 'base': base, 'bases': bases})
 def home(request):
     """Home page — SE location"""
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'se']
-    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se'})
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'se', 'base': 'ko', 'bases': 'se'})
 
 
 def home_gl(request):
     """Home page — GL location"""
     restaurants_items = [r for r in RESTAURANTS if r['campus'] == 'gl']
-    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl'})
+    return render(request, 'pages/home.html', {'items': restaurants_items, 'location': 'gl', 'base': 'ko', 'bases': 'gl'})
 
 
-def menu_list(request, base, bases, path):
+def menu_list(request, path, meal=None, base=None, bases=None):
     """Display menu items for the restaurant selected on the home page."""
+    # Extract base and bases from URL if they're part of the path
     location = 'gl' if request.path.startswith('/gl/') else 'se'
     r = next(r for r in RESTAURANTS if r['path'] == path)
     title = r['title']
@@ -193,15 +194,17 @@ def menu_list(request, base, bases, path):
         'selected_day': selected_day,
         'location': location,
         'menu': filtered_dishes,
+        'base': base or 'ko',
+        'bases': bases or location,
     })
 
 
-def menu_detail(request, path, meal):
+def menu_detail(request, path, meal, base=None, bases=None):
     """Display details for a specific menu item"""
     # menu_item = get_object_or_404(MenuItem, url=path)
     menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location})
+    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location, 'base': base or 'ko', 'bases': bases or location})
 
 
 # @staff_member_required
