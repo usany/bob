@@ -441,19 +441,23 @@ class Command(BaseCommand):
             # Normalise to list whether Gemini returns a single dict or a list
             collection = parsed if isinstance(parsed, list) else [parsed]
             
-            for index, menu in enumerate(collection):
-                MenuItem.objects.create(
-                    main=menu.get('main', ''),
-                    side=menu.get('side', ''),
-                    price=menu.get('price', 0),
-                    time=menu.get('time', ''),
-                    day=menu.get('day', ''),
-                    place=menu.get('place', ''),
-                    extra_menu=menu.get('extra_menu', ''),
-                    extra_price=menu.get('extra_price', 0),
-                    non_pork=menu.get('non_pork', False),
-                    storage_url=menu.get('storage_url', ''),
-                )
-                self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
+            def _save_items(items):
+                for menu in items:
+                    MenuItem.objects.create(
+                        main=menu.get('main', ''),
+                        side=menu.get('side', ''),
+                        price=menu.get('price', 0),
+                        time=menu.get('time', ''),
+                        day=menu.get('day', ''),
+                        place=menu.get('place', ''),
+                        extra_menu=menu.get('extra_menu', ''),
+                        extra_price=menu.get('extra_price', 0),
+                        non_pork=menu.get('non_pork', False),
+                        storage_url=menu.get('storage_url', ''),
+                    )
+                    self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
+
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                executor.submit(_save_items, collection).result()
         except Exception as err:
             self.stderr.write(self.style.ERROR(f'Error: {err}'))
