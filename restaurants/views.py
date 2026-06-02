@@ -114,20 +114,19 @@ def root_redirect(request):
 <head><meta charset="utf-8"></head>
 <body>
 <script>
-  const base = localStorage.getItem('base');
+  const lang = localStorage.getItem('base')
   const loc = localStorage.getItem('bases');
-  
-  if (base === 'ko') {
+  if (lang === 'en') {
     if (loc === 'gl') {
-        window.location.replace('/ko/gl');
+        window.location.replace('en/gl/');
     } else {
-        window.location.replace('/ko/se');
+        window.location.replace('en/se/');
     }
   } else {
     if (loc === 'gl') {
-        window.location.replace('/en/gl');
+        window.location.replace('ko/gl/');
     } else {
-        window.location.replace('/en/se');
+        window.location.replace('ko/se/');
     }
   }
 </script>
