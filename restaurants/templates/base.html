@@ -101,11 +101,24 @@
             }
         }
 
+        function updateCampusIcon(campus) {
+            const campusIcon = document.getElementById('campus-icon');
+            if (campus === 'se') {
+                campusIcon.textContent = '🏫 SE';
+            } else {
+                campusIcon.textContent = '🏫 GL';
+            }
+        }
+
         // Toggle base/campus between 'se' and 'gl'
         function toggleBases() {
             const currentBase = getStorage('bases') || 'se';
             const newBase = currentBase === 'se' ? 'gl' : 'se';
             setStorage('bases', newBase);
+            updateCampusIcon(newBase);
+            
+            // Redirect to the new campus
+            window.location.href = `/${newBase}/`;
         }
 
         // Simple script to set active state based on URL
@@ -137,11 +150,11 @@
             updateLanguageIcon(currentLang);
 
             // Initialize campus icon based on current path
-            const currentBase = currentPath.startsWith('/gl') ? 'gl' : 'se';
+            const currentBase = getStorage('base') || 'se';
             const campusIcon = document.getElementById('campus-icon');
             campusIcon.textContent = currentBase === 'se' ? '🏫 SE' : '🏫 GL';
         });
-    </script>
+    </script>,
 </body>
 
 </html>
