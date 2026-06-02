@@ -420,7 +420,7 @@ class Command(BaseCommand):
                         "data": base64_image,
                     },
                 },
-                {"text": "{'main': '낙지콩나물덮밥', 'side': '유부장국, 유린기 닭:브라질산, 중화품배추찜, 마카로니크래미샐러드, 고들빼기무침, 마시는 요구르트', 'price': 8000, 'time': 'lunch', 'day': 'tue', 'place': 'cg', 'extra_menu': '', 'extra_price': 0, 'non_pork': False, 'storage_url': '/낙지콩나물덮밥.png'}처럼 각 메뉴를 정리해주세요. place는 청운관 학생식당: ch, 청운관 교직원식당: cg, 푸른솔 학생식당: ph, 푸른솔 교직원식당: pg, 학생회관 학생식당: hh, 학생회관 교직원식당: hg입니다. py list로 만들고 # 메모 없이 작성해주세요."},
+                {"text": "{'main': '낙지콩나물덮밥', 'side': '유부장국, 유린기 닭:브라질산, 중화품배추찜, 마카로니크래미샐러드, 고들빼기무침, 마시는 요구르트', 'price': 8000, 'time': 'lunch', 'day': 'tue', 'place': 'cg', 'extra_menu': '', 'extra_price': 0, 'non_pork': False, 'storage_url': '/낙지콩나물덮밥.png'}처럼 각 메뉴를 정리해주세요. place는 청운관 학생식당: ch, 청운관 교직원식당: cg, 푸른솔 학생식당: ph, 푸른솔 교직원식당: pg, 학생회관 학생식당: hh, 학생회관 교직원식당: hg입니다. trailing comma가 없도록 해주세요. py list로 만들고 # 메모 없이 작성해주세요."},
             ]
             
             response = client.models.generate_content(model="gemini-3.5-flash", contents=contents)
