@@ -103,13 +103,9 @@
 
         // Toggle base/campus between 'se' and 'gl'
         function toggleBases() {
-            const currentPath = window.location.pathname;
-            const currentBase = currentPath.startsWith('/gl') ? 'gl' : 'se';
+            const currentBase = getStorage('bases') || 'se';
             const newBase = currentBase === 'se' ? 'gl' : 'se';
             setStorage('bases', newBase);
-            
-            // Redirect to the new campus
-            window.location.href = `/${newBase}/`;
         }
 
         // Simple script to set active state based on URL
