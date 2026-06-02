@@ -440,7 +440,7 @@ class Command(BaseCommand):
             parsed = json.loads(raw)
             # Normalise to list whether Gemini returns a single dict or a list
             collection = parsed if isinstance(parsed, list) else [parsed]
-            
+    
             def _save_items(items):
                 for menu in items:
                     MenuItem.objects.create(
@@ -453,10 +453,10 @@ class Command(BaseCommand):
                         extra_menu=menu.get('extra_menu', ''),
                         extra_price=menu.get('extra_price', 0),
                         non_pork=menu.get('non_pork', False),
-                        storage_url=menu.get('storage_url', ''),
+                        storage_url='/'+menu.get('main', '')+'.png',
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
-
+                    self.generate_image(menu.get('main', ''))                    
             with ThreadPoolExecutor(max_workers=1) as executor:
                 executor.submit(_save_items, collection).result()
         except Exception as err:
