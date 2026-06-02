@@ -453,7 +453,7 @@ class Command(BaseCommand):
                         extra_menu=menu.get('extra_menu', ''),
                         extra_price=menu.get('extra_price', 0),
                         non_pork=menu.get('non_pork', False),
-                        storage_url='/'+menu.get('main', '')+'.png',
+                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/IB7TC1jkYnlu_awkWLKTY6GDr0_dXG5nEh1CAupBQjjIGAcCIbmn_4Gxma2GeE3U/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu.get('main', '')+'.png',
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
                     self.generate_image(menu.get('main', ''))                    
