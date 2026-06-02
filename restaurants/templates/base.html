@@ -116,9 +116,6 @@
             const newBase = currentBase === 'se' ? 'gl' : 'se';
             setStorage('bases', newBase);
             updateCampusIcon(newBase);
-            
-            // Redirect to the new campus
-            window.location.href = `/${newBase}/`;
         }
 
         // Simple script to set active state based on URL
