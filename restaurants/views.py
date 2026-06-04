@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import MenuItem
 
@@ -202,10 +202,19 @@ def menu_list(request, path, meal=None, base=None, bases=None):
 
 def menu_detail(request, path, meal, base=None, bases=None):
     """Display details for a specific menu item"""
-    # menu_item = get_object_or_404(MenuItem, url=path)
-    menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
+    db_item = MenuItem.objects.filter(place=path, main=meal).first()
+    restaurant = next((r for r in RESTAURANTS if r['path'] == path), None)
+    return render(request, 'pages/menu_detail.html', {
+        'menu_item': db_item,
+        'image_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+db_item.main+'.png',
+        'restaurant': restaurant,
+        'location': location,
+        'base': base or 'ko',
+        'bases': bases or location,
+        'path': path,
+        'meal': meal,
+    })
 
 
 # @staff_member_required

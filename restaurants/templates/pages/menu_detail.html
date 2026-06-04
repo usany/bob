@@ -1,9 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ menu_item.title }}{% endblock %}
+{% block title %}{{ menu_item.main }}{% endblock %}
 
 {% block content %}
-<div style="margin-top: 20px;">
-    <a href="/{{ base }}/{{ bases }}/{{ path }}" style="text-decoration: none; color: #3b82f6; font-weight: 500;">&larr; Back</a>
+<div class="max-w-2xl mx-auto py-10">
+    <a href="/{{ base }}/{{ bases }}/{{ path }}/" class="text-blue-600 font-medium text-sm hover:underline">&larr; Back</a>
+
+    <div class="mt-6 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow overflow-hidden">
+        {% if image_url %}
+        <img src="{{ image_url }}" alt="{{ menu_item.main }}" class="w-full max-h-80 object-cover">
+        {% else %}
+        <div class="w-full h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm">
+            No image available
+        </div>
+        {% endif %}
+
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-2">{{ menu_item.main }}</h1>
+            {% if restaurant %}
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ restaurant.title }}</p>
+            {% endif %}
+
+            {% if menu_item.side %}
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ menu_item.side }}</p>
+            {% endif %}
+
+            {% if menu_item.extra_menu %}
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">+ {{ menu_item.extra_menu }}</p>
+            {% endif %}
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xl font-semibold">₩{{ menu_item.price }}</span>
+                    {% if menu_item.extra_price %}
+                    <span class="text-sm text-gray-400 ml-2">+₩{{ menu_item.extra_price }}</span>
+                    {% endif %}
+                </div>
+                {% if menu_item.non_pork %}
+                <span class="text-green-600 dark:text-green-400 text-xs font-medium">🌿 돼지 없음</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

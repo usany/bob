@@ -72,6 +72,8 @@ main side price time place extra pork url
 id,
 main,
 side,
+enmain,
+enside,
 price,
 day,
 meal,
