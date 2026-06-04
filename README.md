@@ -68,3 +68,14 @@ se1 se2 se3 sehufs1 sehufs2
 
 main side price time place extra pork url
 # Gemini 3.5 Flash Gemini 3.1 Flash-Lite Gemini 3 Flash 프리뷰 Gemini 2.5 Pro Gemini 2.5 Flash Gemini 2.5 Flash-Lite Gemini 2.5 Flash-Lite 프리뷰
+
+id,
+main,
+side,
+price,
+day,
+date,
+meal,
+place,
+extra,
+stamp,
