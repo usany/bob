@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "basecoat-css": "^0.3.11",
-    "daisyui": "^5.5.19"
+    "daisyui": "^5.5.19",
+    "lucide": "^1.17.0"
   }
 }

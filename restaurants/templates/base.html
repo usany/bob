@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="{% static 'nav.css' %}">
+    <script src="https://unpkg.com/lucide@latest"></script>
     {% block extra_css %}{% endblock %}
     <script src="{% static 'theme.js' %}"></script>
 </head>
@@ -152,6 +153,11 @@
             // Initialize campus icon based on localStorage
             const currentBase = getStorage('bases') || 'se';
             updateCampusIcon(currentBase);
+
+            // Initialize Lucide icons
+            lucide.createIcons({
+                icons: { Building }
+            });
         });
     </script>
 </body>
