@@ -93,19 +93,21 @@ class Command(BaseCommand):
                     date = dates[day_index]
                     enmain = self.translate_text([main])
                     enside = self.translate_text([side])
-                    MenuItem.objects.create(
+                    MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
-                        main=main,
-                        side=side,
-                        enmain=enmain,
-                        enside=enside,
-                        day=day,
-                        meal='lunch',
-                        place=place,
-                        price='6500',
-                        extra='',
-                        date=date,
-                        stamp=False,
+                        defaults=dict(
+                            main=main,
+                            side=side,
+                            enmain=enmain,
+                            enside=enside,
+                            day=day,
+                            meal='lunch',
+                            place=place,
+                            price='6500',
+                            extra='',
+                            date=date,
+                            stamp=False,
+                        ),
                     )
                     
                     self.generate_image(main, enmain)
@@ -116,19 +118,21 @@ class Command(BaseCommand):
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
                     enmain = self.translate_text([main])
                     enside = self.translate_text([side])
-                    MenuItem.objects.create(
+                    MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
-                        main=main,
-                        side=side,
-                        enmain=enmain,
-                        enside=enside,
-                        day=day,
-                        meal='lunch',
-                        place=place,
-                        price='5500',
-                        extra='',
-                        date=date,
-                        stamp=False,
+                        defaults=dict(
+                            main=main,
+                            side=side,
+                            enmain=enmain,
+                            enside=enside,
+                            day=day,
+                            meal='lunch',
+                            place=place,
+                            price='5500',
+                            extra='',
+                            date=date,
+                            stamp=False,
+                        ),
                     )
                     self.generate_image(main, enmain)
 
@@ -142,19 +146,21 @@ class Command(BaseCommand):
                     date = dates[day_index]
                     enmain = self.translate_text([main])
                     enside = self.translate_text([side])
-                    MenuItem.objects.create(
+                    MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
-                        main=main,
-                        side=side,
-                        enmain=enmain,
-                        enside=enside,
-                        day=day,
-                        meal=meal,
-                        place=place,
-                        price='5500',
-                        extra='',
-                        date=date,
-                        stamp=False,
+                        defaults=dict(
+                            main=main,
+                            side=side,
+                            enmain=enmain,
+                            enside=enside,
+                            day=day,
+                            meal=meal,
+                            place=place,
+                            price='5500',
+                            extra='',
+                            date=date,
+                            stamp=False,
+                        ),
                     )
                     self.generate_image(main, enmain)
 
