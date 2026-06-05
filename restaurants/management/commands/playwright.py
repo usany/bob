@@ -80,10 +80,40 @@ class Command(BaseCommand):
         # Create MenuItem objects outside of Playwright context
         def create_menu_items():
             place = 'jg'
+            # First pass: collect all Korean texts to translate in one batch
+            all_texts = []
             for index, menu in enumerate(menu_texts):
-                if (menu == '미운영'):
+                if menu == '미운영':
                     continue
-                if (menu.startswith('A코너 : ')):
+                if menu.startswith('A코너 : '):
+                    first_part = menu.split(' : ', 1)[1]
+                    first_menu = first_part.split(',', 1)
+                    main = first_menu[0].strip() if first_menu else ''
+                    side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
+                    all_texts.append(main)
+                    all_texts.append(side)
+                    second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
+                    second_menu = second_part.split(',', 1)
+                    main2 = second_menu[0].strip() if second_menu else ''
+                    side2 = second_menu[1].strip() if len(second_menu) > 1 else ''
+                    all_texts.append(main2)
+                    all_texts.append(side2)
+                else:
+                    menu_parts = menu.split(',', 1)
+                    main = menu_parts[0].strip() if menu_parts else ''
+                    side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                    all_texts.append(main)
+                    all_texts.append(side)
+
+            # Batch translate all texts at once
+            translated = self.translate_text(all_texts) if all_texts else []
+            trans_map = {all_texts[i]: translated[i] for i in range(len(all_texts))} if len(translated) == len(all_texts) else {}
+
+            # Second pass: create/update menu items using cached translations
+            for index, menu in enumerate(menu_texts):
+                if menu == '미운영':
+                    continue
+                if menu.startswith('A코너 : '):
                     first_part = menu.split(' : ', 1)[1]
                     first_menu = first_part.split(',', 1)
                     main = first_menu[0].strip() if first_menu else ''
@@ -91,8 +121,8 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    enmain = trans_map.get(main, main)
+                    enside = trans_map.get(side, side)
                     MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         defaults=dict(
@@ -116,8 +146,8 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    enmain = trans_map.get(main, main)
+                    enside = trans_map.get(side, side)
                     MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         defaults=dict(
@@ -144,8 +174,8 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    enmain = trans_map.get(main, main)
+                    enside = trans_map.get(side, side)
                     MenuItem.objects.update_or_create(
                         id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
                         defaults=dict(
