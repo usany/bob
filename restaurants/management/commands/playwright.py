@@ -23,7 +23,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--source',
             type=str,
-            choices=['khu', 'hufs', 'dorm'],
+            choices=['hufs', 'dorm'],
             help='Source to scrape: khu, hufs, or dorm'
         )
         parser.add_argument(
@@ -52,13 +52,7 @@ class Command(BaseCommand):
                 self.scrap_dorm(p)
             elif source == 'hufs':
                 self.scrap_hufs(p, is_student)
-            elif source == 'khu':
-                if not campus:
-                    self.stdout.write(self.style.ERROR('Please specify --campus (seoul or global) for KHU'))
-                    return
-                is_seoul = campus == 'seoul'
-                self.scrap(p, is_seoul)
-
+                
     def scrap_dorm(self, playwright):
         """Scrape dorm menu"""
         browser = playwright.chromium.launch(headless=True)
