@@ -5,6 +5,8 @@ class MenuItem(models.Model):
     id = models.CharField(max_length=200, primary_key=True)
     main = models.CharField(max_length=200)
     side = models.CharField(max_length=200)
+    enmain = models.CharField(max_length=200)
+    enside = models.CharField(max_length=200)
     place = models.CharField(max_length=200)
     extra = models.CharField(max_length=200, null=True, blank=True)
     date = models.CharField(max_length=200, null=True, blank=True)
