@@ -345,29 +345,33 @@ class Command(BaseCommand):
         is_single = isinstance(texts, str)
         text_list = [texts] if is_single else texts
         
-        try:
-            client = genai.Client(api_key=gemini_api_key)
-            
-            # Create prompt for batch translation
-            text_items = '\n'.join([f'{i+1}. {text}' for i, text in enumerate(text_list)])
-            prompt = f"""Translate the following Korean texts to English. Return ONLY the translations in the same order, one per line, with no numbers or extra text:
+        client = genai.Client(api_key=gemini_api_key)
+
+        # Create prompt for batch translation
+        text_items = '\n'.join([f'{i+1}. {text}' for i, text in enumerate(text_list)])
+        prompt = f"""Translate the following Korean texts to English. Return ONLY the translations in the same order, one per line, with no numbers or extra text:
 
 {text_items}"""
-            
-            response = client.models.generate_content(
-                model="gemini-3.5-flash",
-                contents=prompt
-            )
-            translations = response.text.strip().split('\n')
-            
-            # Return in the same format as input
-            if is_single:
-                return translations[0] if translations else texts
-            else:
-                return translations if len(translations) == len(text_list) else text_list
-                
-        except Exception as e:
-            self.stderr.write(self.style.ERROR(f"Error translating text: {str(e)}"))
+
+        for model in ["gemini-3.5-flash", "gemini-2.5-flash", None]:
+            if model is None:
+                self.stderr.write(self.style.ERROR("All Gemini models failed for translation."))
+                return texts
+            try:
+                response = client.models.generate_content(
+                    model=model,
+                    contents=prompt
+                )
+                translations = response.text.strip().split('\n')
+
+                # Return in the same format as input
+                if is_single:
+                    return translations[0] if translations else texts
+                else:
+                    return translations if len(translations) == len(text_list) else text_list
+
+            except Exception as e:
+                self.stderr.write(self.style.ERROR(f"Model {model} failed: {str(e)}. Trying next..."))
             return texts
 
     def generate_image(self, main, enmain):
