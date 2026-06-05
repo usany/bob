@@ -201,13 +201,8 @@ class Command(BaseCommand):
                 place = 'hi' if is_student else 'hg'
                 meal = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
-                existing = MenuItem.objects.filter(
-                    main=main,
-                    side=side,
-                    day=day,
-                    meal=meal,
-                    place=place,
-                ).first()
+                item_id = main+'-'+place+'-'+day+'-'+meal
+                existing = MenuItem.objects.filter(id=item_id).first()
                 if existing:
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
                     existing.save()
@@ -216,7 +211,7 @@ class Command(BaseCommand):
                     enmain = self.translate_text([main])
                     enside = self.translate_text([side])
                     MenuItem.objects.create(
-                        id=main+'-'+place+'-'+day+'-'+meal,
+                        id=item_id,
                         main=main,
                         side=side,
                         enmain=enmain,
@@ -343,7 +338,6 @@ class Command(BaseCommand):
         Returns:
             A single translated string or list of translated strings (matching input type)
         """
-        load_dotenv()
         gemini_api_key = os.getenv('GEMINI_API_KEY')
         
         if not gemini_api_key:
