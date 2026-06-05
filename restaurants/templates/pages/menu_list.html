@@ -58,17 +58,17 @@
                     <img src="{{ dish.storage_url }}" alt="{{ dish.main }}" class="w-12 h-12 object-cover rounded-lg"/>
                     <div class="flex-1">
                         <span class="text-gray-400 dark:text-gray-500">{{ dish.main }}</span>
-                        {% if dish.extra_menu %}
-                        <span class="text-gray-400 dark:text-gray-500"> + {{ dish.extra_menu }}</span>
+                        {% if dish.extra %}
+                        <span class="text-gray-400 dark:text-gray-500"> + {{ dish.extra }}</span>
                         {% endif %}
-                        {% if dish.non_pork %}
+                        {% if dish.stamp %}
                         <span class="ml-2 text-green-600 dark:text-green-400 text-xs font-medium">🌿 돼지 없음</span>
                         {% endif %}
                     </div>
                     <div class="text-right shrink-0">
                         <span class="font-semibold">₩{{ dish.price }}</span>
-                        {% if dish.extra_price %}
-                        <span class="block text-xs text-gray-400">+₩{{ dish.extra_price }}</span>
+                        {% if dish.extra %}
+                        <span class="block text-xs text-gray-400">+₩{{ dish.extra }}</span>
                         {% endif %}
                     </div>
                 </a>
