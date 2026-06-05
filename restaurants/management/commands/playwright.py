@@ -108,7 +108,7 @@ class Command(BaseCommand):
                         stamp=False,
                     )
                     
-                    self.generate_image(enmain)
+                    self.generate_image(main, enmain)
 
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
@@ -130,7 +130,7 @@ class Command(BaseCommand):
                         date=date,
                         stamp=False,
                     )
-                    self.generate_image(enmain)
+                    self.generate_image(main, enmain)
 
                 else:
                     menu_parts = menu.split(',', 1)
@@ -156,7 +156,7 @@ class Command(BaseCommand):
                         date=date,
                         stamp=False,
                     )
-                    self.generate_image(enmain)
+                    self.generate_image(main, enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -229,7 +229,7 @@ class Command(BaseCommand):
                         date=None,
                         stamp=False,
                     )
-                self.generate_image(enmain)
+                self.generate_image(main, enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -379,7 +379,7 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error translating text: {str(e)}"))
             return texts
 
-    def generate_image(self, enmain):
+    def generate_image(self, main, enmain):
         """Generate an image using Cloudflare AI API"""
         load_dotenv()
         account_id = os.getenv('CFACCOUNTID')
@@ -508,7 +508,7 @@ class Command(BaseCommand):
                         stamp=menu.get('stamp', ''),
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
-                    self.generate_image(menu.get('enmain', menu.get('main', '')))                    
+                    self.generate_image(menu.get('main', ''), menu.get('enmain', menu.get('main', '')))                    
             with ThreadPoolExecutor(max_workers=1) as executor:
                 executor.submit(_save_items, collection).result()
         except Exception as err:
