@@ -180,8 +180,9 @@ class Command(BaseCommand):
             # page.wait_for_selector('td.no-menu, td.menu')
         page.wait_for_selector('td.no-menu, td.menu')
         date_elements = page.locator('[id^="date_"]').all()
-        dates = [elem.get_attribute('id').replace('date_', '').replace('-', '') for elem in date_elements]
         days = [elem.inner_text().split('(')[1].split(')')[0] for elem in date_elements if '(' in elem.inner_text()]
+        dates = [elem.get_attribute('id').replace('date_', '').replace('-', '') for elem in date_elements]
+        day_date_map = {day: date for day, date in zip(days, dates)}
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
