@@ -524,43 +524,54 @@ class Command(BaseCommand):
                 {"text": "{'id': '낙지콩나물덮밥-ch-20260101-thu-breakfast', 'main': '낙지콩나물덮밥', 'side': '유부장국, 유린기 닭:브라질산, 중화품배추찜, 마카로니크래미샐러드, 고들빼기무침, 마시는 요구르트', 'enmain': 'Rice with octopus bean sprouts', 'ensub': 'Fried Tofu Soup, Yuringi Chicken: Brazilian, Chinese Cabbage Steamed, Macaroni Crami Salad, Seasoned Godeul, Drinking Yogurt', 'price': 8000, 'time': 'lunch', 'day': 'tue', 'place': 'cg', 'extra': '일식돈가스 추가시 8000', 'extra_price': 0, 'non_pork': False, 'storage_url': '/낙지콩나물덮밥.png'}처럼 각 메뉴를 정리해주세요. place는 청운관 학생식당: ch, 청운관 교직원식당: cg, 푸른솔 학생식당: ph, 푸른솔 교직원식당: pg, 학생회관 학생식당: hh, 학생회관 교직원식당: hg입니다. trailing comma가 없도록 해주세요. id는 main, place, date, day, meal을 합쳐서 만들어주세요. main에는 띄어쓰기가 없도록 해주세요. 추가 메뉴가 없는 경우 extra는 ''입니다. stamp는 금지 표시가 있으면 True, 없으면 False입니다. py list로 만들고 # 메모 없이 작성해주세요."},
             ]
             
-            response = client.models.generate_content(model="gemini-3.5-flash", contents=contents)
-            self.stdout.write(f'Gemini response: {response.text}')
-            
-            # Strip markdown code fences if present, then parse into a list
-            raw = response.text.strip()
-            if raw.startswith('```'):
-                raw = raw.split('\n', 1)[-1]          # drop opening fence line
-                raw = raw.rsplit('```', 1)[0].strip()  # drop closing fence
+            for model in ["gemini-3.5-flash", "gemini-2.5-flash", None]:
+                if model is None:
+                    self.stderr.write(self.style.ERROR("All Gemini models failed for get_menu."))
+                    break
+                try:
+                    response = client.models.generate_content(model=model, contents=contents)
+                except Exception as model_err:
+                    self.stderr.write(self.style.ERROR(f"Model {model} failed: {str(model_err)}. Trying next..."))
+                    continue
 
-            # Convert Python literals to JSON-compatible format
-            raw = raw.replace("True", "true").replace("False", "false").replace("None", "null")
-            # Replace single quotes with double quotes (handle escaped single quotes first)
-            raw = re.sub(r"(?<!\\)'", '"', raw)
+                self.stdout.write(f'Gemini response: {response.text}')
 
-            parsed = json.loads(raw)
-            # Normalise to list whether Gemini returns a single dict or a list
-            collection = parsed if isinstance(parsed, list) else [parsed]
-    
-            def _save_items(items):
-                for menu in items:
-                    MenuItem.objects.create(
-                        id=menu.get('id', ''),
-                        main=menu.get('main', ''),
-                        side=menu.get('side', ''),
-                        enmain=menu.get('enmain', ''),
-                        enside=menu.get('enside', ''),
-                        price=menu.get('price', ''),
-                        meal=menu.get('time', ''),
-                        day=menu.get('day', ''),
-                        place=menu.get('place', ''),
-                        extra=menu.get('extra', ''),
-                        date=menu.get('date', ''),
-                        stamp=menu.get('stamp', ''),
-                    )
-                    self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
-                    self.generate_image(menu.get('main', ''), menu.get('enmain', menu.get('main', '')))                    
-            with ThreadPoolExecutor(max_workers=1) as executor:
-                executor.submit(_save_items, collection).result()
+                # Strip markdown code fences if present, then parse into a list
+                raw = response.text.strip()
+                if raw.startswith('```'):
+                    raw = raw.split('\n', 1)[-1]          # drop opening fence line
+                    raw = raw.rsplit('```', 1)[0].strip()  # drop closing fence
+
+                # Convert Python literals to JSON-compatible format
+                raw = raw.replace("True", "true").replace("False", "false").replace("None", "null")
+                # Replace single quotes with double quotes (handle escaped single quotes first)
+                raw = re.sub(r"(?<!\\)'", '"', raw)
+
+                parsed = json.loads(raw)
+                # Normalise to list whether Gemini returns a single dict or a list
+                collection = parsed if isinstance(parsed, list) else [parsed]
+
+                def _save_items(items):
+                    for menu in items:
+                        MenuItem.objects.create(
+                            id=menu.get('id', ''),
+                            main=menu.get('main', ''),
+                            side=menu.get('side', ''),
+                            enmain=menu.get('enmain', ''),
+                            enside=menu.get('enside', ''),
+                            price=menu.get('price', ''),
+                            meal=menu.get('time', ''),
+                            day=menu.get('day', ''),
+                            place=menu.get('place', ''),
+                            extra=menu.get('extra', ''),
+                            date=menu.get('date', ''),
+                            stamp=menu.get('stamp', ''),
+                        )
+                        self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
+                        self.generate_image(menu.get('main', ''), menu.get('enmain', menu.get('main', '')))
+                with ThreadPoolExecutor(max_workers=1) as executor:
+                    executor.submit(_save_items, collection).result()
+                break  # success — no need to try next model
+
         except Exception as err:
             self.stderr.write(self.style.ERROR(f'Error: {err}'))
