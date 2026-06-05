@@ -372,7 +372,6 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f"Model {model} failed: {str(e)}. Trying next..."))
-            return texts
 
     def generate_image(self, main, enmain):
         """Generate an image using Cloudflare AI API"""
