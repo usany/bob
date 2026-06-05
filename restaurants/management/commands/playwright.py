@@ -214,6 +214,7 @@ class Command(BaseCommand):
                 if existing:
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
                     existing.save()
+                    self.generate_image(main, existing.enmain)
                 else:
                     translations = self.translate_text([main, side])
                     enmain = translations[0] if isinstance(translations, list) else main
@@ -232,7 +233,7 @@ class Command(BaseCommand):
                         date=None,
                         stamp=False,
                     )
-                self.generate_image(main, enmain)
+                    self.generate_image(main, enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -408,14 +409,17 @@ class Command(BaseCommand):
             "seed": random.randint(0, 1000000),
         }
 
+        # Sanitize filename: remove characters invalid on Windows
+        safe_main = re.sub(r'[\\/*?:"<>|]', '+', main)
+
         try:
             image_response = requests.post(imageurl, headers=headers, json=image_payload)
 
             if image_response.status_code == 200:
-                with open(f"{main}.png", "wb") as f:
+                with open(f"{safe_main}.png", "wb") as f:
                     f.write(image_response.content)
-                self.stdout.write(self.style.SUCCESS(f"Image saved as {main}.png"))
-                self.upload_to_storage(f"{main}.png", f"{main}.png")
+                self.stdout.write(self.style.SUCCESS(f"Image saved as {safe_main}.png"))
+                self.upload_to_storage(f"{safe_main}.png", f"{main}.png")
             else:
                 self.stderr.write(self.style.ERROR(f"Image generation API error: {image_response.status_code} {image_response.text}"))
         except Exception as e:
