@@ -103,7 +103,7 @@ class Command(BaseCommand):
                         day=day,
                         meal='lunch',
                         place=place,
-                        price=6500,
+                        price='6500',
                         extra='',
                         date=date,
                         stamp=False,
@@ -126,7 +126,7 @@ class Command(BaseCommand):
                         day=day,
                         meal='lunch',
                         place=place,
-                        price=5500,
+                        price='5500',
                         extra='',
                         date=date,
                         stamp=False,
@@ -152,7 +152,7 @@ class Command(BaseCommand):
                         day=day,
                         meal=meal,
                         place=place,
-                        price=5500,
+                        price='5500',
                         extra='',
                         date=date,
                         stamp=False,
@@ -335,24 +335,48 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Done.'))
 
     
-    def translate_text(self, korean_text):
-        """Translate Korean text to English using Gemini"""
+    def translate_text(self, texts):
+        """Translate Korean text(s) to English using Gemini
+        
+        Args:
+            texts: A single string or list of strings to translate
+            
+        Returns:
+            A single translated string or list of translated strings (matching input type)
+        """
         load_dotenv()
         gemini_api_key = os.getenv('GEMINI_API_KEY')
         
         if not gemini_api_key:
             self.stderr.write(self.style.ERROR('Gemini API key not found in environment variables.'))
-            return korean_text
+            return texts
+        
+        # Handle single string input
+        is_single = isinstance(texts, str)
+        text_list = [texts] if is_single else texts
         
         try:
             genai.configure(api_key=gemini_api_key)
             model = genai.GenerativeModel('gemini-3.5-flash')
-            prompt = f"Translate this Korean text to English. Return only the English translation, no additional text: {korean_text}"
+            
+            # Create prompt for batch translation
+            text_items = '\n'.join([f'{i+1}. {text}' for i, text in enumerate(text_list)])
+            prompt = f"""Translate the following Korean texts to English. Return ONLY the translations in the same order, one per line, with no numbers or extra text:
+
+{text_items}"""
+            
             response = model.generate_content(prompt)
-            return response.text.strip()
+            translations = response.text.strip().split('\n')
+            
+            # Return in the same format as input
+            if is_single:
+                return translations[0] if translations else texts
+            else:
+                return translations if len(translations) == len(text_list) else text_list
+                
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error translating text: {str(e)}"))
-            return korean_text
+            return texts
 
     def generate_image(self, main):
         """Generate an image using Cloudflare AI API"""
