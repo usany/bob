@@ -202,16 +202,11 @@ class Command(BaseCommand):
                 meal = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
                 item_id = main+'-'+place+'-'+day+'-'+meal
-                existing = MenuItem.objects.filter(id=item_id).first()
-                if existing:
-                    existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
-                    existing.save()
-                    self.generate_image(main, existing.enmain)
-                else:
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
-                    MenuItem.objects.create(
-                        id=item_id,
+                enmain = self.translate_text([main])
+                enside = self.translate_text([side])
+                updated, created = MenuItem.objects.update_or_create(
+                    id=item_id,
+                    defaults=dict(
                         main=main,
                         side=side,
                         enmain=enmain,
@@ -223,8 +218,9 @@ class Command(BaseCommand):
                         extra='',
                         date=None,
                         stamp=False,
-                    )
-                    self.generate_image(main, enmain)
+                    ),
+                )
+                self.generate_image(main, enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
