@@ -92,12 +92,14 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[index]
+                    enmain = self.translate_text(main)
+                    enside = self.translate_text(side)
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
                         main=main,
                         side=side,
-                        enmain='',
-                        enside='',
+                        enmain=enmain,
+                        enside=enside,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
                         meal='lunch',
                         place=place,
@@ -113,12 +115,14 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
+                    enmain = self.translate_text(main)
+                    enside = self.translate_text(side)
                     MenuItem.objects.create(
                         id=str(uuid.uuid4()),
                         main=main,
                         side=side,
-                        enmain='',
-                        enside='',
+                        enmain=enmain,
+                        enside=enside,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
                         meal='lunch',
                         place=place,
@@ -134,12 +138,14 @@ class Command(BaseCommand):
                     main = menu_parts[0].strip() if menu_parts else ''
                     side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
                     meal = 'breakfast' if index % 3 == 0 else 'dinner'
+                    enmain = self.translate_text(main)
+                    enside = self.translate_text(side)
                     MenuItem.objects.create(
                         id=str(uuid.uuid4()),
                         main=main,
                         side=side,
-                        enmain='',
-                        enside='',
+                        enmain=enmain,
+                        enside=enside,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
                         meal=meal,
                         place=place,
@@ -201,12 +207,14 @@ class Command(BaseCommand):
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
                     existing.save()
                 else:
+                    enmain = self.translate_text(main)
+                    enside = self.translate_text(side)
                     MenuItem.objects.create(
                         id=str(uuid.uuid4()),
                         main=main,
                         side=side,
-                        enmain='',
-                        enside='',
+                        enmain=enmain,
+                        enside=enside,
                         day=day,
                         meal=meal,
                         place=place,
@@ -318,6 +326,26 @@ class Command(BaseCommand):
         
         browser.close()
         self.stdout.write(self.style.SUCCESS('Done.'))
+
+    
+    def translate_text(self, korean_text):
+        """Translate Korean text to English using Gemini"""
+        load_dotenv()
+        gemini_api_key = os.getenv('GEMINI_API_KEY')
+        
+        if not gemini_api_key:
+            self.stderr.write(self.style.ERROR('Gemini API key not found in environment variables.'))
+            return korean_text
+        
+        try:
+            genai.configure(api_key=gemini_api_key)
+            model = genai.GenerativeModel('gemini-3.5-flash')
+            prompt = f"Translate this Korean text to English. Return only the English translation, no additional text: {korean_text}"
+            response = model.generate_content(prompt)
+            return response.text.strip()
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f"Error translating text: {str(e)}"))
+            return korean_text
 
     def generate_image(self, main):
         """Generate an image using Cloudflare AI API"""
@@ -448,12 +476,14 @@ class Command(BaseCommand):
     
             def _save_items(items):
                 for menu in items:
+                    enmain = self.translate_text(menu.get('main', ''))
+                    enside = self.translate_text(menu.get('side', ''))
                     MenuItem.objects.create(
                         id=str(uuid.uuid4()),
                         main=menu.get('main', ''),
                         side=menu.get('side', ''),
-                        enmain='',
-                        enside='',
+                        enmain=enmain,
+                        enside=enside,
                         price=menu.get('price', 0),
                         meal=menu.get('time', ''),
                         day=menu.get('day', ''),
