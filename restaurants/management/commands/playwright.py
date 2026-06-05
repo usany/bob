@@ -114,9 +114,8 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    translations = self.translate_text([main, side])
-                    enmain = translations[0] if isinstance(translations, list) and len(translations) > 0 else main
-                    enside = translations[1] if isinstance(translations, list) and len(translations) > 1 else side
+                    enmain = self.translate_text([main])
+                    enside = self.translate_text([side])
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         main=main,
