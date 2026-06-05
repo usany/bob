@@ -71,7 +71,7 @@ class Command(BaseCommand):
         
         page.locator('a').filter(has_text='전체보기').first.click()
         page.wait_for_selector('td.te_left')
-        
+        dates = page.locator('[id^="vDate"]').all_inner_texts()
         menu_texts = page.locator('td.te_left').all_inner_texts()
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
@@ -90,7 +90,7 @@ class Command(BaseCommand):
                     main = first_menu[0].strip() if first_menu else ''
                     side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
                     MenuItem.objects.create(
-                        id=str(uuid.uuid4()),
+                        id=main+'-'+,
                         main=main,
                         side=side,
                         enmain='',
