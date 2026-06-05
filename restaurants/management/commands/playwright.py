@@ -355,8 +355,7 @@ class Command(BaseCommand):
         text_list = [texts] if is_single else texts
         
         try:
-            genai.client(api_key=gemini_api_key)
-            model = genai.GenerativeModel('gemini-3.5-flash')
+            client = genai.Client(api_key=gemini_api_key)
             
             # Create prompt for batch translation
             text_items = '\n'.join([f'{i+1}. {text}' for i, text in enumerate(text_list)])
@@ -364,7 +363,10 @@ class Command(BaseCommand):
 
 {text_items}"""
             
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
+            )
             translations = response.text.strip().split('\n')
             
             # Return in the same format as input
@@ -393,12 +395,13 @@ class Command(BaseCommand):
             return
 
         # Step 1: Translate Korean to English using Gemini
-        genai.Client(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-3.5-flash')
-
         try:
+            client = genai.Client(api_key=gemini_api_key)
             prompt = f"Translate this Korean food name to English. Return only the English translation, no additional text: {main}"
-            response = model.generate_content(prompt)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
+            )
             translated_text = response.text.strip()
             self.stdout.write(self.style.SUCCESS(f"Translated: {main} -> {translated_text}"))
         except Exception as e:
@@ -512,7 +515,7 @@ class Command(BaseCommand):
                         side=menu.get('side', ''),
                         enmain=menu.get('enmain', ''),
                         enside=menu.get('enside', ''),
-                        price=menu.get('price', 0),
+                        price=menu.get('price', ''),
                         meal=menu.get('time', ''),
                         day=menu.get('day', ''),
                         place=menu.get('place', ''),
