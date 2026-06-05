@@ -486,15 +486,15 @@ class Command(BaseCommand):
                         id=menu_id,
                         main=menu.get('main', ''),
                         side=menu.get('side', ''),
-                        enmain=enmain,
-                        enside=enside,
+                        enmain=menu.get('enmain', ''),
+                        enside=menu.get('enside', ''),
                         price=menu.get('price', 0),
                         meal=menu.get('time', ''),
                         day=menu.get('day', ''),
                         place=menu.get('place', ''),
-                        extra='',
-                        date=None,
-                        stamp=False,
+                        extra=menu.get('extra', ''),
+                        date=menu.get('date', ''),
+                        stamp=menu.get('stamp', ''),
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
                     self.generate_image(menu.get('main', ''))                    
