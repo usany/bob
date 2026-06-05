@@ -14,7 +14,7 @@ class MenuItem(models.Model):
     stamp = models.BooleanField(default=False)
     
     class Meta:
-        ordering = ['order']
+        ordering = ['place']
     
     def __str__(self):
-        return self.title
+        return self.main
