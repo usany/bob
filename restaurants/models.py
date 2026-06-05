@@ -2,21 +2,18 @@ from django.db import models
 
 
 class MenuItem(models.Model):
-    title = models.CharField(max_length=200)
-    order = models.IntegerField(default=0)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    id = models.CharField(max_length=200)
     main = models.CharField(max_length=200)
     side = models.CharField(max_length=200)
     time = models.CharField(max_length=200)
     place = models.CharField(max_length=200)
-    extra_menu = models.CharField(max_length=200, null=True, blank=True)
-    extra_price = models.IntegerField(default=0, null=True, blank=True)
+    extra = models.CharField(max_length=200, null=True, blank=True)
+    date = models.CharField(max_length=200, null=True, blank=True)
     day = models.CharField(max_length=200, null=True, blank=True)
-    price = models.IntegerField(default=0, null=True, blank=True)
-    non_pork = models.BooleanField(default=False)
-    storage_url = models.CharField(max_length=200, null=True, blank=True)
-
+    meal = models.CharField(max_length=200, null=True, blank=True)
+    price = models.CharField(default=0, null=True, blank=True)
+    stamp = models.BooleanField(default=False)
+    
     class Meta:
         ordering = ['order']
     
