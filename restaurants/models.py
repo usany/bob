@@ -2,7 +2,7 @@ from django.db import models
 
 
 class MenuItem(models.Model):
-    id = models.CharField(max_length=200)
+    id = models.CharField(max_length=200, primary_key=True)
     main = models.CharField(max_length=200)
     side = models.CharField(max_length=200)
     time = models.CharField(max_length=200)
