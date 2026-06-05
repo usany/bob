@@ -202,7 +202,6 @@ class Command(BaseCommand):
                 place = 'hi' if is_student else 'hg'
                 meal = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
-                date = day_date_map[day]
                 existing = MenuItem.objects.filter(
                     main=main,
                     side=side,
@@ -214,8 +213,9 @@ class Command(BaseCommand):
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
                     existing.save()
                 else:
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    translations = self.translate_text([main, side])
+                    enmain = translations[0] if isinstance(translations, list) else main
+                    enside = translations[1] if isinstance(translations, list) and len(translations) > 1 else side
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+day+'-'+meal,
                         main=main,
@@ -227,7 +227,7 @@ class Command(BaseCommand):
                         place=place,
                         price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
                         extra='',
-                        date=date,
+                        date=None,
                         stamp=False,
                     )
                 self.generate_image(main)
