@@ -7,8 +7,7 @@ import random
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 import requests
-import google.generativeai as genai
-from google import genai as google_genai
+from google import genai as genai
 import mimetypes
 import base64
 import re
@@ -356,7 +355,7 @@ class Command(BaseCommand):
         text_list = [texts] if is_single else texts
         
         try:
-            genai.configure(api_key=gemini_api_key)
+            genai.client(api_key=gemini_api_key)
             model = genai.GenerativeModel('gemini-3.5-flash')
             
             # Create prompt for batch translation
@@ -394,7 +393,7 @@ class Command(BaseCommand):
             return
 
         # Step 1: Translate Korean to English using Gemini
-        genai.configure(api_key=gemini_api_key)
+        genai.Client(api_key=gemini_api_key)
         model = genai.GenerativeModel('gemini-3.5-flash')
 
         try:
@@ -464,7 +463,7 @@ class Command(BaseCommand):
     
     def get_menu(self, img_path):
         load_dotenv()
-        client = google_genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
         
         try:
