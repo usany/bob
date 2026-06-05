@@ -226,6 +226,24 @@ class Command(BaseCommand):
 
         # Create MenuItem objects outside of Playwright context
         def create_menu_items():
+            # First pass: collect all Korean texts to translate in one batch
+            all_texts = []
+            for index, menu in enumerate(menu_texts):
+                if menu.startswith('등록된') or index % 7 < 1 or index % 7 > 5:
+                    continue
+                menu_parts = menu.split('\n')
+                main = menu_parts[0].strip() if menu_parts else ''
+                side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
+                if not main or not side:
+                    continue
+                all_texts.append(main)
+                all_texts.append(side)
+
+            # Batch translate all texts at once
+            translated = self.translate_text(all_texts) if all_texts else []
+            trans_map = {all_texts[i]: translated[i] for i in range(len(all_texts))} if len(translated) == len(all_texts) else {}
+
+            # Second pass: create/update menu items using cached translations
             for index, menu in enumerate(menu_texts):
                 if menu.startswith('등록된') or index % 7 < 1 or index % 7 > 5:
                     continue
@@ -238,14 +256,14 @@ class Command(BaseCommand):
                 meal = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
                 item_id = main+'-'+place+'-'+day+'-'+meal
-                enmain = self.translate_text([main])
-                enside = self.translate_text([side])
+                enmain = trans_map.get(main, main)
+                enside = trans_map.get(side, side)
                 updated, created = MenuItem.objects.update_or_create(
                     id=item_id,
                     defaults=dict(
                         main=main,
                         side=side,
-                        enmain=enmain,  
+                        enmain=enmain,
                         enside=enside,
                         day=day,
                         meal=meal,
