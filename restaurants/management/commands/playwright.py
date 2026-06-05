@@ -483,7 +483,7 @@ class Command(BaseCommand):
                     enside = self.translate_text(menu.get('side', ''))
                     menu_id = menu.get('main', '') + '-' + menu.get('place', '') + '-' + menu.get('day', '') + '-' + menu.get('time', '')
                     MenuItem.objects.create(
-                        id=menu_id,
+                        id=menu.get('id', ''),
                         main=menu.get('main', ''),
                         side=menu.get('side', ''),
                         enmain=menu.get('enmain', ''),
