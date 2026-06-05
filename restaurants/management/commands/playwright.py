@@ -13,6 +13,7 @@ import mimetypes
 import base64
 import re
 import json
+import uuid
 
 class Command(BaseCommand):
     help = 'Scrape menu data from university websites using Playwright'
@@ -88,19 +89,17 @@ class Command(BaseCommand):
                     first_menu = first_part.split(',', 1)
                     main = first_menu[0].strip() if first_menu else ''
                     side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
-                    MenuItem.objects.get_or_create(
+                    MenuItem.objects.create(
+                        id=str(uuid.uuid4()),
                         main=main,
                         side=side,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        time='lunch',
+                        meal='lunch',
                         place=place,
-                        defaults={
-                            'price': 6500,
-                            'extra_menu': '',
-                            'extra_price': None,
-                            'non_pork': False,
-                            'storage_url': self.storage_url+main+'.png',
-                        }
+                        price=6500,
+                        extra='',
+                        date=None,
+                        stamp=False,
                     )
                     
                     self.generate_image(main)
@@ -109,19 +108,17 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    MenuItem.objects.get_or_create(
+                    MenuItem.objects.create(
+                        id=str(uuid.uuid4()),
                         main=main,
                         side=side,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        time='lunch',
+                        meal='lunch',
                         place=place,
-                        defaults={
-                            'price': 5500,
-                            'extra_menu': '',
-                            'extra_price': None,
-                            'non_pork': False,
-                            'storage_url': self.storage_url+main+'.png',
-                        }
+                        price=5500,
+                        extra='',
+                        date=None,
+                        stamp=False,
                     )
                     self.generate_image(main)
 
@@ -129,20 +126,18 @@ class Command(BaseCommand):
                     menu_parts = menu.split(',', 1)
                     main = menu_parts[0].strip() if menu_parts else ''
                     side = menu_parts[1].strip() if len(menu_parts) > 1 else ''
-                    time = 'breakfast' if index % 3 == 0 else 'dinner'
-                    MenuItem.objects.get_or_create(
+                    meal = 'breakfast' if index % 3 == 0 else 'dinner'
+                    MenuItem.objects.create(
+                        id=str(uuid.uuid4()),
                         main=main,
                         side=side,
                         day='mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri',
-                        time=time,
+                        meal=meal,
                         place=place,
-                        defaults={
-                            'price': 5500,
-                            'extra_menu': '',
-                            'extra_price': None,
-                            'non_pork': False,
-                            'storage_url': self.storage_url+main,
-                        }
+                        price=5500,
+                        extra='',
+                        date=None,
+                        stamp=False,
                     )
                     self.generate_image(main)
 
@@ -184,31 +179,30 @@ class Command(BaseCommand):
                 if not main or not side:
                     continue
                 place = 'hi' if is_student else 'hg'
-                time = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
+                meal = 'lunch' if not is_student else 'breakfast' if index < 7 else 'lunch' if index < 28 else 'dinner'
                 day = 'mon' if index % 7 == 1 else 'tue' if index % 7 == 2 else 'wed' if index % 7 == 3 else 'thu' if index % 7 == 4 else 'fri'
                 existing = MenuItem.objects.filter(
                     main=main,
                     side=side,
                     day=day,
-                    time=time,
+                    meal=meal,
                     place=place,
                 ).first()
                 if existing:
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
-                    existing.storage_url = self.storage_url+place+time
                     existing.save()
                 else:
                     MenuItem.objects.create(
+                        id=str(uuid.uuid4()),
                         main=main,
                         side=side,
                         day=day,
-                        time=time,
+                        meal=meal,
                         place=place,
                         price=int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', '')),
-                        extra_menu='',
-                        extra_price=None,
-                        non_pork=False,
-                        storage_url=self.storage_url+main+'.png',
+                        extra='',
+                        date=None,
+                        stamp=False,
                     )
                 self.generate_image(main)
 
@@ -444,16 +438,16 @@ class Command(BaseCommand):
             def _save_items(items):
                 for menu in items:
                     MenuItem.objects.create(
+                        id=str(uuid.uuid4()),
                         main=menu.get('main', ''),
                         side=menu.get('side', ''),
                         price=menu.get('price', 0),
-                        time=menu.get('time', ''),
+                        meal=menu.get('time', ''),
                         day=menu.get('day', ''),
                         place=menu.get('place', ''),
-                        extra_menu=menu.get('extra_menu', ''),
-                        extra_price=menu.get('extra_price', 0),
-                        non_pork=menu.get('non_pork', False),
-                        storage_url='https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/IB7TC1jkYnlu_awkWLKTY6GDr0_dXG5nEh1CAupBQjjIGAcCIbmn_4Gxma2GeE3U/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu.get('main', '')+'.png',
+                        extra='',
+                        date=None,
+                        stamp=False,
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
                     self.generate_image(menu.get('main', ''))                    
