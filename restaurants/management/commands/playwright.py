@@ -108,7 +108,7 @@ class Command(BaseCommand):
                         stamp=False,
                     )
                     
-                    self.generate_image(main)
+                    self.generate_image(enmain)
 
                     second_part = first_menu[1].split('B코너 : ', 1)[1].strip() if len(first_menu) > 1 else ''
                     second_menu = second_part.split(',', 1)
@@ -130,7 +130,7 @@ class Command(BaseCommand):
                         date=date,
                         stamp=False,
                     )
-                    self.generate_image(main)
+                    self.generate_image(enmain)
 
                 else:
                     menu_parts = menu.split(',', 1)
@@ -156,7 +156,7 @@ class Command(BaseCommand):
                         date=date,
                         stamp=False,
                     )
-                    self.generate_image(main)
+                    self.generate_image(enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -229,7 +229,7 @@ class Command(BaseCommand):
                         date=None,
                         stamp=False,
                     )
-                self.generate_image(main)
+                self.generate_image(enmain)
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(create_menu_items).result()
@@ -379,34 +379,18 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR(f"Error translating text: {str(e)}"))
             return texts
 
-    def generate_image(self, main):
+    def generate_image(self, enmain):
         """Generate an image using Cloudflare AI API"""
         load_dotenv()
         account_id = os.getenv('CFACCOUNTID')
         api_token = os.getenv('CFAPITOKEN')
-        gemini_api_key = os.getenv('GEMINI_API_KEY')
 
         if not account_id or not api_token:
             self.stderr.write(self.style.ERROR('Cloudflare credentials not found in environment variables.'))
             return
 
-        if not gemini_api_key:
-            self.stderr.write(self.style.ERROR('Gemini API key not found in environment variables.'))
-            return
-
-        # Step 1: Translate Korean to English using Gemini
-        try:
-            client = genai.Client(api_key=gemini_api_key)
-            prompt = f"Translate this Korean food name to English. Return only the English translation, no additional text: {main}"
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
-            translated_text = response.text.strip()
-            self.stdout.write(self.style.SUCCESS(f"Translated: {main} -> {translated_text}"))
-        except Exception as e:
-            self.stderr.write(self.style.ERROR(f"Error translating text with Gemini: {str(e)}"))
-            translated_text = main  # Fallback to original text
+        # Step 1: Use the English dish name directly
+        translated_text = enmain
 
         # Step 2: Generate image using translated text
         imageurl = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning"
@@ -524,7 +508,7 @@ class Command(BaseCommand):
                         stamp=menu.get('stamp', ''),
                     )
                     self.stdout.write(self.style.SUCCESS(f"Successfully posted item: {menu.get('main', 'Unknown Menu Item')}"))
-                    self.generate_image(menu.get('main', ''))                    
+                    self.generate_image(menu.get('enmain', menu.get('main', '')))                    
             with ThreadPoolExecutor(max_workers=1) as executor:
                 executor.submit(_save_items, collection).result()
         except Exception as err:
