@@ -92,8 +92,8 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text(main)
-                    enside = self.translate_text(side)
+                    enmain = self.translate_text([main])
+                    enside = self.translate_text([side])
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         main=main,
@@ -115,8 +115,8 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    enmain = self.translate_text(main)
-                    enside = self.translate_text(side)
+                    enmain = self.translate_text([main])
+                    enside = self.translate_text([side])
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         main=main,
@@ -141,8 +141,8 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text(main)
-                    enside = self.translate_text(side)
+                    enmain = self.translate_text([main])
+                    enside = self.translate_text([side])
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
                         main=main,
@@ -214,8 +214,8 @@ class Command(BaseCommand):
                     existing.price = int(menu_parts[-1].split('(')[0].replace(',', '').replace('원', ''))
                     existing.save()
                 else:
-                    enmain = self.translate_text(main)
-                    enside = self.translate_text(side)
+                    enmain = self.translate_text([main])
+                    enside = self.translate_text([side])
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+day+'-'+meal,
                         main=main,
