@@ -209,7 +209,7 @@ class Command(BaseCommand):
                     defaults=dict(
                         main=main,
                         side=side,
-                        enmain=enmain,
+                        enmain=enmain,  
                         enside=enside,
                         day=day,
                         meal=meal,
@@ -334,6 +334,7 @@ class Command(BaseCommand):
         Returns:
             A single translated string or list of translated strings (matching input type)
         """
+        load_dotenv()
         gemini_api_key = os.getenv('GEMINI_API_KEY')
         
         if not gemini_api_key:
