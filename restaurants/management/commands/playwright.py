@@ -91,8 +91,9 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    translations = self.translate_text([main, side])
+                    enmain = translations[0] if isinstance(translations, list) and len(translations) > 0 else main
+                    enside = translations[1] if isinstance(translations, list) and len(translations) > 1 else side
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         main=main,
@@ -114,8 +115,9 @@ class Command(BaseCommand):
                     second_menu = second_part.split(',', 1)
                     main = second_menu[0].strip() if second_menu else ''
                     side = second_menu[1].strip() if len(second_menu) > 1 else ''
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    translations = self.translate_text([main, side])
+                    enmain = translations[0] if isinstance(translations, list) and len(translations) > 0 else main
+                    enside = translations[1] if isinstance(translations, list) and len(translations) > 1 else side
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-lunch',
                         main=main,
@@ -140,8 +142,9 @@ class Command(BaseCommand):
                     day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
                     day_index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[day_index]
-                    enmain = self.translate_text([main])
-                    enside = self.translate_text([side])
+                    translations = self.translate_text([main, side])
+                    enmain = translations[0] if isinstance(translations, list) and len(translations) > 0 else main
+                    enside = translations[1] if isinstance(translations, list) and len(translations) > 1 else side
                     MenuItem.objects.create(
                         id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
                         main=main,
