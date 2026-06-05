@@ -11,7 +11,7 @@ class MenuItem(models.Model):
     date = models.CharField(max_length=200, null=True, blank=True)
     day = models.CharField(max_length=200, null=True, blank=True)
     meal = models.CharField(max_length=200, null=True, blank=True)
-    price = models.CharField(default=0, null=True, blank=True)
+    price = models.CharField(max_length=200, null=True, blank=True)
     stamp = models.BooleanField(default=False)
     
     class Meta:
