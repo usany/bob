@@ -93,7 +93,7 @@ class Command(BaseCommand):
                     index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
                     date = dates[index]
                     MenuItem.objects.create(
-                        id=main+'-'+,
+                        id=main+'-'+place+'-'+date+'-'+day+'-'+meal,
                         main=main,
                         side=side,
                         enmain='',
@@ -103,7 +103,7 @@ class Command(BaseCommand):
                         place=place,
                         price=6500,
                         extra='',
-                        date=None,
+                        date=date,
                         stamp=False,
                     )
                     
