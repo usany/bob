@@ -89,6 +89,9 @@ class Command(BaseCommand):
                     first_menu = first_part.split(',', 1)
                     main = first_menu[0].strip() if first_menu else ''
                     side = first_menu[1].split('B코너 : ', 1)[0].strip() if len(first_menu) > 1 else ''
+                    day = 'mon' if index < 3 else 'tue' if index < 6 else 'wed' if index < 9 else 'thu' if index < 12 else 'fri'
+                    index = {'mon': 0, 'tue': 1, 'wed': 2, 'thu': 3, 'fri': 4, 'sat': 5, 'sun': 7}[day]
+                    date = dates[index]
                     MenuItem.objects.create(
                         id=main+'-'+,
                         main=main,
