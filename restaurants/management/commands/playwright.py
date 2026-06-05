@@ -179,7 +179,8 @@ class Command(BaseCommand):
             page.locator('a').filter(has_text='교수회관식당').click()
             # page.wait_for_selector('td.no-menu, td.menu')
         page.wait_for_selector('td.no-menu, td.menu')
-                    
+        date_elements = page.locator('[id^="date_"]').all()
+        dates = [elem.get_attribute('id').replace('date_', '').replace('-', '') for elem in date_elements]
         menu_texts = page.locator('td.no-menu, td.menu').all_inner_texts()
         self.stdout.write(str(menu_texts))
         self.stdout.write(f'Found {len(menu_texts)} items')
@@ -479,9 +480,6 @@ class Command(BaseCommand):
     
             def _save_items(items):
                 for menu in items:
-                    enmain = self.translate_text(menu.get('main', ''))
-                    enside = self.translate_text(menu.get('side', ''))
-                    menu_id = menu.get('main', '') + '-' + menu.get('place', '') + '-' + menu.get('day', '') + '-' + menu.get('time', '')
                     MenuItem.objects.create(
                         id=menu.get('id', ''),
                         main=menu.get('main', ''),
