@@ -560,7 +560,7 @@ class Command(BaseCommand):
                             enmain=menu.get('enmain', ''),
                             enside=menu.get('enside', ''),
                             price=menu.get('price', ''),
-                            meal=menu.get('time', ''),
+                            meal=menu.get('meal', ''),
                             day=menu.get('day', ''),
                             place=menu.get('place', ''),
                             extra=menu.get('extra', ''),
