@@ -7,7 +7,13 @@ import random
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 import requests
-from google import genai as genai
+from openai import OpenAI
+
+load_dotenv()
+client = OpenAI(
+    api_key=os.getenv("GEMINI_API_KEY"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+)
 import mimetypes
 import base64
 import re
@@ -399,8 +405,6 @@ class Command(BaseCommand):
         is_single = isinstance(texts, str)
         text_list = [texts] if is_single else texts
         
-        client = genai.Client(api_key=gemini_api_key)
-
         # Create prompt for batch translation
         text_items = '\n'.join([f'{i+1}. {text}' for i, text in enumerate(text_list)])
         prompt = f"""Translate the following Korean texts to English. Return ONLY the translations in the same order, one per line, with no numbers or extra text:
@@ -412,11 +416,13 @@ class Command(BaseCommand):
                 self.stderr.write(self.style.ERROR("All Gemini models failed for translation."))
                 return texts
             try:
-                response = client.models.generate_content(
+                response = client.chat.completions.create(
                     model=model,
-                    contents=prompt
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ]
                 )
-                translations = response.text.strip().split('\n')
+                translations = response.choices[0].message.content.strip().split('\n')
 
                 # Return in the same format as input
                 if is_single:
@@ -501,7 +507,6 @@ class Command(BaseCommand):
     
     def get_menu(self, img_path):
         load_dotenv()
-        client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
         
         try:
@@ -514,14 +519,22 @@ class Command(BaseCommand):
                 base64_image = base64.b64encode(f.read()).decode('utf-8')
             
             # Gemini API call
-            contents = [
+            messages = [
                 {
-                    "inline_data": {
-                        "mime_type": mime_type,
-                        "data": base64_image,
-                    },
-                },
-                {"text": "{'id': '낙지콩나물덮밥-ch-20260101-thu-breakfast', 'main': '낙지콩나물덮밥', 'side': '유부장국, 유린기 닭:브라질산, 중화품배추찜, 마카로니크래미샐러드, 고들빼기무침, 마시는 요구르트', 'enmain': 'Rice with octopus bean sprouts', 'ensub': 'Fried Tofu Soup, Yuringi Chicken: Brazilian, Chinese Cabbage Steamed, Macaroni Crami Salad, Seasoned Godeul, Drinking Yogurt', 'price': 8000, 'date': '20260101', 'day': 'tue', 'meal': 'lunch', 'place': 'cg', 'extra': '일식돈가스 추가시 8000', 'stamp': False }처럼 각 메뉴를 정리해주세요. place는 청운관 학생식당: ch, 청운관 교직원식당: cg, 푸른솔 학생식당: ph, 푸른솔 교직원식당: pg, 학생회관 학생식당: hh, 학생회관 교직원식당: hg입니다. trailing comma가 없도록 해주세요. id는 main-place-date-day-meal 순서로 합쳐서 만들어주세요. main에는 띄어쓰기가 없도록 해주세요. 추가 메뉴가 없는 경우 extra는 ''입니다. date는 현재 년도를 참고해서 작성해주세요. stamp는 금지 표시가 있으면 True, 없으면 False입니다. py list로 만들고 # 메모 없이 작성해주세요."},
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "{'id': '낙지콩나물덮밥-ch-20260101-thu-breakfast', 'main': '낙지콩나물덮밥', 'side': '유부장국, 유린기 닭:브라질산, 중화품배추찜, 마카로니크래미샐러드, 고들빼기무침, 마시는 요구르트', 'enmain': 'Rice with octopus bean sprouts', 'ensub': 'Fried Tofu Soup, Yuringi Chicken: Brazilian, Chinese Cabbage Steamed, Macaroni Crami Salad, Seasoned Godeul, Drinking Yogurt', 'price': 8000, 'date': '20260101', 'day': 'tue', 'meal': 'lunch', 'place': 'cg', 'extra': '일식돈가스 추가시 8000', 'stamp': False }처럼 각 메뉴를 정리해주세요. place는 청운관 학생식당: ch, 청운관 교직원식당: cg, 푸른솔 학생식당: ph, 푸른솔 교직원식당: pg, 학생회관 학생식당: hh, 학생회관 교직원식당: hg입니다. trailing comma가 없도록 해주세요. id는 main-place-date-day-meal 순서로 합쳐서 만들어주세요. main에는 띄어쓰기가 없도록 해주세요. 추가 메뉴가 없는 경우 extra는 ''입니다. date는 현재 년도를 참고해서 작성해주세요. stamp는 금지 표시가 있으면 True, 없으면 False입니다. py list로 만들고 # 메모 없이 작성해주세요."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:{mime_type};base64,{base64_image}"
+                            }
+                        }
+                    ]
+                }
             ]
             
             for model in ["gemini-3.5-flash", "gemini-2.5-flash", None]:
@@ -529,15 +542,15 @@ class Command(BaseCommand):
                     self.stderr.write(self.style.ERROR("All Gemini models failed for get_menu."))
                     break
                 try:
-                    response = client.models.generate_content(model=model, contents=contents)
+                    response = client.chat.completions.create(model=model, messages=messages)
                 except Exception as model_err:
                     self.stderr.write(self.style.ERROR(f"Model {model} failed: {str(model_err)}. Trying next..."))
                     continue
 
-                self.stdout.write(f'Gemini response: {response.text}')
+                self.stdout.write(f'Gemini response: {response.choices[0].message.content}')
 
                 # Strip markdown code fences if present, then parse into a list
-                raw = response.text.strip()
+                raw = response.choices[0].message.content.strip()
                 if raw.startswith('```'):
                     raw = raw.split('\n', 1)[-1]          # drop opening fence line
                     raw = raw.rsplit('```', 1)[0].strip()  # drop closing fence
