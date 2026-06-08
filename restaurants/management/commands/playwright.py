@@ -411,7 +411,7 @@ class Command(BaseCommand):
 
 {text_items}"""
 
-        for model in ["gemini-3.5-flash", "gemini-2.5-flash", None]:
+        for model in ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro", None]:
             if model is None:
                 self.stderr.write(self.style.ERROR("All Gemini models failed for translation."))
                 return texts
@@ -537,7 +537,7 @@ class Command(BaseCommand):
                 }
             ]
             
-            for model in ["gemini-3.5-flash", "gemini-2.5-flash", None]:
+            for model in ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro",None]:
                 if model is None:
                     self.stderr.write(self.style.ERROR("All Gemini models failed for get_menu."))
                     break
