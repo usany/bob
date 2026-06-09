@@ -16,7 +16,11 @@
         {% endif %}
 
         <div class="p-6">
+            {% if base == 'en' %}
+            <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-2">{{ menu_item.enmain }}</h1>
+            {% else %}
             <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-2">{{ menu_item.main }}</h1>
+            {% endif %}
             
             {% if base == 'en' %}
             <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ menu_item.enside }}</p>
