@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
 <div class="text-center py-10">
-    <h1 id="welcome-text" class="text-4xl font-bold text-blue-700 mb-6">Welcome to restaurants</h1>
+    <h1 id="welcome-text" class="text-4xl font-bold text-blue-700 mb-6">{% trans "Welcome to restaurants" %}</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 max-w-2xl mx-auto">
         {% for item in items %}
         <a href="/{{ lang }}/{{ location }}/{{ item.path }}/"
@@ -19,6 +20,6 @@
         </a>
         {% endfor %}
     </div>
-    <p class="mt-4 text-blue-400">This is the main page.</p>
+    <p class="mt-4 text-blue-400">{% trans "This is the main page." %}</p>
 </div>
 {% endblock %}

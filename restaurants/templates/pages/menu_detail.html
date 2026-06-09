@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}{{ menu_item.main }}{% endblock %}
 
@@ -11,7 +12,7 @@
         <img src="{{ image_url }}" alt="{{ menu_item.main }}" class="w-50 h-64 object-cover">
         {% else %}
         <div class="w-full h-48 bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm">
-            No image available
+            {% trans "No image available" %}
         </div>
         {% endif %}
 
@@ -50,7 +51,7 @@
                     {% endif %} -->
                 </div>
                 {% if menu_item.stamp %}
-                <span class="text-green-600 dark:text-green-400 text-xs font-medium">🌿 돼지 없음</span>
+                <span class="text-green-600 dark:text-green-400 text-xs font-medium">🌿 {% trans "돼지 없음" %}</span>
                 {% endif %}
             </div>
         </div>
