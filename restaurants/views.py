@@ -201,7 +201,9 @@ def menu_detail(request, path, meal, base=None, bases=None):
     # menu_item = get_object_or_404(MenuItem, url=path)
     menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = 'gl' if request.path.startswith('/gl/') else 'se'
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'location': location, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
+    menu_item = MenuItem.objects.filter(id=meal)[0]
+
+    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'image_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu_item.main+'.png', 'location': location, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
 
 
 # @staff_member_required
