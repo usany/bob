@@ -17,12 +17,17 @@
 
         <div class="p-6">
             <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400 mb-2">{{ menu_item.main }}</h1>
+            
+            {% if menu_item.side %}
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ menu_item.side }}</p>
+            {% endif %}
+            
             {% if location %}
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ location }}</p>
             {% endif %}
 
-            {% if menu_item.side %}
-            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ menu_item.side }}</p>
+            {% if time %}
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ time }}</p>
             {% endif %}
 
             {% if menu_item.extra %}
