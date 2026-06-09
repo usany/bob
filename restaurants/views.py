@@ -200,9 +200,9 @@ def menu_detail(request, path, meal, base=None, bases=None):
     """Display details for a specific menu item"""
     # menu_item = get_object_or_404(MenuItem, url=path)
     menu_item = {'title': path, 'meal': meal, 'order': 0}
-    location = 'gl' if request.path.startswith('/gl/') else 'se'
+    location = next(r for r in RESTAURANTS if r['path'] == path)['title']
     menu_item = MenuItem.objects.filter(id=meal)[0]
-
+    
     return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'image_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu_item.main+'.png', 'location': location, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
 
 
