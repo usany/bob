@@ -202,8 +202,8 @@ def menu_detail(request, path, meal, base=None, bases=None):
     # menu_item = {'title': path, 'meal': meal, 'order': 0}
     location = next(r for r in RESTAURANTS if r['path'] == path)['title']
     menu_item = MenuItem.objects.filter(id=meal)[0]
-    formatted_date = f"{menu_item.date[0:4]}-{menu_item.date[4:6]}-{menu_item.date[6:8]} {menu_item.day} {menu_item.meal}"
-    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'image_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu_item.main+'.png', 'location': location, 'formatted_date': formatted_date, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
+    time = f"{menu_item.date[0:4]}-{menu_item.date[4:6]}-{menu_item.date[6:8]} {menu_item.day} {menu_item.meal}"
+    return render(request, 'pages/menu_detail.html', {'menu_item': menu_item, 'image_url': 'https://objectstorage.ap-chuncheon-1.oraclecloud.com/n/ax0ym4amgnfk/b/bucket-20260516-0145/o/'+menu_item.main+'.png', 'location': location, 'time': time, 'base': base or 'ko', 'bases': bases or location, 'path': path, 'meal': meal})
 
 
 # @staff_member_required
