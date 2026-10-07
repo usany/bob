@@ -1,0 +1,50 @@
+name: Crawl menus
+
+on:
+  schedule:
+    # Every Friday 23:05 KST (14:05 UTC)
+    - cron: '5 14 * * 5'
+  workflow_dispatch:
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      # Run one scraper at a time; keep going if one fails
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        include:
+          - name: khu_seoul
+            args: --source khu --campus seoul
+          - name: khu_global
+            args: --source khu --campus global
+          - name: hufs_student
+            args: --source hufs --student
+          - name: hufs_staff
+            args: --source hufs
+          - name: dorm
+            args: --source dorm
+    name: ${{ matrix.name }}
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      CFACCOUNTID: ${{ secrets.CFACCOUNTID }}
+      CFDATABASEID: ${{ secrets.CFDATABASEID }}
+      CFTOKEN: ${{ secrets.CFTOKEN }}
+      CFAPITOKEN: ${{ secrets.CFAPITOKEN }}
+      STORAGE_URL: ${{ secrets.STORAGE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: |
+          uv sync --locked
+          uv run playwright install --with-deps chromium
+
+      - name: Run crawler
+        run: uv run crawler.py ${{ matrix.args }}

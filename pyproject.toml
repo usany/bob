@@ -5,7 +5,6 @@ description = "Scheduled Playwright scrapers for university cafeteria menus"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "apscheduler>=3.10,<4",
     "openai",
     "playwright",
     "python-dotenv",

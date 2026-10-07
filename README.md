@@ -11,11 +11,14 @@ uv run playwright install chromium
 
 Environment variables (or a `.env` file): `GEMINI_API_KEY`, `CFACCOUNTID`, `CFDATABASEID`, `CFTOKEN` (D1), `CFAPITOKEN` (Workers AI), `STORAGE_URL`.
 
-## Run
+## Schedule
+
+The scrapers run via GitHub Actions (`.github/workflows/crawl.yml`) every Friday at 23:05 KST, one at a time. Add the environment variables above as repository secrets. Trigger a manual run from the Actions tab with "Run workflow".
+
+## Run locally
 
 ```sh
-uv run scheduler.py                                # cron: every Friday 23:05–23:25 KST
-uv run crawler.py --source khu --campus seoul      # one-off run
+uv run crawler.py --source khu --campus seoul
 uv run crawler.py --source hufs --student
 uv run crawler.py --source dorm
 ```
