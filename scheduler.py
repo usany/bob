@@ -1,93 +1,66 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-from django.core.management import call_command
-import threading
+"""Run the Playwright scrapers on a cron schedule.
 
-# Shared lock — ensures playwright jobs run one at a time even if cron fires them simultaneously
-_playwright_lock = threading.Lock()
+Usage:
+    python scheduler.py
+"""
+import logging
 
-def _run_playwright(*args, **kwargs):
-    """Acquire the lock before running playwright so jobs are queued, not concurrent."""
-    with _playwright_lock:
-        call_command(*args, **kwargs)
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 
-# Create scheduler 
-# scheduler = BackgroundScheduler()
-scheduler = BackgroundScheduler(timezone='Asia/Seoul')
-min = 5
-def start():
-    """Start the scheduler with scheduled jobs"""
-    
-    # Clear expired sessions daily at 3 AM
-    # scheduler.add_job(
-    #     call_command,
-    #     'cron',
-    #     args=['clearsessions'],
-    #     id='clear_sessions',
-    #     hour=3,
-    #     minute=0,
-    #     replace_existing=True
-    # )
-    
-    # Run playwright scraping for KHU Seoul campus every Tuesday at 7:13 AM
-    scheduler.add_job(
-        _run_playwright,
-        'cron',
-        args=['playwright'],
-        kwargs={'source': 'khu', 'campus': 'seoul'},
-        id='playwright_khu_seoul',
-        day_of_week='fri',
-        hour=23,
-        minute=min,
-        replace_existing=True
+import crawler
+
+logger = logging.getLogger(__name__)
+
+TIMEZONE = 'Asia/Seoul'
+DAY_OF_WEEK = 'fri'
+HOUR = 23
+START_MINUTE = 5
+
+# (job id, crawler.run kwargs) — each job runs 5 minutes after the previous one
+JOBS = [
+    ('playwright_khu_seoul', {'source': 'khu', 'campus': 'seoul'}),
+    ('playwright_khu_global', {'source': 'khu', 'campus': 'global'}),
+    ('playwright_hufs_student', {'source': 'hufs', 'student': True}),
+    ('playwright_hufs_staff', {'source': 'hufs', 'student': False}),
+    ('playwright_dorm', {'source': 'dorm'}),
+]
+
+
+def run_job(job_id, kwargs):
+    logger.info(f'Starting {job_id}')
+    try:
+        crawler.run(**kwargs)
+        logger.info(f'Finished {job_id}')
+    except Exception:
+        logger.exception(f'{job_id} failed')
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+
+    # A single worker queues jobs so Playwright runs one at a time even if triggers overlap
+    scheduler = BlockingScheduler(
+        timezone=TIMEZONE,
+        executors={'default': {'type': 'threadpool', 'max_workers': 1}},
+        job_defaults={'coalesce': True, 'misfire_grace_time': 3600},
     )
-    scheduler.add_job(
-        _run_playwright,
-        'cron',
-        args=['playwright'],
-        kwargs={'source': 'khu', 'campus': 'global'},
-        id='playwright_khu_global',
-        day_of_week='fri',
-        hour=23,
-        minute=min + 5,
-        replace_existing=True
-    )
-    scheduler.add_job(
-        _run_playwright,
-        'cron',
-        args=['playwright'],
-        kwargs={'source': 'hufs', 'student': True},
-        id='playwright_hufs_student',
-        day_of_week='fri',
-        hour=23,
-        minute=min + 10,
-        replace_existing=True
-    )
-    scheduler.add_job(
-        _run_playwright,
-        'cron',
-        args=['playwright'],
-        kwargs={'source': 'hufs', 'student': False},
-        id='playwright_hufs_staff',
-        day_of_week='fri',
-        hour=23,
-        minute=min + 15,
-        replace_existing=True
-    )
-    scheduler.add_job(
-        _run_playwright,
-        'cron',
-        args=['playwright'],
-        kwargs={'source': 'dorm'},
-        id='playwright_dorm',
-        day_of_week='fri',
-        hour=23,
-        minute=min + 20,
-        replace_existing=True
-    )
-    
-    if not scheduler.running:
+
+    for offset, (job_id, kwargs) in enumerate(JOBS):
+        scheduler.add_job(
+            run_job,
+            CronTrigger(day_of_week=DAY_OF_WEEK, hour=HOUR, minute=START_MINUTE + offset * 5, timezone=TIMEZONE),
+            args=[job_id, kwargs],
+            id=job_id,
+            replace_existing=True,
+        )
+
+    logger.info('Scheduler started. Waiting for jobs...')
+    try:
         scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        logger.info('Shutting down scheduler...')
 
-def stop():
-    """Stop the scheduler"""
-    scheduler.shutdown()
+
+if __name__ == '__main__':
+    main()

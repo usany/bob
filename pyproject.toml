@@ -1,7 +1,13 @@
 [project]
 name = "foodtask"
 version = "0.1.0"
-description = "Add your description here"
+description = "Scheduled Playwright scrapers for university cafeteria menus"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "apscheduler>=3.10,<4",
+    "openai",
+    "playwright",
+    "python-dotenv",
+    "requests",
+]
