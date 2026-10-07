@@ -4,10 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:scripts": "tsc -p tsconfig.scripts.json",
+    "pipeline": "tsx scripts/cron_wrapper.ts --now",
+    "cron": "tsx scripts/cron_wrapper.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@10.33.2",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1147.0",
+    "@opencode-ai/sdk": "^1.18.35",
+    "node-cron": "^4.6.0",
+    "playwright": "^1.63.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }

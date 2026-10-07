@@ -263,14 +263,15 @@ function toWav(mimeType: string, audio: Buffer): Buffer {
   return Buffer.concat([wavHeader(audio.length), audio]);
 }
 
-/** Convert an MP3 file to WAV using macOS `afconvert`. */
+/** Convert an MP3 file to 16-bit PCM WAV using `ffmpeg` (override binary via FFMPEG). */
 function convertMp3ToWav(mp3Path: string, wavPath: string): void {
-  const r = spawnSync("afconvert", ["-f", "WAVE", "-d", "LEI16", mp3Path, wavPath], {
+  const ffmpeg = process.env.FFMPEG ?? "ffmpeg";
+  const r = spawnSync(ffmpeg, ["-y", "-loglevel", "error", "-i", mp3Path, "-c:a", "pcm_s16le", wavPath], {
     encoding: "utf8",
     timeout: 300_000,
   });
   if (r.status !== 0) {
-    throw new Error(`afconvert failed: ${r.stderr?.trim() || r.error?.message || "unknown"}`);
+    throw new Error(`ffmpeg failed: ${r.stderr?.trim() || r.error?.message || "unknown"}`);
   }
 }
 
