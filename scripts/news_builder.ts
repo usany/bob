@@ -38,7 +38,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // ----------------------------------------------------------------------------
 // Config
 // ----------------------------------------------------------------------------
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WORK = path.join(ROOT, "_workspace");
 const DEFAULT_INPUT = path.join(WORK, "03_news_scenario.md");
 const DEFAULT_OUTPUT_DIR = path.join(ROOT, "store");

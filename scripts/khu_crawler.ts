@@ -28,7 +28,7 @@ const execFileAsync = promisify(execFile);
 // ----------------------------------------------------------------------------
 // Config
 // ----------------------------------------------------------------------------
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WORK = path.join(ROOT, "_workspace");
 const IMG_DIR = path.join(WORK, "01_notice_images");
 const NOTICE_MD = path.join(WORK, "01_notice.md");
@@ -421,7 +421,7 @@ async function main() {
   for (const cat of CATEGORIES) {
     let pageIndex = 1;
     console.log(`[crawler] category ${cat.name} (menuNo=${cat.menuNo})`);
-    for (;;) {
+    for (; ;) {
       const listUrl = `${BASE}/list.do?menuNo=${cat.menuNo}&pageIndex=${pageIndex}`;
       await page.goto(listUrl, { waitUntil: "networkidle", timeout: 60_000 });
       const rows = await parseListRows(page);
