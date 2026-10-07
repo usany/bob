@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build:scripts": "tsc -p tsconfig.scripts.json",
-    "pipeline": "tsx scripts/run_pipeline.ts"
+    "pipeline": "node scripts/run_pipeline.ts"
   },
   "keywords": [],
   "author": "",
