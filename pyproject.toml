@@ -1,0 +1,9 @@
+[project]
+name = "newstask-scripts"
+version = "0.0.0"
+description = "Python helpers for the news pipeline (easyocr)"
+requires-python = ">=3.12"
+dependencies = ["easyocr"]
+
+[tool.uv]
+package = false

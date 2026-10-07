@@ -33,7 +33,7 @@ jobs:
       S3_REGION: ${{ vars.S3_REGION }}
       S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
       S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
-      PYTHON: python3
+      PYTHON: ${{ github.workspace }}/.venv/bin/python
     steps:
       - uses: actions/checkout@v4
 
@@ -44,10 +44,9 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.12"
-          cache: pip
+          enable-cache: true
 
       - name: Install Node dependencies
         run: pnpm install --frozen-lockfile
@@ -59,11 +58,11 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Install opencode CLI (used by @opencode-ai/sdk)
-        run: npm install -g opencode-ai
+        run: pnpm add -g --allow-build=opencode-ai opencode-ai
 
       - name: Install easyocr
         if: ${{ !inputs.no_ocr }}
-        run: pip install easyocr
+        run: uv sync --locked
 
       - name: Build scripts
         run: pnpm run build:scripts
