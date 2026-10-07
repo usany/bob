@@ -52,8 +52,8 @@ jobs:
       - name: Install Node dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install ffmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      # - name: Install ffmpeg
+      #   run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
@@ -70,10 +70,10 @@ jobs:
 
       - name: Run pipeline
         run: |
-          args=(--now)
+          args=()
           if [ -n "${{ inputs.week }}" ]; then args+=("--week=${{ inputs.week }}"); fi
           if [ "${{ inputs.no_ocr }}" = "true" ]; then args+=(--no-ocr); fi
-          pnpm exec tsx scripts/cron_wrapper.ts "${args[@]}"
+          pnpm exec tsx scripts/run_pipeline.ts "${args[@]}"
 
       - name: Upload outputs
         if: always()

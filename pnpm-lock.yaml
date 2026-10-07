@@ -14,9 +14,6 @@ importers:
       '@opencode-ai/sdk':
         specifier: ^1.18.35
         version: 1.18.35
-      node-cron:
-        specifier: ^4.6.0
-        version: 4.6.0
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
@@ -430,10 +427,6 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  node-cron@4.6.0:
-    resolution: {integrity: sha512-Si/bzYiKRHOB8/a99T2+SDGN582ONDMSTlJr5oCkT6GtnqPjZ2s10eoQRYkW9ZHwjVxONL+W8Fb+qR0AHMQsdg==}
-    engines: {node: '>=20'}
 
   path-key@3.1.1:
     resolution: {integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==}
@@ -865,8 +858,6 @@ snapshots:
     optional: true
 
   isexe@2.0.0: {}
-
-  node-cron@4.6.0: {}
 
   path-key@3.1.1: {}
 

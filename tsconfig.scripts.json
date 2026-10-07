@@ -11,5 +11,5 @@
     "types": ["node"]
   },
   "include": ["scripts/**/*.ts"],
-  "exclude": ["scripts/cron_wrapper.ts"]
+  "exclude": ["scripts/run_pipeline.ts"]
 }
