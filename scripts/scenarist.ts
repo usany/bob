@@ -1,5 +1,5 @@
 /**
- * scenarist.mts — replaces the `scenarist` agent using the opencode SDK.
+ * scenarist.ts — generates a radio news scenario using the Google Gemini API.
  *
  * Mirrors `.claude/agents/scenarist.md`:
  *   1. Reads the notice file `_workspace/01_notice.md`
@@ -9,39 +9,37 @@
  *       include all notices, only readable texts)
  *   4. Writes the result to `_workspace/03_news_scenario.md`
  *
- * Uses `@opencode-ai/sdk`: spins up an in-process opencode server created by
- * `createOpencode()`, creates a session, and asks the model (default: opencode's
- * default model) to play the scenarist role.
- *
- * WHY `.mts` (ESM)? The SDK's package.json `exports` map only defines the
- * `import` condition (no `require`/`default`), so the module must be loaded as
- * ESM. In this project (no `"type": "module"`), `.ts` files are treated as CJS
- * and would fail to resolve `@opencode-ai/sdk`. `.mts` forces ESM.
+ * Uses `@google/generative-ai`: calls the Gemini API to generate the scenario.
+ * Requires GOOGLE_API_KEY environment variable.
  *
  * Run (from repo root):
- *   npx tsx scripts/scenarist.mts
- *   npx tsx scripts/scenarist.mts --input=_workspace/01_notice.md
- *   npx tsx scripts/scenarist.mts --output=_workspace/03_news_scenario.md
- *   OPENCODE_MODEL=google/gemini-3.5-flash npx tsx scripts/scenarist.mts   # pick a different model
+ *   npx tsx scripts/scenarist.ts
+ *   npx tsx scripts/scenarist.ts --input=_workspace/01_notice.md
+ *   npx tsx scripts/scenarist.ts --output=_workspace/03_news_scenario.md
+ *   GEMINI_MODEL=gemini-2.0-flash npx tsx scripts/scenarist.ts   # pick a different model
  */
-import { createOpencode } from "@opencode-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as fsp from "node:fs/promises";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
 
 // ----------------------------------------------------------------------------
 // Config
 // ----------------------------------------------------------------------------
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const ROOT = path.resolve(path.dirname(import.meta.url), "..");
 const WORK = path.join(ROOT, "_workspace");
 const DEFAULT_INPUT = path.join(WORK, "01_notice.md");
 const DEFAULT_OUTPUT = path.join(WORK, "03_news_scenario.md");
 
-// Optional: "<provider>/<model>". Override via OPENCODE_MODEL or --model.
-// opencode provider free-tier model (the previous deepseek-v4-flash-free was
-// retired from the free tier). Override with OPENCODE_MODEL if needed.
-// Example: "opencode/nemotron-3.5-lightning-free".
-const DEFAULT_MODEL = process.env.OPENCODE_MODEL ?? "opencode/big-pickle";
+// Gemini model. Override via GEMINI_MODEL environment variable.
+// Default to gemini-1.5-flash for speed and cost efficiency.
+const DEFAULT_MODEL = process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
+
+// Require GOOGLE_API_KEY
+const API_KEY = process.env.GOOGLE_API_KEY;
+if (!API_KEY) {
+  console.error("[scenarist] ERROR: GOOGLE_API_KEY environment variable is not set");
+  process.exit(1);
+}
 
 function parseArgs(argv: string[]) {
   const args: { input: string; output: string; model: string } = {
@@ -127,87 +125,41 @@ async function main() {
   }
   console.log(`[scenarist] read ${noticeMarkdown.length} chars from ${args.input}`);
 
-  const [providerID, modelID] = args.model.split("/");
-  if (args.model && (!providerID || !modelID)) {
-    console.error(`[scenarist] ERROR: --model must be "<provider>/<model>", got "${args.model}"`);
+  // 2. Ensure output directory exists.
+  try {
+    await fsp.mkdir(args.output, { recursive: true });
+  } catch (err) {
+    console.error(`[scenarist] ERROR: cannot create output directory: ${args.output}\n  ${err}`);
     process.exit(1);
   }
 
-  // 2. Boot an in-process opencode server and build a client.
-  console.log("[scenarist] starting opencode server...");
-  const { client, server } = await createOpencode();
-  const session = client.session;
+  // 3. Initialize Gemini client.
+  console.log("[scenarist] initializing Gemini API...");
+  const client = new GoogleGenerativeAI(API_KEY);
+  const model = client.getGenerativeModel({ model: args.model });
 
   try {
-    // 3. Create a session rooted at the output directory (model is set at prompt time).
-    const created = await session.create({
-      body: { title: "Radio News — scenarist" },
-      query: { directory: args.output },
-    });
-    const sessionID = created.data?.id;
-    if (!sessionID) {
-      throw new Error(`session.create returned no session id: ${JSON.stringify(created)}`);
-    }
-    console.log(`[scenarist] session created: ${sessionID}`);
+    // 4. Generate the scenario via Gemini.
+    console.log(`[scenarist] generating scenario with model ${args.model}...`);
+    const response = await model.generateContent(buildPrompt(noticeMarkdown));
 
-    // 4. Send the scenarist prompt (optionally with a target model).
-    console.log(`[scenarist] sending scenarist prompt${args.model ? ` (${args.model})` : " (opencode default model)"}...`);
-    const promptRes = await session.prompt({
-      path: { id: sessionID },
-      query: { directory: args.output },
-      body: {
-        ...(args.model ? { model: { providerID, modelID } } : {}),
-        parts: [{ type: "text", text: buildPrompt(noticeMarkdown) }],
-      },
-    });
-    const messageID = promptRes.data?.info?.id;
-    if (!messageID) {
-      throw new Error(`session.prompt returned no message id: ${JSON.stringify(promptRes)}`);
-    }
-    console.log(`[scenarist] prompt accepted (message ${messageID}), waiting for completion...`);
-
-    // 5. Wait for the assistant to finish (it writes the file via its tools).
-    const deadline = Date.now() + 10 * 60 * 1000;
-    const isDone = (r: { data?: { info?: { time?: { created: number; completed?: number } | { created: number } } } | null }) => {
-      const t = r.data?.info?.time;
-      return !!t && "completed" in t && typeof t.completed === "number";
-    };
-    let lastRes: Awaited<ReturnType<typeof session.message>> | undefined;
-    while (Date.now() < deadline) {
-      lastRes = await session.message({
-        path: { id: sessionID, messageID },
-        query: { directory: args.output },
-      });
-      if (isDone(lastRes)) break;
-      await sleep(1500);
-    }
-    if (!lastRes || !isDone(lastRes)) {
-      throw new Error(`Timed out waiting for assistant message ${messageID} to complete`);
-    }
-    console.log("[scenarist] assistant finished.");
-
-    // 6. Verify the output file exists.
-    const out = args.output;
-    const outputFile = path.join(out, "03_news_scenario.md");
-    let finalText: string;
-    try {
-      finalText = await fsp.readFile(outputFile, "utf8");
-    } catch (err) {
-      const entries = await fsp.readdir(out).catch(() => []);
-      const candidates = entries.filter((f) => f.includes("scenario")).sort();
-      if (candidates.length === 0) {
-        throw new Error(`no scenario file found in ${out}`);
-      }
-      const fallback = path.join(out, candidates[0]);
-      console.warn(`[scenarist] WARNING: expected ${outputFile}, using ${fallback}`);
-      finalText = await fsp.readFile(fallback, "utf8");
+    if (!response.response.text()) {
+      throw new Error("Gemini returned empty response");
     }
 
-    console.log(`[scenarist] DONE — wrote ${finalText.length} chars to ${outputFile}`);
-  } finally {
-    server.close();
+    const scenario = response.response.text();
+    console.log(`[scenarist] received ${scenario.length} chars from Gemini`);
+
+    // 5. Write the result to the output file.
+    const outputFile = path.join(args.output, "03_news_scenario.md");
+    await fsp.writeFile(outputFile, scenario, "utf8");
+    console.log(`[scenarist] DONE — wrote ${scenario.length} chars to ${outputFile}`);
+  } catch (err) {
+    console.error("[scenarist] ERROR:", err);
+    throw err;
   }
 }
+
 
 main().catch((err) => {
   console.error("[scenarist] FATAL:", err);

@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "build:scripts": "tsc -p tsconfig.scripts.json",
-    "pipeline": "node --env-file=.env scripts/run_pipeline.ts"
+    "pipeline": "node --env-file=.env scripts/run_pipeline.ts",
+    "scenarist": "node dist/scripts/scenarist.js"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +13,7 @@
   "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1147.0",
-    "@opencode-ai/sdk": "^1.18.35",
+    "@google/generative-ai": "^0.19.0",
     "playwright": "^1.63.0"
   },
   "devDependencies": {
