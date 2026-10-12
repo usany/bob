@@ -5,7 +5,7 @@
   "scripts": {
     "build:scripts": "tsc -p tsconfig.scripts.json",
     "pipeline": "node --env-file=.env scripts/run_pipeline.ts",
-    "scenarist": "node dist/scripts/scenarist.js"
+    "scenarist": "node --env-file=.env scripts/scenarist.ts"
   },
   "keywords": [],
   "author": "",

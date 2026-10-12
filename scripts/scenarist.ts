@@ -35,7 +35,7 @@ const DEFAULT_OUTPUT = path.join(WORK, "03_news_scenario.md");
 const DEFAULT_MODEL = process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
 
 // Require GOOGLE_API_KEY
-const API_KEY = process.env.GOOGLE_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 if (!API_KEY) {
   console.error("[scenarist] ERROR: GOOGLE_API_KEY environment variable is not set");
   process.exit(1);
